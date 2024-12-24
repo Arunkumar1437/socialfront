@@ -1,0 +1,55 @@
+p{
+    text-align: center;
+}
+.form-group {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    margin-left: 500px;
+    
+  }
+  
+  .control-label {
+    margin-right: 10px;
+    width: 200px;
+
+  }
+  
+  .input-group {
+    flex-grow: 1;
+    border: 2px solid #007bff; 
+    background-color: lightgray; 
+    border-radius: 5px;
+    max-width: 274px;
+
+  }
+  .converted-text-heading{
+    font-size: 24px;
+     font-weight: bold;
+      text-align: center; 
+      margin-top: 20px;
+  }
+  #output-details{
+    margin-left: 546px;
+    white-space: pre-line;
+    margin-top: 20px;
+    border: 1px solid red;
+    width: auto;
+    padding: 26px;
+    border-radius: 20px;
+    overflow-y: auto; 
+    max-height: 400px; 
+  }
+  #output-details-empty{
+    border: none;
+    padding: 0;
+    margin-left: 546px;
+    white-space: pre-line; 
+    margin-top: 20px; 
+    width: auto;
+  }
+  #error-message{
+    color: red; 
+    margin-left: 755px; 
+    margin-top: 10px;
+  }

@@ -1,0 +1,191 @@
+<div class="container">
+  <!-- <button class="toggle-btn">
+    <span>
+      <span  *ngIf="isCollapsed" (click)="toggleSidebar()">➡️</span>
+      <span  *ngIf="!isCollapsed" (click)="toggleSidebar()">⬅️</span>
+    </span>
+  </button> -->
+  <aside class="sidebar" [class.closed]="isSidebarClosed">
+    <ul class="sidebar-links">
+      <h4><span>Menu</span><div class="menu-separator"></div></h4>
+      <li><a (click)="dashboard()"><span>📊</span>Dashboard</a></li>
+      <li><a (click)="message()"><span>✉️</span>Message</a></li>
+      <li><a (click)="post()"><span>📝</span> Post</a></li>
+      <li><a (click)="notification()"><span>🔔</span>Notifications</a></li>
+      <li><a (click)="profile()"><span>👤</span>Profile</a></li>
+      <li><a (click)="setting()"><span>⚙️</span>Settings</a></li>
+      <li><a (click)="ocr()"><span>🧑‍💻</span>OCR</a></li>
+      <li><a (click)="chat()"><span>📱</span>Chat</a></li>
+      <!-- <li><a (click)="logout()"><span>🚪</span>Logout</a></li> -->
+    </ul>
+    <div class="user-account">
+      <div class="user-profile">
+        <div class="user-detail">
+          <h3>{{username}}</h3>
+          <h3>Date :{{currentDate}}</h3>
+          <h3>Time :{{currentTime}}</h3>
+        </div>
+      </div>
+    </div>
+    <a style="margin-left: 67px;" (click)="logout()"><span>🚪</span>Logout</a>
+  </aside>
+</div>
+<!--<ul>
+   General Icons 
+  <li><span>📊</span> Dashboard</li>
+  <li><span>✉️</span> Messages</li>
+  <li><span>📝</span> Post</li>
+  <li><span>🔔</span> Notifications</li>
+  <li><span>👤</span> Profile</li>
+  <li><span>⚙️</span> Settings</li>
+  <li><span>🏠</span> Home</li>
+  <li><span>❓</span> Help</li>
+  <li><span>🔍</span> Search</li>
+  <li><span>📤</span> Upload</li>
+  <li><span>⬇️</span> Download</li>
+  <li><span>💾</span> Save</li>
+  <li><span>✏️</span> Edit</li>
+  <li><span>🗑️</span> Delete</li>
+  <li><span>➕</span> Add</li>
+  <li><span>➖</span> Remove</li>
+  <li><span>🔗</span> Link</li>
+  <li><span>📎</span> Attachment</li>
+  <li><span>🔒</span> Lock</li>
+  <li><span>🔓</span> Unlock</li>
+  <li><span>❌</span> Error</li>
+  <li><span>✅</span> Success</li>
+  <li><span>⚠️</span> Warning</li>-->
+
+  <!-- Chat / Messaging 
+  <li><span>💬</span> Chat</li>
+  <li><span>✉️</span> Message</li>
+  <li><span>💬</span> Speech Bubble</li>
+  <li><span>📤</span> Send Message</li>
+  <li><span>⌨️</span> Typing</li>
+  <li><span>🎙️</span> Microphone (Voice Message)</li>
+  <li><span>📸</span> Camera (Image Message)</li>
+  <li><span>😄</span> Emoji</li>-->
+
+  <!-- OCR (Optical Character Recognition) 
+  <li><span>🧑‍💻</span> OCR Module</li>
+  <li><span>📄</span> Scan Document</li>
+  <li><span>📝</span> Text Recognition</li>
+  <li><span>📸</span> Camera Scan</li>
+  <li><span>📤</span> File Upload</li>
+  <li><span>✏️</span> Edit Text</li>
+  <li><span>💾</span> Save Text</li>
+  <li><span>⬇️</span> Download Text</li>
+  <li><span>❌</span> Error in OCR</li>
+  <li><span>⚙️</span> OCR Settings</li>-->
+
+  <!-- Files & Documents 
+  <li><span>📁</span> File</li>
+  <li><span>📄</span> Document</li>
+  <li><span>📄</span> Page</li>
+  <li><span>🗂️</span> Folder</li>
+  <li><span>📑</span> PDF File</li>
+  <li><span>📊</span> Spreadsheet</li>
+  <li><span>📈</span> Presentation</li>
+  <li><span>📝</span> Text File</li>
+  <li><span>🖼️</span> Image</li>
+  <li><span>🎥</span> Video</li>
+  <li><span>🎧</span> Audio</li>-->
+
+  <!-- User Interaction 
+  <li><span>👍</span> Like</li>
+  <li><span>👎</span> Dislike</li>
+  <li><span>⭐</span> Star</li>
+  <li><span>❤️</span> Heart</li>
+  <li><span>👍</span> Thumbs Up</li>
+  <li><span>👎</span> Thumbs Down</li>
+  <li><span>👏</span> Clapping</li>
+  <li><span>✔️</span> Checkmark</li>
+  <li><span>❌</span> Crossmark</li>
+  <li><span>⚠️</span> Alert</li>-->
+
+  <!-- Social & Network
+  <li><span>🌐</span> Social Network</li>
+  <li><span>👥</span> Friend Request</li>
+  <li><span>➕</span> Follow</li>
+  <li><span>➖</span> Unfollow</li>
+  <li><span>👨‍👩‍👧‍👦</span> Group</li>
+  <li><span>🔗</span> Share</li> -->
+ <!-- <li><span>@</span> Mention</li>-->
+  <!--<li><span>🏷️</span> Tag</li> -->
+
+  <!-- Time & Date 
+  <li><span>🕰️</span> Clock</li>
+  <li><span>📅</span> Calendar</li>
+  <li><span>⏰</span> Alarm</li>
+  <li><span>⏱️</span> Stopwatch</li>
+  <li><span>⏲️</span> Timer</li>-->
+
+  <!-- Tools & Utilities 
+  <li><span>⚙️</span> Gear</li>
+  <li><span>🔨</span> Hammer</li>
+  <li><span>🔧</span> Wrench</li>
+  <li><span>🪛</span> Screwdriver</li>
+  <li><span>🧰</span> Toolbox</li>
+  <li><span>💡</span> Lightbulb</li>
+  <li><span>🔦</span> Flashlight</li>
+  <li><span>🔍</span> Magnifying Glass</li>-->
+
+  <!-- Weather
+  <li><span>🌞</span> Sun</li>
+  <li><span>☁️</span> Cloud</li>
+  <li><span>🌧️</span> Rain</li>
+  <li><span>❄️</span> Snowflake</li>
+  <li><span>⚡</span> Lightning</li>
+  <li><span>🌈</span> Rainbow</li>
+  <li><span>🌬️</span> Wind</li> -->
+
+  <!-- Animals & Nature 
+  <li><span>🐕</span> Dog</li>
+  <li><span>🐈</span> Cat</li>
+  <li><span>🦁</span> Lion</li>
+  <li><span>🐯</span> Tiger</li>
+  <li><span>🐘</span> Elephant</li>
+  <li><span>🐦</span> Bird</li>
+  <li><span>🐟</span> Fish</li>
+  <li><span>🌳</span> Tree</li>
+  <li><span>🌸</span> Flower</li>
+  <li><span>🍃</span> Leaf</li>-->
+
+  <!-- Food & Drink 
+  <li><span>☕</span> Coffee</li>
+  <li><span>🍕</span> Pizza</li>
+  <li><span>🍔</span> Burger</li>
+  <li><span>🍟</span> Fries</li>
+  <li><span>🍦</span> Ice Cream</li>
+  <li><span>🍰</span> Cake</li>
+  <li><span>🍎</span> Apple</li>
+  <li><span>🍌</span> Banana</li>
+  <li><span>🍉</span> Watermelon</li>-->
+
+  <!-- Transportation 
+  <li><span>🚗</span> Car</li>
+  <li><span>🚌</span> Bus</li>
+  <li><span>🚆</span> Train</li>
+  <li><span>✈️</span> Plane</li>
+  <li><span>🚲</span> Bicycle</li>
+  <li><span>🚢</span> Ship</li>
+  <li><span>🚀</span> Rocket</li>-->
+
+  <!-- Music & Arts 
+  <li><span>🎶</span> Musical Note</li>
+  <li><span>🎸</span> Guitar</li>
+  <li><span>🎤</span> Microphone</li>
+  <li><span>🥁</span> Drum</li>
+  <li><span>🎨</span> Paint Palette</li>
+  <li><span>🎨</span> Artist Palette</li>
+  <li><span>🎭</span> Theater Masks</li>
+  <li><span>🎬</span> Film Reel</li>-->
+
+  <!-- Health & Fitness
+  <li><span>🩺</span> Stethoscope</li>
+  <li><span>💪</span> Flexed Arm</li>
+  <li><span>🏃</span> Runner</li>
+  <li><span>⛹️</span> Person Basketball</li>
+  <li><span>⚽</span> Soccer Ball</li>
+  <li><span>🥇</span> Gold Medal</li>
+</ul> -->

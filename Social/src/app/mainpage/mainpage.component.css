@@ -1,0 +1,71 @@
+body{
+  max-width: 79%;
+  margin-left: 20%;}
+h4{
+  text-align: center;
+  margin-top: 100px;
+  width: 83%;
+}
+#back{
+   float: left;
+   margin-left: 580px;
+}
+#next{
+  margin-right: 640px;
+    float: right;
+}
+#btns{
+    margin-top: 100px;
+}
+#detail{
+  text-align: center;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: larger;
+  margin-top: 20px;
+  float: right;
+
+}
+.custom-snackbar {
+  background-color: green;
+  color: white;
+}
+#up{
+  margin-left :50px ;
+}
+
+#down{
+  margin-left :20px ;
+}
+#footer{
+  width: 83%;
+  float: right;
+}
+.holebody{
+  border: 1px solid  skyblue;
+  border-radius: 10px;
+  width: 700px;
+  height: 300px;
+  margin-top: 20px;
+}
+.loginData{
+  margin-left: 300px;
+  width: 500px;
+}
+.card {
+  border: 2px solid blue; /* Blue border */
+  border-radius: 20px; /* Rounded corners with 20px radius */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  max-width: 600px;
+  margin: 20px auto; /* Centers the card */
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}

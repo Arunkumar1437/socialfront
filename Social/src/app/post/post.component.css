@@ -1,0 +1,27 @@
+.postbox{
+    width:50%;
+    border: 1px solid;
+    float: left;
+    color: whitesmoke;
+    height: 600px;
+    margin-top: 21px;
+    margin-left: 31px;
+    border-radius: 10px;
+    background-color: white;
+  }
+  h2{
+    color : black;
+    text-align: center;
+  }
+  .postSidebar{
+    width:29%;
+    border: 1px solid;
+    float: left;
+    color: whitesmoke;
+    height: 600px;
+    margin-top: 21px;
+    margin-left: 31px;
+    border-radius: 10px;
+    background-color: white;
+    
+}

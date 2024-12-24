@@ -1,0 +1,77 @@
+.email-container {
+  display: flex;
+  border: 1px solid blueviolet;
+  border-radius: 20px;
+  width:70%;
+  margin-left:350px;
+  margin-top: 10px;
+
+}
+
+.sidebar {
+  width: 20%;
+  background-color: #f5f5f5;
+  border-right: 1px solid #ddd;
+  padding: 15px;
+}
+
+.sidebar h5 {
+  margin-bottom: 15px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  padding: 5px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.email-compose {
+  width: 96%;
+  padding: 25px;
+}
+
+.header {
+  margin-bottom: 20px;
+  margin-left: 400px;
+}
+
+.header button {
+  margin-right: 10px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-control {
+  width: 44%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-left: 90px;
+
+}
+
+.rich-text-options {
+  margin-top: 10px;
+}
+
+.rich-text-options button {
+  margin-right: 5px;
+}
+
+textarea.form-control {
+  resize: vertical;
+}
+input{
+  width: 500px;
+  margin-left: 20px;
+}
+label{
+  float: left;
+}

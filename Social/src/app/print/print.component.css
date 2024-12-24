@@ -1,0 +1,19 @@
+table,th,td{
+  margin-top: 50px;
+  border: 1px solid black;
+  text-align: center;
+}
+table{
+  height: 500px;
+  width:400px;
+  margin-left: 500px;
+}
+#head{
+  color: rgb(19, 235, 235);
+}
+td{
+  text-align: center;
+}
+button{
+  margin-left: 600px;
+}
