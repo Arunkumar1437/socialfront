@@ -82,10 +82,18 @@
 margin-left: 40px;
  }
  .user-account{
- border: 1px solid blue;
+    border: 1px solid blue;
     width: 216px;
     border-radius: 44px;
 }
 h4{
   margin-left:57px;
+}
+footer {
+  text-align: center;      
+  padding: 10px;             
+  position: relative;       
+  bottom: 0;
+  width: 100%;
+  box-sizing: border-box;
 }

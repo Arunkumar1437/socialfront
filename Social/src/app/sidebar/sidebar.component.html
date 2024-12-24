@@ -7,16 +7,15 @@
   </button> -->
   <aside class="sidebar" [class.closed]="isSidebarClosed">
     <ul class="sidebar-links">
-      <h4><span>Menu</span><div class="menu-separator"></div></h4>
+      <h4><span><a style="float: right;margin-right: 5px;"(click)="profile()"><span>👤</span></a></span><div class="menu-separator"></div></h4>
       <li><a (click)="dashboard()"><span>📊</span>Dashboard</a></li>
-      <li><a (click)="message()"><span>✉️</span>Message</a></li>
+      <li><a (click)="message()"><span>✉️</span>Mail</a></li>
       <li><a (click)="post()"><span>📝</span> Post</a></li>
-      <li><a (click)="notification()"><span>🔔</span>Notifications</a></li>
-      <li><a (click)="profile()"><span>👤</span>Profile</a></li>
+      <!-- <li><a (click)="notification()"><span>🔔</span>Notifications</a></li>
+      <li><a (click)="profile()"><span>👤</span>Profile</a></li> -->
       <li><a (click)="setting()"><span>⚙️</span>Settings</a></li>
       <li><a (click)="ocr()"><span>🧑‍💻</span>OCR</a></li>
       <li><a (click)="chat()"><span>📱</span>Chat</a></li>
-      <!-- <li><a (click)="logout()"><span>🚪</span>Logout</a></li> -->
     </ul>
     <div class="user-account">
       <div class="user-profile">
@@ -27,7 +26,9 @@
         </div>
       </div>
     </div>
-    <a style="margin-left: 67px;" (click)="logout()"><span>🚪</span>Logout</a>
+    <footer>
+    <span><a style="float: right;margin-right: 5px;" (click)="logout()"><span>🚪</span>Logout</a></span>
+  </footer>
   </aside>
 </div>
 <!--<ul>

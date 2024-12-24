@@ -38,6 +38,9 @@ export class LoginComponent {
               verticalPosition: 'top',
               panelClass: ['success-snackbar']
             });
+            const loginid = response.userid;
+            localStorage.setItem('UserId', loginid); 
+            console.log('UserId:', loginid);
             const token = response.token;
             localStorage.setItem('authToken', token); 
             console.log('authToken:', token);
