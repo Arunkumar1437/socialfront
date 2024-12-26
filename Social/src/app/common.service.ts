@@ -27,7 +27,9 @@ export class CommonService {
   getLoginData(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.apiUrl}api/dashboard/getlogindata`); }
   login(username: string, password: string): Observable<any> {const data = { username, password };return this.http.post(`${this.apiUrl}auth/login`, { username, password });}
   view(id: String): Observable<any> {const url = `${this.apiUrl}api/profile/view/${id}`;return this.http.get<any>(url);}
-  ocrupload(formData:FormData):Observable<any> {return this.http.post<any>(`${this.apiUrl}api/ocr/convertToText`, formData);}
+  ocruploadinvoice(formData:FormData):Observable<any> {return this.http.post<any>(`${this.apiUrl}api/ocr/PDFofPo`, formData);}
+  ocruploadpo(formData:FormData):Observable<any> {return this.http.post<any>(`${this.apiUrl}api/ocr/PDFofAgree`, formData);}
+  ocruploadcompare(detailTable: any[], aggreDetail: any[]): Observable<any> {const requestBody = {detailTable: detailTable,aggreDetail: aggreDetail};return this.http.post<any>(`${this.apiUrl}api/ocr/compare`, requestBody);}
   sendMessage(message: string) {this.socket.emit('chat_message', message);}
   receiveMessages(): Observable<string> {return new Observable<string>((observer) => {this.socket.on('chat_message', (message: string) => {observer.next(message);});});}
 

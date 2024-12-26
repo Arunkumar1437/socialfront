@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CommonService } from '../common.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-ocr',
@@ -11,20 +12,30 @@ import { CommonService } from '../common.service';
 })
 export class OcrComponent {
 
-  uploadedFile: File | null = null;
-  extractedText: string = '';
-  errorMessage: string | null = null;
+  fileUploadinvoice: File | null = null;
+  fileUploadpo: File | null = null;
+  invoiceDetail:any[]=[];
+  poDetail:any[]=[];
+  comparedList:any[]=[];
+  detailTable:any[]=[];
+  aggreDetail:any[]=[];
+  poerrorMessage: string | null = null;
+  invoiceerrorMessage: string | null = null;
   ocrForm: FormGroup;
-  error:boolean=false;
+  invoiceerror:boolean=false;
+  poerror:boolean=false;
+  comparelist:boolean=false;
   constructor(
     private http: HttpClient,
     private router: Router,
     private route: ActivatedRoute,
     private dataService: CommonService,
     private formBuilder: FormBuilder,
+     private _snackBar: MatSnackBar
   ) {
     this.ocrForm = this.formBuilder.group({
-      fileUpload:[,Validators.required],
+      fileUploadinvoice:[,Validators.required],
+      fileUploadpo:[,Validators.required],
     });
   }
 
@@ -33,41 +44,103 @@ export class OcrComponent {
     const file = input.files?.[0] || null;
 
     if (file && file.type === 'application/pdf') {
-      this.errorMessage = null;
-      this.uploadedFile = file;
+      this.invoiceerrorMessage = null;
+      this.fileUploadinvoice = file;
     } else {
-      this.error=true;
-      this.errorMessage = 'Please upload a PDF file.....!';
+      this.invoiceerror=true;
+      this.invoiceerrorMessage = 'Please upload a PDF file.....!';
       input.value = ''; 
     }
   }
 
-  uploadFile(): void {
-    if (!this.uploadedFile) {
-      this.error=true;
-      this.errorMessage = 'Please Choose The File.....!';
+  validateAndUploadDocument1(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0] || null;
+
+    if (file && file.type === 'application/pdf') {
+      this.poerrorMessage = null;
+      this.fileUploadpo = file;
+    } else {
+      this.poerror=true;
+      this.poerrorMessage = 'Please upload a PDF file.....!';
+      input.value = ''; 
+    }
+  }
+
+  uploadinvoice(): void {
+    if (!this.fileUploadinvoice) {
+      this.invoiceerror=true;
+      this.invoiceerrorMessage = 'Please Choose The File.....!';
       return;
     }
 
     const formData = new FormData();
-    formData.append('file', this.uploadedFile);
+    formData.append('file', this.fileUploadinvoice);
 
-    this.dataService.ocrupload(formData).subscribe(
+    this.dataService.ocruploadinvoice(formData).subscribe(
       res => {
-     //this.http.post<{ text: string }>(, formData).subscribe({
-       //next: (response) => {
-         this.extractedText = res.text;
-         console.log('Extracted Text:', this.extractedText);
-       
+        if(res.success){
+          this.invoiceDetail = res.detailTable;
+          this.ocrForm.get('fileUploadinvoice')?.setValue(null);
+          console.log('Invoice List'+this.invoiceDetail)
+          this._snackBar.open('Invoice Upload Sucess', '', {
+            duration: 300,
+            verticalPosition: 'top',horizontalPosition: 'right',
+            panelClass: ['success-snackbar']
+          });
+        }
        error: (error: HttpErrorResponse) => {
          console.error('Upload error:', error);
-         this.errorMessage = 'File upload failed. Please try again.';
+         this.invoiceerrorMessage = 'File upload failed. Please try again.';
        }
      });
 
     (document.getElementById('fileUpload') as HTMLInputElement).value = '';
   }
 
+   uploadpo(): void {
+    if (!this.fileUploadpo) {
+      this.poerror=true;
+      this.poerrorMessage = 'Please Choose The File.....!';
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', this.fileUploadpo);
+
+    this.dataService.ocruploadpo(formData).subscribe(
+      res => {
+        if(res.success){
+        this.poDetail = res.aggreDetail;
+        this.ocrForm.get('fileUploadpo')?.setValue(null);
+        console.log('Po List'+this.poDetail)
+        this._snackBar.open('Po Upload Sucess', '', {
+          duration: 300,
+          verticalPosition: 'top',horizontalPosition: 'right',
+          panelClass: ['success-snackbar']
+        });
+        
+        }
+         error: (error: HttpErrorResponse) => {
+         console.error('Upload error:', error);
+         this.poerrorMessage = 'File upload failed. Please try again.';
+       }
+     });
+
+    (document.getElementById('fileUpload') as HTMLInputElement).value = '';
+  }
+  compare():void{
+    this.detailTable=this.invoiceDetail;
+    this.aggreDetail=this.poDetail;
+    this.dataService.ocruploadcompare(this.detailTable,this.aggreDetail).subscribe(
+      res => {
+       this.comparedList=res.compareData
+       this.comparelist=true
+       console.log('Compared List'+this.comparedList)
+         error: (error: HttpErrorResponse) => {
+       }
+     });
+  }
   cancelUpload(): void {
     this.router.navigate(['app/finance/transaction/digitallibrary1'], {
     });

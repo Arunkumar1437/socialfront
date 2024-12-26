@@ -2,42 +2,85 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> 
 
 <form [formGroup]="ocrForm" class="form-horizontal" novalidate>
-    <div class="row book-widget-row">
-      <div class="container">
-        <div class="form-group d-flex align-items-center">
-          <label class="control-label">
-            Upload Document<span style="color: red;">*</span>
-          </label>
-          <div class="input-group">
-            <input
-              type="file"
-              class="form-control"
-              id="fileUpload" formControlName="fileUpload"
-              accept=".pdf"
-              (change)="validateAndUploadDocument($event)"
-            />
-          </div>
-        </div>
-  
-        <div id="error-message"  *ngIf="error"> {{errorMessage}}</div>
-  
-        <div class="d-flex justify-content-start" style="margin-left: 720px; margin-top: 20px;">
-          <button
-            class="btn btn-success me-2"
-            type="button"
-            (click)="uploadFile()"
-          >
-            <i class="fa fa-upload"></i> Upload File
-          </button>
+  <div class="row book-widget-row">
+    <!-- Invoice File Input (same line as PO file input) -->
+    <div class="col-sm-6">
+      <div class="form-group d-flex align-items-center">
+        <label class="control-label" style="margin-left: -175px;">
+          Upload Invoice<span style="color: red;">*</span>
+        </label>
+        <div class="input-group">
+          <input
+            type="file"
+            class="form-control"
+            id="fileUploadinvoice"
+            formControlName="fileUploadinvoice"
+            accept=".pdf"
+            (change)="validateAndUploadDocument($event)"
+          />
         </div>
       </div>
-      <div class="converted-text-heading">Converted Text</div>
-
-      <div *ngIf="extractedText !== ''" id="output-details">{{ extractedText }}</div>
-      <div *ngIf="extractedText === ''" id="output-details-empty">
-       
-      </div>
-      
+      <div id="invoice-error-message" *ngIf="invoiceerror">{{invoiceerrorMessage}}</div>
     </div>
-  </form>
+
+    <!-- PO File Input (same line as Invoice file input) -->
+    <div class="col-sm-6">
+      <div class="form-group d-flex align-items-center">
+        <label class="control-label" style="margin-left: -350px;">
+          Upload PO<span style="color: red;">*</span>
+        </label>
+        <div class="input-group">
+          <input
+            type="file"
+            class="form-control"
+            id="fileUploadpo"
+            formControlName="fileUploadpo"
+            accept=".pdf"
+            (change)="validateAndUploadDocument1($event)"
+          />
+        </div>
+      </div>
+      <div id="po-error-message" *ngIf="poerror">{{poerrorMessage}}</div>
+    </div>
+
+    <div class="col-sm-12">
+      <div class="d-flex justify-content-start">
+        <button class="btn btn-success me-2" type="button" (click)="uploadinvoice()"style="margin-left: 500px;"><span>📤</span>Upload Invoice</button>
+        <button class="btn btn-success" type="button" (click)="uploadpo()" style="margin-left: 490px;"><span>📤</span> Upload PO</button>
+      </div>
+    </div>
+    <div class="col-sm-12">
+      <div class="d-flex justify-content-start">
+        <button class="btn btn-success me-2" type="button" (click)="compare()"style="margin-left: 815px;margin-top: 16px;"><span>📄</span>Compare</button>
+      </div>
+    </div>
+  </div>
+</form>
+<div *ngIf="comparelist"class="mat-elevation-z8-with-color" style="width: 80%;float:right;margin-right: 20px;margin-top: 15px;">
+ <table id="tab" class = "table table-striped table-bordered">
+ <thead>
+     <tr>
+         <th style="background: rgb(132, 221, 120);">Product No</th>
+         <th style="background: rgb(132, 221, 120);">Invoice Qty</th>
+         <th style="background: rgb(132, 221, 120);">PO Qty</th>
+         <th style="background: rgb(132, 221, 120);">Invoice Unit Price</th>
+         <th style="background: rgb(132, 221, 120);">PO Unit Price</th>
+         <th style="background: rgb(132, 221, 120);">Different Unit Price</th>
+
+     </tr>
+ </thead>
+ <tbody>
+  <tr *ngFor="let item of comparedList">
+    <td>{{ item.partyno }}</td>
+    <td>{{ item.invqty }}</td>
+    <td>{{ item.poqty }}</td>
+    <td>{{ item.invunit }}</td>
+    <td [ngStyle]="{'color': item.redcolour ? 'red' : 'inherit'}" style="text-align:right;">
+      {{ item.pounit }}
+    </td>
+    <td>{{ item.diffunit }}</td>
+  </tr>
   
+ </tbody>
+</table>
+</div>

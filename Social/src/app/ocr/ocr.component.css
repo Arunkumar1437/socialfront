@@ -10,7 +10,7 @@ p{
   }
   
   .control-label {
-    margin-right: 10px;
+    margin-right: -70px;
     width: 200px;
 
   }
@@ -48,8 +48,11 @@ p{
     margin-top: 20px; 
     width: auto;
   }
-  #error-message{
+  #po-error-message{
     color: red; 
-    margin-left: 755px; 
-    margin-top: 10px;
+    margin-left: 340px; 
+  }
+  #invoice-error-message{
+    color: red; 
+    margin-left: 495px; 
   }
