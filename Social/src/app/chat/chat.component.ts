@@ -31,9 +31,11 @@ export class ChatComponent implements OnInit {
 
   sendMessage(): void {
     if (this.chatForm.valid) {
+      if(this.chatForm.value !='' || this.chatForm.value!=null || this.chatForm.value !=undefined){
       this.chatService.sendMessage(this.chatForm.value);
       this.messages.push(this.chatForm.value.message);
       this.message = '';
+     }
     }
   }
 

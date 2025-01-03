@@ -8,7 +8,7 @@ import { io } from 'socket.io-client';
   providedIn: 'root'
 })
 export class CommonService {
-  
+   
   private apiUrl = 'http://localhost:8073/';
   socket: any;
   constructor(private http: HttpClient,private router: Router) {this.socket = io(this.apiUrl);}
@@ -32,5 +32,6 @@ export class CommonService {
   ocruploadcompare(detailTable: any[], aggreDetail: any[]): Observable<any> {const requestBody = {detailTable: detailTable,aggreDetail: aggreDetail};return this.http.post<any>(`${this.apiUrl}api/ocr/compare`, requestBody);}
   sendMessage(message: string) {this.socket.emit('chat_message', message);}
   receiveMessages(): Observable<string> {return new Observable<string>((observer) => {this.socket.on('chat_message', (message: string) => {observer.next(message);});});}
+  sendmail(data:any): Observable<any> {var url=this.apiUrl+'api/email/send';return this.http.post<any>(url,data);}
 
 }

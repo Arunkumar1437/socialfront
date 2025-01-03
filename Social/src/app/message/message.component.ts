@@ -24,7 +24,7 @@ export class MessageComponent {
       bcc: [,Validators.email],
       subject: [,],
       message: [,Validators.required],
-      attachment: []
+      // attachment: []
     });
     
   }
@@ -33,12 +33,20 @@ export class MessageComponent {
       from:this.userEmail,
     });
   }
-  onSend() {
-    if (this.emailForm.valid) {
-      console.log('Email data:', this.emailForm.value);
-      alert('Email Sent!');
-    } else {
-      alert('Please fill in all required fields.');
-    }
+  
+  onSend(){
+      this.dataService.sendmail(this.emailForm.value).subscribe(
+        res => {
+          if (res.sucess==true) {
+          this._snackBar.open('Data Saved successfully', '', {
+            duration: 300,horizontalPosition: 'end',
+            verticalPosition: 'top'
+          });
+        }
+        },
+        error => {
+          console.error('Error saving data:', error);
+        }
+      );
   }
 }
