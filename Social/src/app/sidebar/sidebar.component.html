@@ -7,7 +7,14 @@
   </button> -->
   <aside class="sidebar" [class.closed]="isSidebarClosed">
     <ul class="sidebar-links">
-      <h4><span><a style="float: right;margin-right: 5px;"(click)="profile()"><span>👤</span></a></span><div class="menu-separator"></div></h4>
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <a style="margin-right: 10px; cursor: pointer;" (click)="profile()">
+          <span>👤</span></a><a (click)="notification()"><span>🔔</span></a>
+        <div class="menu-separator"></div>
+        <a style="margin-left: auto; cursor: pointer;" (click)="logout()">
+          <span>🚪</span>
+        </a>
+      </div>
       <li><a (click)="dashboard()"><span>📊</span>Dashboard</a></li>
       <li><a (click)="message()"><span>✉️</span>Mail</a></li>
       <li><a (click)="post()"><span>📝</span> Post</a></li>
@@ -26,9 +33,27 @@
         </div>
       </div>
     </div>
-    <footer>
-    <span><a style="float: right;margin-right: 5px;" (click)="logout()"><span>🚪</span>Logout</a></span>
-  </footer>
+    <!-- <footer>
+      <div class="calendar-container">
+        <div class="calendar-header">
+          <button (click)="prevMonth()">&#9664;</button>
+          <h3>{{ month1 + 1 }}/{{ year1 }}</h3>
+          <button (click)="nextMonth()">&#9654;</button>
+        </div>
+      
+        <div class="calendar-grid">
+          <div class="day-name" *ngFor="let day of weekDays">{{ day }}</div>
+          <div
+            class="day"
+            *ngFor="let day of daysInMonth"
+            [class.empty]="day === 0"
+            (click)="selectDate(day)"
+          >
+            {{ day > 0 ? day : '' }}
+          </div>
+        </div>
+      </div>
+  </footer> -->
   </aside>
 </div>
 <!--<ul>

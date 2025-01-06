@@ -8,6 +8,9 @@ import { io } from 'socket.io-client';
   providedIn: 'root'
 })
 export class CommonService {
+  changePassword(username: any, newPassword: any) {
+    throw new Error('Method not implemented.');
+  }
    
   private apiUrl = 'http://localhost:8073/';
   socket: any;
@@ -33,5 +36,6 @@ export class CommonService {
   sendMessage(message: string) {this.socket.emit('chat_message', message);}
   receiveMessages(): Observable<string> {return new Observable<string>((observer) => {this.socket.on('chat_message', (message: string) => {observer.next(message);});});}
   sendmail(data:any): Observable<any> {var url=this.apiUrl+'api/email/send';return this.http.post<any>(url,data);}
-
+  newReg(data: any): Observable<any> {var url=this.apiUrl+'api/register/save';return this.http.post<any>(url,data);}
+  changepass(data: any): Observable<any> {var url=this.apiUrl+'api/register/passchange';return this.http.post<any>(url,data);}
 }

@@ -1,20 +1,95 @@
-<body>
-    <div id="container">
-       <header>Register new account</header>
-       <form method="post">
-          <fieldset>
-             <br/>
-             <input type="text" name="username" id="username" placeholder="Username" required autofocus>
-             <br/><br/>
-             <input type="email" name="email" id="email" placeholder="E-mail" required>
-             <br/><br/>
-             <input type="password" name="password" id="password" placeholder="Password" required>
-             <br/><br/>
-             <input type="password" name="confirm-password" id="confirm-password" placeholder="Confirm Password" required>
-             <br/> <br/> <br/>
-             <label for="submit"></label>
-             <input type="submit" name="submit" id="submit" value="REGISTER">
-          </fieldset>
-       </form>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<div>
+  <form [formGroup]="RegForm" (ngSubmit)="newReg()">
+    <div>
+      <h4 class="text-center border border-0 bg-secondary rounded text-white p-2" style="width: 700px;    margin-left: 415px;">Sign Up</h4>
     </div>
- </body>
+    <div class="text-center border border-0 bg-info rounded p-4" style="width: 700px;    margin-left: 415px;">
+      
+      <div class="row mb-2">
+        <label class="col-sm-3 col-form-label text-end">Full Name:<span style="color: red;">*</span></label>
+        <div class="col-sm-6">
+          <input type="text" formControlName="name" class="form-control" required>
+          <div *ngIf="RegForm.get('name')?.invalid && RegForm.get('name')?.touched" class="text-danger">
+            Full name is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <label class="col-sm-3 col-form-label text-end">Gender:<span style="color: red;">*</span></label>
+        <div class="col-sm-6">
+          <select formControlName="gender" class="form-control" required>
+            <option value="" disabled>Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+          <div *ngIf="RegForm.get('gender')?.invalid && RegForm.get('gender')?.touched" class="text-danger">
+            Gender is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <label class="col-sm-3 col-form-label text-end">Date of Birth:<span style="color: red;">*</span></label>
+        <div class="col-sm-6">
+          <input type="date" formControlName="dob" class="form-control" required>
+          <div *ngIf="RegForm.get('dob')?.invalid && RegForm.get('dob')?.touched" class="text-danger">
+            Date of Birth is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <label class="col-sm-3 col-form-label text-end">Age:</label>
+        <div class="col-sm-6">
+          <input type="number" formControlName="age" class="form-control" min="1" max="100">
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <label class="col-sm-3 col-form-label text-end">Email:<span style="color: red;">*</span></label>
+        <div class="col-sm-6">
+          <input type="email" formControlName="emailid" class="form-control" required>
+          <div *ngIf="RegForm.get('emailid')?.invalid && RegForm.get('emailid')?.touched" class="text-danger">
+            Valid email is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-2 position-relative">
+        <label class="col-sm-3 col-form-label text-end">Password:<span style="color: red;">*</span></label>
+        <div class="col-sm-6">
+          <input [type]="showPassword ? 'text' : 'password'" id='Password'formControlName="password" class="form-control" required >
+          <span (click)="togglePasswordVisibility('password')" class="position-absolute" style="right: 158px; top: 50%; transform: translateY(-50%); cursor: pointer;">
+            {{ showPassword ? '🙈' : '👁️' }}
+          </span>
+          <div *ngIf="RegForm.get('password')?.invalid && RegForm.get('password')?.touched" class="text-danger">
+            Password is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-2 position-relative">
+        <label class="col-sm-3 col-form-label text-end">Confirm Password:<span style="color: red;">*</span></label>
+        <div class="col-sm-6">
+          <input [type]="showPassword1 ? 'text' : 'password'"id='confirmPassword' formControlName="confirmPassword" class="form-control" required>
+          <span (click)="togglePasswordVisibility('confirmPassword')" class="position-absolute" style="right: 158px; top: 50%; transform: translateY(-50%); cursor: pointer;">
+            {{ showPassword1 ? '🙈' : '👁️' }}
+          </span>
+          <div *ngIf="RegForm.get('confirmPassword')?.invalid && RegForm.get('confirmPassword')?.touched" class="text-danger">
+            Confirm password is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <button type="submit" class="btn btn-success mt-4">Register</button>
+        <button type="button" class="btn btn-danger mt-4" (click)="cancel()" style="margin-left: 10px">Cancel</button>
+      </div>
+      
+    </div>
+  </form>
+</div>

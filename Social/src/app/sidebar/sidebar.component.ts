@@ -16,8 +16,16 @@ export class SidebarComponent {
   currentDate: string | undefined;
   currentTime: string | undefined;
 
-   constructor(private router: Router,    private app: CommonService,
-   ) {}
+  currentDate1: Date = new Date();
+  daysInMonth: number[] = [];
+  month1: number ;
+  year1!: number;
+  weekDays: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+   constructor(private router: Router,    private app: CommonService) {
+    this.month1 = this.currentDate1.getMonth();
+    this.month1 = this.currentDate1.getFullYear();
+    this.generateCalendar();
+   }
    ngOnInit(): void {
     this.getLastUser();
     this.updateDateTime();
@@ -77,7 +85,47 @@ export class SidebarComponent {
 
     }, 1000); // Update every second
   }
-  
   ocr(){this.router.navigate(['/ocr/ocr']);}
   chat(){this.router.navigate(['/chat/chat'])}
+  generateCalendar(): void {
+    const firstDay = new Date(this.year1, this.month1, 1).getDay();
+    const totalDays = new Date(this.year1, this.month1 + 1, 0).getDate();
+    this.daysInMonth = [];
+
+    // Fill empty slots before the first day
+    for (let i = 0; i < firstDay; i++) {
+      this.daysInMonth.push(0);
+    }
+
+    // Fill actual days
+    for (let i = 1; i <= totalDays; i++) {
+      this.daysInMonth.push(i);
+    }
+  }
+
+  prevMonth(): void {
+    if (this.month1 === 0) {
+      this.month1 = 11;
+      this.year1--;
+    } else {
+      this.month1--;
+    }
+    this.generateCalendar();
+  }
+
+  nextMonth(): void {
+    if (this.month1 === 11) {
+      this.month1 = 0;
+      this.year1++;
+    } else {
+      this.month1++;
+    }
+    this.generateCalendar();
+  }
+
+  selectDate(day: number): void {
+    if (day > 0) {
+      alert(`You selected ${this.year1}-${this.month1 + 1}-${day}`);
+    }
+  }
 }

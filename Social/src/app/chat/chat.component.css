@@ -3,14 +3,15 @@ p{
 }
 /* src/app/chat/chat.component.css */
 .chat-container {
-    width: 400px;
-    margin: 0 auto;
-    padding: 10px;
-    border: 1px solid #ccc;
+  width: 951px;
+  height: 630px;
+  margin: 25px auto;
+  padding: 10px;
+  border: 1px solid #ccc;
   }
   
   .messages {
-    height: 300px;
+    height: 480px;
     overflow-y: scroll;
   }
   
@@ -24,7 +25,7 @@ p{
   input {
     width: 80%;
     padding: 10px;
-    margin-top: 10px;
+    margin-top: 80px;
     border-radius: 5px;
   }
   

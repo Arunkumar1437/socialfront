@@ -31,13 +31,15 @@ export class ChatComponent implements OnInit {
 
   sendMessage(): void {
     if (this.chatForm.valid) {
-      if(this.chatForm.value !='' || this.chatForm.value!=null || this.chatForm.value !=undefined){
-      this.chatService.sendMessage(this.chatForm.value);
-      this.messages.push(this.chatForm.value.message);
-      this.message = '';
-     }
+      const message = this.chatForm.value.message; // Retrieve the message value
+      if (message !== '' && message !== null && message !== undefined) {
+        this.chatService.sendMessage(message); // Send the message via the chat service
+        this.messages.push(message); // Add the message to the messages array
+        this.chatForm.reset(); // Clear the input field
+      }
     }
   }
+  
 
   receiveMessages():void{
     //this.chatService.receiveMessages().subscribe((message:String) => {
