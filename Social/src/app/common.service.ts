@@ -37,7 +37,5 @@ export class CommonService {
   //getChatHistory(details:any): Observable<any> {var url=this.apiUrl+'api/messages/chat';return this.http.get<any>(url,details);}
   getChatHistory(message: any):Observable<any> {var url=this.apiUrl+'api/messages/retrive';return this.http.post<any>(url,message);}
   getChatperson():Observable<any> {var url=this.apiUrl+'api/messages/getpersonList';return this.http.get<any>(url);}
-  getAllReceivedMessages(receiverId: String): Observable<any> {
-    return this.http.get(`${this.apiUrl}/api/messages/received/${receiverId}`);
-  }
+  getChatHistorybyId(message: any):Observable<any> {var url=this.apiUrl+'api/messages/retrivebyid';return this.http.post<any>(url,message);}
 }

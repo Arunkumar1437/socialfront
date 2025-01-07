@@ -32,11 +32,19 @@ export class ChatComponent implements OnInit {
     if (UserId) {
       this.senderId = UserId;
     } else {
-      this._snackBar.open('User ID not found!', 'Close', { duration: 3000 });
+      this._snackBar.open('senderId not found!', 'Close', { duration: 3000 });
       return;
     }
-
-    this.receiverId = 'E0001';
+    const receiverId = localStorage.getItem('receiverId');
+    if (receiverId) {
+      this.receiverId = receiverId;
+    }else if(receiverId==null){
+      this.receiverId = 'E0001';
+    } 
+    else {
+      this._snackBar.open('receiverId not found!', 'Close', { duration: 3000 });
+      return;
+    }
     this.loadpersonList();
     this.loadChatHistory();
   }
@@ -86,7 +94,21 @@ export class ChatComponent implements OnInit {
     );
   }
   loadbyId(personId:String){
-    
+    const message = {
+      senderId: this.senderId,
+      receiverId: personId,
+    };
+    this.chatService.getChatHistorybyId(message).subscribe(
+      (response: any) => {
+        this.chatHistory=[];
+        this.chatHistory = response.chatHistoryById; 
+        const receiverId = localStorage.getItem('personId');
+        console.log('receiverId :',receiverId)
+      },
+      (error) => {
+        this._snackBar.open('Failed to load chat history', 'Close', { duration: 3000 });
+      }
+    );
     console.log(`Loading chat history for person with ID: ${personId}`);
   }
 }
