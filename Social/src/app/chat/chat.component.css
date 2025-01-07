@@ -1,31 +1,106 @@
-p{
-    margin-left: 500px;
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
 }
-/* src/app/chat/chat.component.css */
-.chat-container {
-  width: 951px;
-  height: 630px;
-  margin: 25px auto;
-  padding: 10px;
+
+.chat-wrapper {
+  display: flex; 
+  height: 100%;
+  margin-left: 400px;
+}
+
+.chat-person {
+  display: flex;
+  flex-direction: column;
+  height: 670px;
   border: 1px solid #ccc;
-  }
-  
-  .messages {
-    height: 480px;
-    overflow-y: scroll;
-  }
-  
-  .message {
-    background-color: #f1f1f1;
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 5px;
-  }
-  
-  input {
-    width: 80%;
-    padding: 10px;
-    margin-top: 80px;
-    border-radius: 5px;
-  }
-  
+  width: 200px; /* Fixed width */
+  background-color: #fff;
+  margin: 20px;
+}
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 670px;
+  border: 1px solid #ccc;
+  max-width: 694px;
+  background-color: #fff;
+  margin: 20px;
+  flex: 1; 
+}
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+}
+
+.message-container {
+  display: flex;
+  width: 100%;
+}
+
+.message {
+  max-width: 70%;
+  padding: 10px;
+  border-radius: 10px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.message.right {
+  margin-left: auto;
+  background-color: #d4f1f9;
+  text-align: right;
+}
+
+.message.left {
+  margin-right: auto;
+  background-color: #f1f0f0;
+  text-align: left;
+}
+
+.input-form {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  gap: 10px;
+}
+
+input {
+  flex: 1;
+  height: 46px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+button {
+  height: 46px;
+  padding: 0 20px;
+  border-radius: 12px;
+}
+.person-item{
+  max-width: 70%;
+  padding: 10px;
+  border-radius: 10px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  border: 1px solid orange;
+  background-color: deepskyblue;
+  align-items: center;
+  margin-left: 25px;
+}
+.no-list-style {
+  list-style-type: none;
+  padding: 0;
+  margin: 0; 
+}
+h1{
+  margin-left: 25px;
+}

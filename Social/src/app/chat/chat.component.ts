@@ -7,43 +7,83 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.css'] // Correctly use 'styleUrls' for an array
+  styleUrls: ['./chat.component.css'], 
 })
 export class ChatComponent implements OnInit {
-  message: string = '';
-  messages: string[] = [];
-  chatForm: FormGroup; 
+  chatHistory: any[] = [];
+  getperson: any[] = [];
+  senderId!: string;  
+  receiverId!: string;  
+  chatForm: FormGroup;
+
   constructor(
     private chatService: CommonService,
     private formBuilder: FormBuilder,
     private _snackBar: MatSnackBar,
-    private route: ActivatedRoute,) {
+    private route: ActivatedRoute
+  ) {
     this.chatForm = this.formBuilder.group({
-      message: [],
-      });
-  }
-
-  ngOnInit(): void {
-    this.chatService.receiveMessages().subscribe((message) => {
-      this.messages.push(message);
+      newMessage: [''],
     });
   }
 
-  sendMessage(): void {
-    if (this.chatForm.valid) {
-      const message = this.chatForm.value.message; // Retrieve the message value
-      if (message !== '' && message !== null && message !== undefined) {
-        this.chatService.sendMessage(message); // Send the message via the chat service
-        this.messages.push(message); // Add the message to the messages array
-        this.chatForm.reset(); // Clear the input field
+  ngOnInit() {
+    const UserId = localStorage.getItem('UserId');
+    if (UserId) {
+      this.senderId = UserId;
+    } else {
+      this._snackBar.open('User ID not found!', 'Close', { duration: 3000 });
+      return;
+    }
+
+    this.receiverId = 'E0001';
+    this.loadpersonList();
+    this.loadChatHistory();
+  }
+
+  loadChatHistory() {
+    const message = {
+      senderId: this.senderId,
+      receiverId: this.receiverId,
+    };
+    this.chatService.getChatHistory(message).subscribe(
+      (response: any) => {
+        this.chatHistory = response.chatHistory; 
+      },
+      (error) => {
+        this._snackBar.open('Failed to load chat history', 'Close', { duration: 3000 });
       }
+    );
+  }
+
+  sendMessage() {
+    if (this.chatForm.valid) {
+      const message = {
+        senderId: this.senderId,
+        receiverId: this.receiverId,
+        content: this.chatForm.get('newMessage')?.value,  
+      };
+
+      this.chatService.sendMessage(message).subscribe(
+        () => {
+          this.chatForm.reset();  
+          this.loadChatHistory();  
+        },
+        (error) => {
+          this._snackBar.open('Failed to send message', 'Close', { duration: 3000 });
+        }
+      );
     }
   }
-  
-
-  receiveMessages():void{
-    //this.chatService.receiveMessages().subscribe((message:String) => {
-    // this.messages.push(message);
-    //});
+  loadpersonList() {
+    this.chatService.getChatperson().subscribe(
+      (response: any) => {
+        this.getperson = response.getperson; 
+      },
+      (error) => {
+        this._snackBar.open('Failed to load chat history', 'Close', { duration: 3000 });
+      }
+    );
   }
+
 }
