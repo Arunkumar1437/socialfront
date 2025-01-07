@@ -85,5 +85,8 @@ export class ChatComponent implements OnInit {
       }
     );
   }
-
+  loadbyId(personId:String){
+    
+    console.log(`Loading chat history for person with ID: ${personId}`);
+  }
 }
