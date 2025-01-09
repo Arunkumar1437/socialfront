@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonService } from '../common.service';
+import { CommonService } from '../common.service'; // Ensure this service is implemented correctly
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
@@ -15,7 +15,9 @@ export class ChatComponent implements OnInit {
   senderId!: string;  
   receiverId!: string;  
   chatForm: FormGroup;
-
+  showEmojiPicker: boolean = false;
+  selectedEmoji: any;
+  receiverame!: string;
   constructor(
     private chatService: CommonService,
     private formBuilder: FormBuilder,
@@ -32,23 +34,25 @@ export class ChatComponent implements OnInit {
     if (UserId) {
       this.senderId = UserId;
     } else {
-      this._snackBar.open('senderId not found!', 'Close', { duration: 3000 });
+      this._snackBar.open('Sender ID not found!', 'Close', { duration: 3000 });
       return;
     }
+
     const receiverId = localStorage.getItem('receiverId');
     if (receiverId) {
       this.receiverId = receiverId;
-    }else if(receiverId==null){
-      this.receiverId = 'E0001';
-    } 
-    else {
-      this._snackBar.open('receiverId not found!', 'Close', { duration: 3000 });
+    } else if (receiverId == null) {
+      this.receiverId = ''; 
+    } else {
+      this._snackBar.open('Receiver ID not found!', 'Close', { duration: 3000 });
       return;
     }
+
     this.loadpersonList();
     this.loadChatHistory();
+    this.loadbyId(this.receiverId,this.receiverame)
   }
-
+  
   loadChatHistory() {
     const message = {
       senderId: this.senderId,
@@ -57,9 +61,6 @@ export class ChatComponent implements OnInit {
     this.chatService.getChatHistory(message).subscribe(
       (response: any) => {
         this.chatHistory = response.chatHistory; 
-      },
-      (error) => {
-        this._snackBar.open('Failed to load chat history', 'Close', { duration: 3000 });
       }
     );
   }
@@ -73,42 +74,57 @@ export class ChatComponent implements OnInit {
       };
 
       this.chatService.sendMessage(message).subscribe(
-        () => {
+        (response: any) => {
+          
           this.chatForm.reset();  
-          this.loadChatHistory();  
-        },
-        (error) => {
-          this._snackBar.open('Failed to send message', 'Close', { duration: 3000 });
+          this.loadbyId(this.receiverId,this.receiverame);  
         }
       );
     }
   }
+
+  // Fetch the list of available persons
   loadpersonList() {
     this.chatService.getChatperson().subscribe(
       (response: any) => {
         this.getperson = response.getperson; 
-      },
-      (error) => {
-        this._snackBar.open('Failed to load chat history', 'Close', { duration: 3000 });
       }
     );
   }
-  loadbyId(personId:String){
+
+  loadbyId(personId: string,personname:string) {
     const message = {
       senderId: this.senderId,
       receiverId: personId,
     };
+    this.receiverId = personId;
+    this.receiverame=personname;
     this.chatService.getChatHistorybyId(message).subscribe(
       (response: any) => {
-        this.chatHistory=[];
         this.chatHistory = response.chatHistoryById; 
         const receiverId = localStorage.getItem('personId');
-        console.log('receiverId :',receiverId)
+        console.log('receiverId :', receiverId);
       },
-      (error) => {
-        this._snackBar.open('Failed to load chat history', 'Close', { duration: 3000 });
-      }
     );
     console.log(`Loading chat history for person with ID: ${personId}`);
+  }
+
+  /* Emoj */
+  toggleEmojiPicker(): void {
+    this.showEmojiPicker = !this.showEmojiPicker;
+  }
+
+  addEmoji(event: any): void {
+    const currentMessage = this.chatForm.get('newMessage')?.value || '';
+    this.chatForm.patchValue({ newMessage: currentMessage + event.detail.emoji });
+    this.showEmojiPicker = false; // Close emoji picker after selection
+  }
+
+  onEmojiSelect(event: any): void {
+    this.selectedEmoji = event.emoji.native; // Capture the selected emoji
+    const currentMessage = this.chatForm.get('newMessage')?.value || '';
+    this.chatForm.patchValue({ newMessage: currentMessage + this.selectedEmoji }); // Append emoji to message
+    this.showEmojiPicker = false; // Close emoji picker after emoji selection
+    console.log('Selected Emoji:', this.selectedEmoji);
   }
 }

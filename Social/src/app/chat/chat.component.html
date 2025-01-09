@@ -5,13 +5,16 @@
   <div class="chat-person">
     <h1>Person List</h1>
     <ul class="no-list-style">
-      <li *ngFor="let person of getperson" (click)="loadbyId(person.id)" class="person-item">
+      <li *ngFor="let person of getperson" (click)="loadbyId(person.id,person.text)" class="person-item">
         <span>👤</span> {{ person.text }}
       </li>
     </ul>
   </div>
   
   <div class="chat-container">
+      <div class="profile">
+        <span>👤</span>Chat-Person: {{ receiverame }}
+      </div>
     <div class="messages">
       <div *ngFor="let message of chatHistory" class="message-container">
         <div class="message" [ngClass]="{'right': message.sflag, 'left': !message.sflag}">
@@ -19,9 +22,18 @@
         </div>
       </div>
     </div>
+    <div class="emoji-picker-container" *ngIf="showEmojiPicker">
+      <emoji-mart 
+      *ngIf="showEmojiPicker" 
+      (emojiSelect)="onEmojiSelect($event)">
+    </emoji-mart>
+    </div>
     <form [formGroup]="chatForm" (ngSubmit)="sendMessage()" class="input-form">
-      <input formControlName="newMessage" placeholder="Type a message" />
-      <button type="submit" id="submit" class="btn btn-success">Send</button>
+      <div class="emoji-container">
+        <input formControlName="newMessage" placeholder="Type a message" style="width: 500px;"/>
+       <span (click)="toggleEmojiPicker()">😄</span> <span (click)="sendMessage()">📤</span>
+      </div>
+      
     </form>
   </div>
 </div>

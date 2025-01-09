@@ -14,8 +14,9 @@ body, html {
   display: flex;
   flex-direction: column;
   height: 670px;
-  border: 1px solid #ccc;
-  width: 200px; /* Fixed width */
+  border: 2px solid #2ae1a8;
+  width: 200px; 
+  border-radius: 23px;
   background-color: #fff;
   margin: 20px;
 }
@@ -24,10 +25,11 @@ body, html {
   display: flex;
   flex-direction: column;
   height: 670px;
-  border: 1px solid #ccc;
+  border: 2px solid #1f83c1;
   max-width: 694px;
   background-color: #fff;
   margin: 20px;
+  border-radius: 23px;
   flex: 1; 
 }
 
@@ -103,4 +105,41 @@ button {
 }
 h1{
   margin-left: 25px;
+}
+.profile {
+  padding: 10px;
+  border: 2px solid orange; 
+  color: rgb(0, 0, 0); 
+  height: auto; 
+  width: 100%; 
+  display: flex; 
+  align-items: center; 
+  border-radius: 30px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+emoji-mart {
+  display: inline-block;
+  margin: auto;
+}
+
+
+.emoji-picker-container {
+  position: absolute; 
+  bottom: 70px; 
+  left: 0;
+  right: 0;
+  z-index: 1000; 
+  overflow-y: auto; 
+  max-height: 300px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background: #fff;
+  border-radius: 12px;
+  margin-left: 670px;
+  width: 500px;
+}
+
+p {
+  font-size: 1.5em;
+  font-weight: bold;
 }
