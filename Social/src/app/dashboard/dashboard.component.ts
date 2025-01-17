@@ -14,22 +14,36 @@ export class DashboardComponent {
   message: any;
   items: any[] = [];
   selectedFile: File | undefined;
-  lastloginlist:any[]=[];
-
+  lastloginlist: any[] = [];
   detailslog: any;
-  header: string[] = [];  
-  details: number[] = []; 
-
-  loginData: ChartData<'line'> = {  
-    labels: this.header, 
+  header: string[] = [];
+  details: number[] = [];
+  chatheader: string[] = [];
+  chatdetails: number[] = [];
+  chatcolor: string[] = [];
+  loginData: ChartData<'line'> = {
+    labels: this.header,
     datasets: [
       {
-        data: this.details,  
+        data: this.details,
         label: 'Logins per Day',
         borderColor: '#007bff',
         backgroundColor: 'rgba(0, 123, 255, 0.1)',
-        tension: 0.4, 
-        fill: true, 
+        tension: 0.4,
+        fill: true,
+      },
+    ],
+  };
+
+  chatData: ChartData<'bar'> = {
+    labels: this.chatheader,
+    datasets: [
+      {
+        data: this.chatdetails,
+        label: 'Chats per Week',
+        backgroundColor: this.chatcolor, 
+        borderColor: this.chatcolor, 
+        borderWidth: 1, 
       },
     ],
   };
@@ -46,21 +60,21 @@ export class DashboardComponent {
       x: {
         title: {
           display: true,
-          text: 'Days of the Week',  
+          text: 'Days of the Week',
         },
         ticks: {
-          autoSkip: false,  
-          maxRotation: 90,  
+          autoSkip: false,
+          maxRotation: 90,
         },
       },
       y: {
         title: {
           display: true,
-          text: 'Number of Logins',  
+          text: 'Number of Entries',
         },
-        beginAtZero: true, 
+        beginAtZero: true,
         ticks: {
-          stepSize: 0.1,  
+          stepSize: 1,
         },
       },
     },
@@ -70,33 +84,24 @@ export class DashboardComponent {
     private router: Router,
     private app: CommonService,
     private _snackBar: MatSnackBar,
-    private cdr: ChangeDetectorRef  
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.fetchLoginData();
     this.fetchLastLoginList();
+    this.fetchChatData();
   }
-
 
   fetchLoginData(): void {
     this.app.getLoginData().subscribe({
       next: (data: any) => {
-        console.log("API Response:", data);
-
-        let detailsArray: any[] = [];
-
-        if (data.logindetails && Array.isArray(data.logindetails)) {
-          detailsArray = data.logindetails; 
-        } else if (data.logindetails && typeof data.logindetails === 'object') {
-          detailsArray = Object.values(data.logindetails); 
-        }
-
-        if (detailsArray.length > 0) {
-          this.detailslog = detailsArray; 
+        if (data.logindetails) {
+          const detailsArray = Array.isArray(data.logindetails)
+            ? data.logindetails
+            : Object.values(data.logindetails);
 
           this.header = detailsArray.map((item: { dayofweek: string }) => item.dayofweek);
-
           this.details = detailsArray.map((item: { loginCount: number }) => item.loginCount);
 
           this.loginData = {
@@ -113,23 +118,60 @@ export class DashboardComponent {
             ],
           };
 
-          this.cdr.detectChanges(); 
+          this.cdr.detectChanges();
         } else {
-          console.error("`logindetails` is not valid or empty");
+          console.error('Login details not available or invalid.');
         }
       },
-      error: (e: any) => console.error("Error fetching data:", e)
+      error: (e: any) => console.error('Error fetching login data:', e),
     });
   }
+
   fetchLastLoginList(): void {
     this.app.list().subscribe({
       next: (data: any) => {
-        console.log("API Response:", data);
         if (data.list) {
-          this.lastloginlist=data.list;
+          this.lastloginlist = data.list;
+        } else {
+          console.error('Last login list not available.');
         }
       },
-      error: (e: any) => console.error("Error fetching data:", e)
+      error: (e: any) => console.error('Error fetching last login list:', e),
+    });
+  }
+  fetchChatData(): void {
+    this.app.getChatData().subscribe({
+      next: (data: any) => {
+        if (data.getchatdata) {
+          const chatDataArray = Array.isArray(data.getchatdata)
+            ? data.getchatdata
+            : Object.values(data.getchatdata);
+  
+          this.chatheader = chatDataArray.map((item: { dayofweek: string }) => item.dayofweek);
+          this.chatdetails = chatDataArray.map((item: { chatcount: number }) => item.chatcount);
+          this.chatcolor = chatDataArray.map((item: { dayofweek: string }) =>
+            item.dayofweek === 'Yesterday' ? '#ff0000' : '#87ceeb'
+          );
+
+          this.chatData = {
+            labels: this.chatheader,
+            datasets: [
+              {
+                data: this.chatdetails,
+                label: 'Chats per Week',
+                backgroundColor: this.chatcolor,
+                borderColor: this.chatcolor,
+                borderWidth: 1, 
+              },
+            ],
+          };
+  
+          this.cdr.detectChanges();
+        } else {
+          console.error('Chat data not available or invalid.');
+        }
+      },
+      error: (e: any) => console.error('Error fetching chat data:', e),
     });
   }
 }

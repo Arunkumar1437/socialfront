@@ -1,0 +1,109 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> 
+
+<body>
+<div *ngIf="isList">
+  <button class="btn btn-success" (click)="openAddUserrights()">Add</button><br>
+  <div class="table-container">
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th style="background: rgb(224, 81, 174);text-align: center;">User Id</th>
+          <th style="background: rgb(224, 81, 174);text-align: center;">User Name</th>
+          <th style="background: rgb(224, 81, 174);text-align: center;">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of userrightslist">
+          <td style="text-align: center;">{{ item.userid }}</td>
+          <td style="text-align: center;">{{ item.username }}</td>
+          <td  style="text-align: center;"><button class="btn btn-primary" (click)="editUserrights(item)"><span>✏️</span>Edit</button></td>
+        </tr> 
+      </tbody>
+    </table>
+  </div>
+</div>
+<div *ngIf="! isList">
+ <form [formGroup]="adminForm" (ngSubmit)="onSubmit()">
+  <div class="row align-items-center mb-2">
+    <label class="col-sm-2 col-form-label text-end">Full Name:<span class="text-danger">*</span></label>
+    <div class="col-sm-3">
+      <ng-select
+        style="border: 2px solid blue; border-radius: 5px;"
+        formControlName="username"
+        [items]="userList"
+        bindLabel="username"
+        bindValue="userid"
+        [searchable]="true"
+        [clearable]="true">
+      </ng-select>
+    </div>
+  </div>
+
+  <div *ngIf="adminForm.get('username')?.valid && adminForm.get('username')?.value">
+    <div class="table-container">
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th style="background: rgb(162, 88, 223);">Form Name</th>
+            <th style="background: rgb(162, 88, 223);">All</th>
+            <th style="background: rgb(162, 88, 223);">Create</th>
+            <th style="background: rgb(162, 88, 223);">Read</th>
+            <th style="background: rgb(162, 88, 223);">Update</th>
+            <th style="background: rgb(162, 88, 223);">Delete</th>
+          </tr>
+        </thead>
+        <!-- <tbody formArrayName="formdetaillist">
+          <tr *ngFor="let group of formdetaillistArray.controls; let i = index" [formGroupName]="i">
+            <td>{{ group.get('formname')?.value }}</td>
+            <td>
+              <input type="checkbox" formControlName="all" (change)="toggleAll(i)">
+            </td>
+            <td>
+              <input type="checkbox" formControlName="create" [disabled]="group.get('all')?.value">
+            </td>
+            <td>
+              <input type="checkbox" formControlName="read" [disabled]="group.get('all')?.value">
+            </td>
+            <td>
+              <input type="checkbox" formControlName="update" [disabled]="group.get('all')?.value">
+            </td>
+            <td>
+              <input type="checkbox" formControlName="delete" [disabled]="group.get('all')?.value">
+            </td>
+          </tr>
+        </tbody> -->
+        <tbody formArrayName="formdetaillist">
+          <tr *ngFor="let group of formdetaillistArray.controls; let i = index" [formGroupName]="i">
+            <td>{{ group.get('formname')?.value }}</td>
+            <td>
+              <input type="checkbox" formControlName="all" (change)="toggleAll(i)">
+            </td>
+            <td>
+              <input type="checkbox" formControlName="create" [disabled]="group.get('all')?.value">
+            </td>
+            <td>
+              <input type="checkbox" formControlName="read" [disabled]="group.get('all')?.value">
+            </td>
+            <td>
+              <input type="checkbox" formControlName="update" [disabled]="group.get('all')?.value">
+            </td>
+            <td>
+              <input type="checkbox" formControlName="delete" [disabled]="group.get('all')?.value">
+            </td>
+          </tr>
+        </tbody>
+        
+      </table>
+    </div>
+  </div>
+
+  <div class="text-center mt-4" style="    margin-left: -274px;">
+    <button type="submit" *ngIf="!isEdit"class="btn btn-success" [disabled]="!adminForm.valid">Save</button>
+    <button type="submit"  *ngIf="isEdit" class="btn btn-success" [disabled]="!adminForm.valid">Update</button>
+    <button class="btn btn-danger" (click)="cancel()">cancel</button><br>
+
+  </div>
+</form>
+</div>
+</body>

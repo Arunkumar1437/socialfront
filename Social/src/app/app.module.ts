@@ -23,6 +23,9 @@ import { AuthInterceptor } from "./auth.interceptor";
 import { OcrComponent } from './ocr/ocr.component';
 import { ChatComponent } from './chat/chat.component';
 import { PickerModule } from "@ctrl/ngx-emoji-mart";
+import { RouterModule } from "@angular/router";
+import { AdminComponent } from './admin/admin.component';
+import { NgSelectModule } from "@ng-select/ng-select";
 
 @NgModule({
   declarations: [
@@ -39,6 +42,7 @@ import { PickerModule } from "@ctrl/ngx-emoji-mart";
           ProfileComponent,
           OcrComponent,
           ChatComponent,
+          AdminComponent,
   ],
   imports: [
     CommonModule,
@@ -47,7 +51,7 @@ import { PickerModule } from "@ctrl/ngx-emoji-mart";
     MatButtonModule,
     MatIconModule,
     MatSidenavModule,
-    MatListModule, NgChartsModule,PickerModule  
+    MatListModule, NgChartsModule,PickerModule,RouterModule,NgSelectModule  
 
   ], providers: [CommonService,
       {

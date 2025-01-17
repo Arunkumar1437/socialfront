@@ -11,11 +11,11 @@ export class SidebarComponent {
   adminvalidation:boolean=false;
   route: any;
   LuserId: any;
- username: any;
- isCollapsed:boolean=false;
+  username: any;
+  isCollapsed:boolean=false;
   currentDate: string | undefined;
   currentTime: string | undefined;
-
+  forms: any;
   currentDate1: Date = new Date();
   daysInMonth: number[] = [];
   month1: number ;
@@ -36,6 +36,7 @@ export class SidebarComponent {
       (data: any) => {
         this.LuserId = data.luserid;
         this.username = data.username;
+        this.forms=data.forms;
         console.log(this.LuserId);
         if( this.LuserId==='N001'){
            this.adminvalidation=true;
@@ -68,6 +69,7 @@ export class SidebarComponent {
   ChangePassword(){this.router.navigate(['/Forget/forget']);}
   setting(){this.router.navigate(['/Setting/setting']);}
   profile() {this.router.navigate([`/profile/profile/${this.LuserId}`]);}
+  Admin(){this.router.navigate(['/Admin/admin']);}
   
   updateDateTime(): void {
     setInterval(() => {
@@ -83,7 +85,7 @@ export class SidebarComponent {
       this.currentDate = `${day}/${month}/${year} `;
       this.currentTime = `${hours}:${minutes}:${seconds}`;
 
-    }, 1000); // Update every second
+    }, 1000); 
   }
   ocr(){this.router.navigate(['/ocr/ocr']);}
   chat(){this.router.navigate(['/chat/chat'])}
@@ -92,12 +94,10 @@ export class SidebarComponent {
     const totalDays = new Date(this.year1, this.month1 + 1, 0).getDate();
     this.daysInMonth = [];
 
-    // Fill empty slots before the first day
     for (let i = 0; i < firstDay; i++) {
       this.daysInMonth.push(0);
     }
 
-    // Fill actual days
     for (let i = 1; i <= totalDays; i++) {
       this.daysInMonth.push(i);
     }
