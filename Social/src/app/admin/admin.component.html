@@ -28,15 +28,20 @@
   <div class="row align-items-center mb-2">
     <label class="col-sm-2 col-form-label text-end">Full Name:<span class="text-danger">*</span></label>
     <div class="col-sm-3">
+      <ng-container *ngIf="!isEdit">
       <ng-select
-        style="border: 2px solid blue; border-radius: 5px;"
-        formControlName="username"
-        [items]="userList"
-        bindLabel="username"
-        bindValue="userid"
-        [searchable]="true"
-        [clearable]="true">
-      </ng-select>
+      style="border: 2px solid blue; border-radius: 5px;"
+      formControlName="username"
+      [items]="userList"
+      bindLabel="username"
+      bindValue="userid"
+      [searchable]="true"
+      [clearable]="true">
+    </ng-select>
+  </ng-container>
+  <ng-container *ngIf="isEdit">
+    <span>{{ adminForm.get('username')?.value }}</span>
+  </ng-container>
     </div>
   </div>
 
@@ -98,10 +103,10 @@
     </div>
   </div>
 
-  <div class="text-center mt-4" style="    margin-left: -274px;">
+  <div class="text-center mt-4" style="margin-left: -274px;">
     <button type="submit" *ngIf="!isEdit"class="btn btn-success" [disabled]="!adminForm.valid">Save</button>
     <button type="submit"  *ngIf="isEdit" class="btn btn-success" [disabled]="!adminForm.valid">Update</button>
-    <button class="btn btn-danger" (click)="cancel()">cancel</button><br>
+    <button class="btn btn-danger" (click)="cancel()" style="margin-left:10px;">cancel</button><br>
 
   </div>
 </form>

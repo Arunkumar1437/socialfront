@@ -44,24 +44,24 @@
  </div>
  </div>
 
- <div *ngIf="isEdit && !isViewOnly">
+ <!-- <div *ngIf="isEdit && !isViewOnly">
   <form [formGroup]="EmpForm" (ngSubmit)="updateProfile()">
     <div>
       <h4 class="ml-4 heading text-center border border-0 bg-primary rounded">Edit Info</h4>
     </div>
     <div class="ml-2 demo text-center border border-0 bg-warning rounded">
       <label class="control-label col-sm-4">Fullname:</label>
-      <input type="text" id="fname" formControlName="name" class="form-control mt-4 w-75" required ><br>
+      <input type="text" id="fname" formControlName="name" class="form-control mt-4 w-75" required ><br> -->
 
-      <div class="form-group position-relative">
+      <!-- <div class="form-group position-relative">
         <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password" class="form-control mt-4 w-75" required >
         <span *ngIf="!showPassword" (click)="togglePasswordVisibility()" class="password-toggle-icon position-absolute" style="right: 20px; top: 35%; cursor: pointer;">
           <span>👁️</span></span>
           <span *ngIf="showPassword" (click)="togglePassworddisable()" class="password-toggle-icon position-absolute" style="right: 20px; top: 35%; cursor: pointer;">
             <span>🙈</span></span>  
-      </div>
+      </div> -->
       
-      <label class="control-label col-sm-4">Gender</label>
+      <!-- <label class="control-label col-sm-4">Gender</label>
       <select id="gender" formControlName="gender" class="form-control mt-4 w-75" required >
         <option value="male">Male</option>
         <option value="female">Female</option>
@@ -80,4 +80,56 @@
       <button class="btn btn-danger mt-4" (click)="cancel()">Cancel</button>
     </div>
   </form>
+</div> -->
+
+<div *ngIf="isEdit && !isViewOnly" class="edit-container">
+  <form [formGroup]="EmpForm" (ngSubmit)="updateProfile()" class="form-container">
+    <div>
+      <h4 class="heading text-center border border-0 bg-primary text-white rounded py-2">
+        Edit Info
+      </h4>
+    </div>
+    <div class="demo border border-1 bg-secondary rounded p-4">
+      <!-- Fullname -->
+      <div class="form-group d-flex align-items-center mb-3">
+        <label for="fname" class="control-label col-4 text-right">Fullname:</label>
+        <input type="text" id="fname" formControlName="name" class="form-control w-75" placeholder="Enter full name" required />
+      </div>
+
+      <!-- Gender -->
+      <div class="form-group d-flex align-items-center mb-3">
+        <label for="gender" class="control-label col-4 text-right">Gender:</label>
+        <select id="gender" formControlName="gender" class="form-control w-75" required>
+          <option value="" disabled>Select gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </div>
+
+      <!-- Date of Birth -->
+      <div class="form-group d-flex align-items-center mb-3">
+        <label for="dob" class="control-label col-4 text-right">Date of Birth:</label>
+        <input type="date" id="dob" formControlName="dob" class="form-control w-75" required />
+      </div>
+
+      <!-- Age -->
+      <div class="form-group d-flex align-items-center mb-3">
+        <label for="age" class="control-label col-4 text-right">Age:</label>
+        <input type="number" id="age" formControlName="age" class="form-control w-75" min="1" max="100" placeholder="Enter age" />
+      </div>
+
+      <!-- Email -->
+      <div class="form-group d-flex align-items-center mb-3">
+        <label for="email" class="control-label col-4 text-right">Email:</label>
+        <input type="email" id="email" formControlName="email" class="form-control w-75" placeholder="Enter email address" required />
+      </div>
+
+      <!-- Buttons -->
+      <div class="form-group d-flex justify-content-center mt-4">
+        <button type="submit" id="submit" class="btn btn-success mx-2">Update Profile</button>
+        <button type="button" class="btn btn-danger mx-2" (click)="cancel()">Cancel</button>
+      </div>
+    </div>
+  </form>
 </div>
+

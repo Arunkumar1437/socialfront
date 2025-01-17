@@ -19,7 +19,7 @@
   }
   .heading{
     margin-top: 200px;
-    width: 350px;
+    width: 569px;
     margin: 6px;
     margin-left: 500px;
   }
@@ -28,8 +28,8 @@
   }
   .demo {
     display: inline-block;
-    width: 350px;
-    height: 700px;
+    width: 569px;
+    height: 365px;
     margin: 6px;
     margin-left: 500px;
     margin-top: 10px;
@@ -125,3 +125,21 @@
 #gridhead{
 text-align: center;
 }
+
+.form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  margin-top: 10px;
+}
+
+.control-label {
+  width: 25%; /* Adjust based on your label width preference */
+  text-align: right; /* Align the label text to the right */
+  margin-right: 1rem; /* Add spacing between label and input */
+}
+
+.form-control {
+  flex: 1; /* Allow the input to take the remaining space */
+}
+
