@@ -18,7 +18,9 @@ export class AdminComponent implements OnInit {
   userrightslist: any[] = [];
   isEdit: boolean = false;
   isView: boolean = false;
-
+  userid:any;
+  user:any;
+  userRightsview:any[]=[];
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -27,12 +29,16 @@ export class AdminComponent implements OnInit {
   ) {
     this.adminForm = this.formBuilder.group({
       username: ['', Validators.required],
-      edit:[false,],
+      edit:[false,],view:[false,],
       formdetaillist: this.formBuilder.array([]),
     });
   }
 
   ngOnInit(): void {
+   const luserid= localStorage.getItem('userid'); 
+   const lusername= localStorage.getItem('username'); 
+   this.user=lusername;
+   this.userid=luserid;
     this.getFormDetails();
     this.getList();
   }
@@ -89,25 +95,29 @@ export class AdminComponent implements OnInit {
     if (this.adminForm.valid) {
       this.commonService.saveuserrightData(this.adminForm.value).subscribe({
         next: (res: any) => {
-          if (res.success === true && !this.isEdit) { 
-            this.isList = true; 
-            
+          if (res.sucess === true && !this.isEdit) { 
             this._snackBar.open('Saved successfully', '', {
               duration: 3000,
               verticalPosition: 'top',
               horizontalPosition: 'right',
             });
+            this.isList = true; 
             this.adminForm.reset();
             this.router.navigate(['/Admin/admin']);
-          }else if (res.success === true && this.isEdit) { 
+            this.isEdit=false;
+            this.getList();
+          }else if (res.sucess === true && this.isEdit) { 
             this.isList = true; 
             this._snackBar.open('Update successfully', '', {
               duration: 3000,
               verticalPosition: 'top',
               horizontalPosition: 'right',
             });
+            this.isList = true; 
             this.adminForm.reset();
             this.router.navigate(['/Admin/admin']);
+            this.isEdit=false;
+            this.getList();
           }
         },
         error: (err: any) => {
@@ -129,6 +139,7 @@ export class AdminComponent implements OnInit {
 
   cancel(): void {
     this.isList = true;
+    this.isView = false;
   }
 
   getList(): void {
@@ -157,37 +168,16 @@ export class AdminComponent implements OnInit {
     }
   }
 
-  // loadvalue(userid: any): void {
-  //   this.commonService.useredit(userid).subscribe({
-  //     next: (data: any) => {
-  //       this.formdetaillistArray.clear();
-  //       const userRightsEdit = data.userrightsedit || [];
-  //       userRightsEdit.forEach((item: any) => {
-  //         this.formdetaillistArray.push(
-  //           this.formBuilder.group({
-  //             formid: [item.formid],
-  //             formname: [item.formname || ''],
-  //             all: [item.all || false],
-  //             create: [item.create || false],
-  //             read: [item.read || false],
-  //             update: [item.update || false],
-  //             delete: [item.delete || false],
-  //           })
-  //         );
-  //       });
-  //     },
-  //     error: (e: any) => {
-  //       console.error('Error fetching data:', e);
-  //     },
-  //   });
-  // }
-
   loadvalue(userid: any): void {
+    if(this.isEdit && !this.isView){
   this.commonService.useredit(userid).subscribe({
     next: (data: any) => {
       this.formdetaillistArray.clear();
+      const uname=data.username;
       const userRightsEdit = data.userrightsedit || [];
-
+      this.adminForm.patchValue({
+        'username': uname,
+        });
       userRightsEdit.forEach((item: any, index: number) => {
         const group = this.formBuilder.group({
           formid: [item.formid],
@@ -198,24 +188,57 @@ export class AdminComponent implements OnInit {
         update: [item.update === "true"],
         delete: [item.delete === "true"],
         });
-
-        // Debugging each value
         console.log(`Row ${index} values:`, group.value);
-
         this.formdetaillistArray.push(group);
       });
-
-      // Debugging final form array values
       console.log('Final form array:', this.formdetaillistArray.value);
     },
     error: (e: any) => {
       console.error('Error fetching data:', e);
     },
   });
+}else{
+  this.commonService.useredit(userid).subscribe({
+    next: (data: any) => {
+      this.formdetaillistArray.clear();
+      this.userRightsview = data.userrightsedit;
+      const viewdata = data.username;
+      this.adminForm.patchValue({
+        'username':  viewdata,
+        });
+     
+    },
+    error: (e: any) => {
+      console.error('Error fetching data:', e);
+    },
+  });
+}
 }
 
   viewUserrights(item: any):void{
-
+    this.isList = false;
+    this.isEdit = false;
+    this.isView=true;
+    this.loadvalue(item.userid);
   }
-  
+  deleteUserrights(item: any):void{
+    this.isList = true;
+    this.isEdit = false;
+    this.isView=false;
+    this.commonService.userDelete(item.userid).subscribe({
+      next: (data: any) => {
+        if(data.sucess){
+        this._snackBar.open('Deleted successfully', '', {
+          duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'right',
+        });
+      }
+      this.getList();
+      },
+      error: (e: any) => {
+        console.error('Error delete data:', e);
+      },
+    });
+  }
 }

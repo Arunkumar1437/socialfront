@@ -44,7 +44,10 @@ export class SidebarComponent {
           this.adminvalidation=false;
         }
         const luserid = data.luserid;
+        const lusername = data.username;
             localStorage.setItem('userid', luserid); 
+            localStorage.setItem('username', lusername); 
+
       },
       (error: any) => {
         console.error('Error fetching last user:', error);

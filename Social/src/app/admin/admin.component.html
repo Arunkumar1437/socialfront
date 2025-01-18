@@ -17,13 +17,13 @@
         <tr *ngFor="let item of userrightslist">
           <td style="text-align: center;">{{ item.userid }}</td>
           <td style="text-align: center;">{{ item.username }}</td>
-          <td  style="text-align: center;"><button class="btn btn-primary" (click)="editUserrights(item)"><span>✏️</span>Edit</button></td>
+          <td  style="text-align: center;"><button class="btn btn-primary" style="background: transparent; border: none;" (click)="editUserrights(item)"><span>✏️</span></button><button class="btn btn-primary" style="background: transparent; border: none;" (click)="viewUserrights(item)"><span>👀</span></button><button class="btn btn-primary" style="background: transparent; border: none;"(click)="deleteUserrights(item)"><span>🗑️</span></button></td>
         </tr> 
       </tbody>
     </table>
   </div>
 </div>
-<div *ngIf="! isList">
+<div *ngIf="! isList && !isView" >
  <form [formGroup]="adminForm" (ngSubmit)="onSubmit()">
   <div class="row align-items-center mb-2">
     <label class="col-sm-2 col-form-label text-end">Full Name:<span class="text-danger">*</span></label>
@@ -58,26 +58,6 @@
             <th style="background: rgb(162, 88, 223);">Delete</th>
           </tr>
         </thead>
-        <!-- <tbody formArrayName="formdetaillist">
-          <tr *ngFor="let group of formdetaillistArray.controls; let i = index" [formGroupName]="i">
-            <td>{{ group.get('formname')?.value }}</td>
-            <td>
-              <input type="checkbox" formControlName="all" (change)="toggleAll(i)">
-            </td>
-            <td>
-              <input type="checkbox" formControlName="create" [disabled]="group.get('all')?.value">
-            </td>
-            <td>
-              <input type="checkbox" formControlName="read" [disabled]="group.get('all')?.value">
-            </td>
-            <td>
-              <input type="checkbox" formControlName="update" [disabled]="group.get('all')?.value">
-            </td>
-            <td>
-              <input type="checkbox" formControlName="delete" [disabled]="group.get('all')?.value">
-            </td>
-          </tr>
-        </tbody> -->
         <tbody formArrayName="formdetaillist">
           <tr *ngFor="let group of formdetaillistArray.controls; let i = index" [formGroupName]="i">
             <td>{{ group.get('formname')?.value }}</td>
@@ -98,17 +78,47 @@
             </td>
           </tr>
         </tbody>
-        
       </table>
     </div>
   </div>
-
   <div class="text-center mt-4" style="margin-left: -274px;">
     <button type="submit" *ngIf="!isEdit"class="btn btn-success" [disabled]="!adminForm.valid">Save</button>
     <button type="submit"  *ngIf="isEdit" class="btn btn-success" [disabled]="!adminForm.valid">Update</button>
     <button class="btn btn-danger" (click)="cancel()" style="margin-left:10px;">cancel</button><br>
-
   </div>
 </form>
 </div>
+<div *ngIf="isView">
+  View
+  <div class="row mb-3">
+    <div class="col-md-3 font-weight-bold" id="gridhead"><b>Full Name</b></div>
+    <div class="col-md-3">{{ adminForm.get('username')?.value || 'N/A' }}</div>
+  </div>
+  <div class="table-container">
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th style="background: rgb(235, 206, 89);">Form Name</th>
+          <th style="background: rgb(235, 206, 89);">All</th>
+          <th style="background: rgb(235, 206, 89);">Create</th>
+          <th style="background: rgb(235, 206, 89);">Read</th>
+          <th style="background: rgb(235, 206, 89);">Update</th>
+          <th style="background: rgb(235, 206, 89);">Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let view of userRightsview">
+          <td style="text-align: center;">{{ view.formname }}</td>
+          <td style="text-align: center;">{{ view.all }}</td>
+          <td style="text-align: center;">{{ view.create }}</td>
+          <td style="text-align: center;">{{ view.read }}</td>
+          <td style="text-align: center;">{{ view.update }}</td>
+          <td style="text-align: center;">{{ view.delete }}</td>
+        </tr> 
+      </tbody>
+    </table>
+  </div>
+  <button class="btn btn-danger" (click)="cancel()" style="margin-left:10px;">cancel</button><br>
+</div>
 </body>
+ 

@@ -43,4 +43,6 @@ export class CommonService {
   saveuserrightData(data: any): Observable<any> {const url = `${this.apiUrl}api/admin/saverights`; return this.http.post<any>(url,data);}
   userList(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.apiUrl}api/admin/userList`); }
   useredit(userid: any): Observable<any> {const url = `${this.apiUrl}api/admin/userrightsedit/${userid}`;return this.http.get<any>(url);}
+  userDelete(userid: any): Observable<any> {const url = `${this.apiUrl}api/admin/userrightsdelete/${userid}`;return this.http.delete(url);}
+  
 }
