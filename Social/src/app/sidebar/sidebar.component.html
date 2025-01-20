@@ -1,29 +1,12 @@
 <div class="container">
-  <!-- <button class="toggle-btn">
-    <span>
-      <span  *ngIf="isCollapsed" (click)="toggleSidebar()">➡️</span>
-      <span  *ngIf="!isCollapsed" (click)="toggleSidebar()">⬅️</span>
-    </span>
-  </button> -->
   <aside class="sidebar" [class.closed]="isSidebarClosed">
     <ul class="sidebar-links">
       <div style="display: flex; justify-content: space-between; align-items: center;">
-        <!-- <a style="margin-right: 10px; cursor: pointer;" (click)="profile()">
-          <span>👤</span></a><a (click)="notification()"><span>🔔</span></a> -->
         <div class="menu-separator"></div>
         <a style="margin-left: auto; cursor: pointer;" (click)="logout()">
           <span>🚪</span>
         </a>
       </div>
-      <!-- <li><a routerLink="/dashboard/dash"><span>📊</span>Dashboard</a></li>
-      <li><a (click)="message()"><span>✉️</span>Mail</a></li>
-      <li><a (click)="post()"><span>📝</span> Post</a></li>
-       <li><a (click)="notification()"><span>🔔</span>Notifications</a></li>
-      <li><a (click)="profile()"><span>👤</span>Profile</a></li> 
-      <li><a (click)="setting()"><span>⚙️</span>Settings</a></li>
-      <li><a (click)="ocr()"><span>🧑‍💻</span>OCR</a></li>
-      <li><a (click)="Admin()"><span>📱</span>Admin</a></li>--> 
-      <!-- Dynamically display the form names -->
      <li *ngFor="let form of forms">
       <a [routerLink]="form.redirect === '/profile/profile' ? ['/profile/profile', LuserId] : [form.redirect]">
         {{ form.formname }}
