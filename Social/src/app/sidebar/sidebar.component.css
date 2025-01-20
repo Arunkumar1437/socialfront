@@ -66,7 +66,7 @@
     transition: background 0.3s ease;
   }
   .sidebar-links li a:hover {
-    background: #4f52ba;
+    background: #a8c13d;
   }
   .submenu {
     display: none;
