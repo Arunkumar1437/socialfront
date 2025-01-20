@@ -28,8 +28,8 @@
     left: 0;
     height: 100%;
     width: 250px;
-    background: #161a2d;
-    color: #fff;
+    background: #f4f1de;
+    color: #0b0404;
     overflow-x: hidden;
     overflow-y: auto;
     transition: width 0.3s ease;
@@ -56,7 +56,7 @@
     margin-bottom: 15px;
   }
   .sidebar-links li a {
-    color: #fff;
+    color: #0a0404;
     text-decoration: none;
     display: flex;
     align-items: center;
