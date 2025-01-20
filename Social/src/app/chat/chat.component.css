@@ -7,15 +7,14 @@ body, html {
 .chat-wrapper {
   display: flex; 
   height: 100%;
-  margin-left: 400px;
 }
 
 .chat-person {
   display: flex;
   flex-direction: column;
-  height: 670px;
+  height: 650px;
   border: 2px solid #2ae1a8;
-  width: 200px; 
+  width: 295px; 
   border-radius: 23px;
   background-color: #fff;
   margin: 20px;
@@ -24,9 +23,9 @@ body, html {
 .chat-container {
   display: flex;
   flex-direction: column;
-  height: 670px;
+  height: 650px;
   border: 2px solid #1f83c1;
-  max-width: 694px;
+  max-width: 800px;
   background-color: #fff;
   margin: 20px;
   border-radius: 23px;

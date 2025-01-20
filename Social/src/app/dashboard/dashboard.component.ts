@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { ChartData, ChartOptions } from 'chart.js';
@@ -21,6 +21,13 @@ export class DashboardComponent {
   chatheader: string[] = [];
   chatdetails: number[] = [];
   chatcolor: string[] = [];
+  pageloginlist: any[] = [];
+   @Input() totalItems: number = 0;  
+    @Input() itemsByPage: number = 5;
+    @Input() currentPage: number = 1;
+    @Output() pageChanged = new EventEmitter<number>();  
+    numPages: number = 1;
+
   loginData: ChartData<'line'> = {
     labels: this.header,
     datasets: [
@@ -40,7 +47,7 @@ export class DashboardComponent {
     datasets: [
       {
         data: this.chatdetails,
-        label: 'Chats per Week',
+        label: 'Chat of Yesterday VS Today',
         backgroundColor: this.chatcolor, 
         borderColor: this.chatcolor, 
         borderWidth: 1, 
@@ -60,7 +67,7 @@ export class DashboardComponent {
       x: {
         title: {
           display: true,
-          text: 'Days of the Week',
+          text: 'Days',
         },
         ticks: {
           autoSkip: false,
@@ -70,7 +77,7 @@ export class DashboardComponent {
       y: {
         title: {
           display: true,
-          text: 'Number of Entries',
+          text: 'Counts',
         },
         beginAtZero: true,
         ticks: {
@@ -132,6 +139,9 @@ export class DashboardComponent {
       next: (data: any) => {
         if (data.list) {
           this.lastloginlist = data.list;
+          this.totalItems = this.lastloginlist.length;
+          this.numPages = Math.ceil(this.totalItems / this.itemsByPage);  
+          this.updatePagedData(); 
         } else {
           console.error('Last login list not available.');
         }
@@ -139,6 +149,7 @@ export class DashboardComponent {
       error: (e: any) => console.error('Error fetching last login list:', e),
     });
   }
+  
   fetchChatData(): void {
     this.app.getChatData().subscribe({
       next: (data: any) => {
@@ -158,7 +169,7 @@ export class DashboardComponent {
             datasets: [
               {
                 data: this.chatdetails,
-                label: 'Chats per Week',
+                label: 'Chats of Yesterday and Today',
                 backgroundColor: this.chatcolor,
                 borderColor: this.chatcolor,
                 borderWidth: 1, 
@@ -174,4 +185,42 @@ export class DashboardComponent {
       error: (e: any) => console.error('Error fetching chat data:', e),
     });
   }
+
+  // <----pagenation start here ---->
+  updatePagedData(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsByPage;
+    const endIndex = startIndex + this.itemsByPage;
+    this.pageloginlist = this.lastloginlist.slice(startIndex, endIndex);
+  }
+
+  onPageChange(newPage: number): void {
+    this.currentPage = newPage;
+    this.updatePagedData();
+    this.pageChanged.emit(newPage);  
+  }
+
+  updatePagination() {
+    this.numPages = Math.ceil(this.totalItems / this.itemsByPage);
+    if (this.currentPage > this.numPages) {
+      this.currentPage = this.numPages;
+    }
+    this.pageChanged.emit(this.currentPage);
+  }
+
+  selectPage(page: number) {
+    if (page < 1 || page > this.numPages) {
+      return;
+    }
+    this.currentPage = page;
+    this.updatePagedData();
+  }
+
+  onPageNumberChange() {
+    if (this.currentPage < 1) {
+      this.currentPage = 1;
+    } else if (this.currentPage > this.numPages) {
+      this.currentPage = this.numPages;
+    }
+  }
+  //<---- pagenation end  here ---->
 }

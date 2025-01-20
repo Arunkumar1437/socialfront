@@ -1,16 +1,24 @@
-.container {
-    display: flex;
-  }
-  
-  .sidebar {
-    width: 250px; 
-    background-color: #f4f4f4; 
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); 
-  }
-  
-  .mainbar {
-    flex: 1; 
-    padding: 20px; 
-    background-color: #fff; 
-  }
-  
+.fullbar {
+  display: flex;
+  width: 100%; 
+  height: 100vh; 
+  margin: 0; 
+  padding: 0; 
+  box-sizing: border-box; 
+}
+
+.sidebar {
+  flex: 0 0 250px;
+  background-color: #f4f4f4; 
+  border-right: 1px solid #ddd; 
+  padding: 1rem;
+  box-sizing: border-box; 
+}
+
+.mainbar {
+  flex: 1; 
+  background-color: #fff; 
+  padding: 1rem;
+  overflow-y: auto; 
+  box-sizing: border-box; 
+}

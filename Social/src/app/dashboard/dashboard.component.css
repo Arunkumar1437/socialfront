@@ -12,23 +12,13 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 16px;
   flex: 1;
-  max-width: 35%;
+  max-width: 47%;
   min-height: 300px; /* Ensures consistent height for all cards */
   display: flex;
   flex-direction: column;
 }
 
-.card-body {
-  flex: 1;
-  overflow: hidden; /* Prevent content overflow */
-  display: flex;
-  flex-direction: column;
-}
 
-.table-container {
-  overflow-y: auto; 
-  max-height: 200px; 
-}
 
 .card-title {
   font-size: 18px;

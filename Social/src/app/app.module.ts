@@ -1,7 +1,7 @@
 import { NgModule, importProvidersFrom } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
-import {  ReactiveFormsModule } from "@angular/forms";
+import {  FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { TaskmangeComponent } from './taskmange/taskmange.component';
 import { AttendanceComponent } from './attendance/attendance.component';
 import { SidebarComponent } from "./sidebar/sidebar.component";
@@ -51,7 +51,7 @@ import { NgSelectModule } from "@ng-select/ng-select";
     MatButtonModule,
     MatIconModule,
     MatSidenavModule,
-    MatListModule, NgChartsModule,PickerModule,RouterModule,NgSelectModule  
+    MatListModule, NgChartsModule,PickerModule,RouterModule,NgSelectModule,FormsModule
 
   ], providers: [CommonService,
       {
@@ -61,7 +61,7 @@ import { NgSelectModule } from "@ng-select/ng-select";
       },
   ],
   exports: [
-    SidebarComponent
+    SidebarComponent,
   ],
 })
 export class AppModule { }

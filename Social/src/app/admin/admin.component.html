@@ -3,7 +3,7 @@
 
 <body>
 <div *ngIf="isList">
-  <button class="btn btn-success" (click)="openAddUserrights()">Add</button><br>
+  <div><span (click)="openAddUserrights()">➕</span></div>
   <div class="table-container">
     <table class="table table-striped table-bordered">
       <thead>
@@ -14,13 +14,47 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of userrightslist">
+        <tr *ngFor="let item of pagedUserRights">
           <td style="text-align: center;">{{ item.userid }}</td>
           <td style="text-align: center;">{{ item.username }}</td>
           <td  style="text-align: center;"><button class="btn btn-primary" style="background: transparent; border: none;" (click)="editUserrights(item)"><span>✏️</span></button><button class="btn btn-primary" style="background: transparent; border: none;" (click)="viewUserrights(item)"><span>👀</span></button><button class="btn btn-primary" style="background: transparent; border: none;"(click)="deleteUserrights(item)"><span>🗑️</span></button></td>
         </tr> 
       </tbody>
     </table>
+    <footer class="panel-footer panel-footer-list" style="background-color: #e2e2e2;">	
+        <div class="row" style="margin-left: 483px;">
+          <div class="col-sm-12 col-md-7">
+            <div class="pagination" *ngIf="numPages > 1">
+              <ul class="pagination pagination-bottom">
+                <li class="footable-page-arrow" [ngClass]="{'disabled': currentPage === 1}">
+                  <a (click)="selectPage(1)">
+                    <span class="text-info">⏪</span>
+                </a>
+                </li>
+                <li class="footable-page-arrow" [ngClass]="{'disabled': currentPage === 1}">
+                  <a (click)="selectPage(currentPage - 1)">
+                    <span class="text-info">⬅️</span>
+                  </a>
+                </li>
+                <li class="footable-page active">
+                  <input type="number" [(ngModel)]="currentPage" min="1" [max]="numPages" (change)="selectPage(currentPage)">
+                </li>
+                <li class="footable-page-arrow" [ngClass]="{'disabled': currentPage === numPages}">
+                  <a (click)="selectPage(currentPage + 1)">
+                    <span class="text-info">➡️</span>
+                </a>
+                </li>
+                <li class="footable-page-arrow" [ngClass]="{'disabled': currentPage === numPages}">
+                  <a (click)="selectPage(numPages)">
+                    <span class="text-info">⏩</span>
+                  </a>
+                </li>
+              </ul>
+              <small class="inline m-t-sm m-b-sm"> Showing page {{currentPage}} of {{numPages}} </small>
+            </div>
+          </div>
+        </div>
+    </footer>
   </div>
 </div>
 <div *ngIf="! isList && !isView" >

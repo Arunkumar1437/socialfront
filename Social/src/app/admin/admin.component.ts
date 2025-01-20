@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -18,9 +18,17 @@ export class AdminComponent implements OnInit {
   userrightslist: any[] = [];
   isEdit: boolean = false;
   isView: boolean = false;
-  userid:any;
-  user:any;
-  userRightsview:any[]=[];
+  userid: any;
+  user: any;
+  userRightsview: any[] = [];
+  pagedUserRights: any[] = [];
+
+  @Input() totalItems: number = 0;  
+  @Input() itemsByPage: number = 10;
+  @Input() currentPage: number = 1;
+  @Output() pageChanged = new EventEmitter<number>();  
+  numPages: number = 1;
+
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -29,21 +37,22 @@ export class AdminComponent implements OnInit {
   ) {
     this.adminForm = this.formBuilder.group({
       username: ['', Validators.required],
-      edit:[false,],view:[false,],
+      edit: [false],
+      view: [false],
       formdetaillist: this.formBuilder.array([]),
     });
   }
 
   ngOnInit(): void {
-   const luserid= localStorage.getItem('userid'); 
-   const lusername= localStorage.getItem('username'); 
-   this.user=lusername;
-   this.userid=luserid;
+    const luserid = localStorage.getItem('userid');
+    const lusername = localStorage.getItem('username');
+    this.user = lusername;
+    this.userid = luserid;
+
     this.getFormDetails();
     this.getList();
   }
 
-  // Getter for form array
   get formdetaillistArray(): FormArray {
     return this.adminForm.get('formdetaillist') as FormArray;
   }
@@ -95,28 +104,16 @@ export class AdminComponent implements OnInit {
     if (this.adminForm.valid) {
       this.commonService.saveuserrightData(this.adminForm.value).subscribe({
         next: (res: any) => {
-          if (res.sucess === true && !this.isEdit) { 
-            this._snackBar.open('Saved successfully', '', {
+          if (res.sucess === true) {
+            const message = this.isEdit ? 'Update successfully' : 'Saved successfully';
+            this._snackBar.open(message, '', {
               duration: 3000,
               verticalPosition: 'top',
               horizontalPosition: 'right',
             });
-            this.isList = true; 
+            this.isList = true;
             this.adminForm.reset();
-            this.router.navigate(['/Admin/admin']);
-            this.isEdit=false;
-            this.getList();
-          }else if (res.sucess === true && this.isEdit) { 
-            this.isList = true; 
-            this._snackBar.open('Update successfully', '', {
-              duration: 3000,
-              verticalPosition: 'top',
-              horizontalPosition: 'right',
-            });
-            this.isList = true; 
-            this.adminForm.reset();
-            this.router.navigate(['/Admin/admin']);
-            this.isEdit=false;
+            this.isEdit = false;
             this.getList();
           }
         },
@@ -131,7 +128,6 @@ export class AdminComponent implements OnInit {
       });
     }
   }
-  
 
   openAddUserrights(): void {
     this.isList = false;
@@ -146,6 +142,9 @@ export class AdminComponent implements OnInit {
     this.commonService.userList().subscribe({
       next: (data: any) => {
         this.userrightslist = data.userrightslist || [];
+        this.totalItems = this.userrightslist.length;
+        this.numPages = Math.ceil(this.totalItems / this.itemsByPage);  
+        this.updatePagedData(); 
       },
       error: (e: any) => {
         console.error('Error fetching data:', e);
@@ -169,76 +168,94 @@ export class AdminComponent implements OnInit {
   }
 
   loadvalue(userid: any): void {
-    if(this.isEdit && !this.isView){
-  this.commonService.useredit(userid).subscribe({
-    next: (data: any) => {
-      this.formdetaillistArray.clear();
-      const uname=data.username;
-      const userRightsEdit = data.userrightsedit || [];
-      this.adminForm.patchValue({
-        'username': uname,
-        });
-      userRightsEdit.forEach((item: any, index: number) => {
-        const group = this.formBuilder.group({
-          formid: [item.formid],
-        formname: [item.formname],
-        all: [item.all === "true"],
-        create: [item.create === "true"],
-        read: [item.read === "true"],
-        update: [item.update === "true"],
-        delete: [item.delete === "true"],
-        });
-        console.log(`Row ${index} values:`, group.value);
-        this.formdetaillistArray.push(group);
-      });
-      console.log('Final form array:', this.formdetaillistArray.value);
-    },
-    error: (e: any) => {
-      console.error('Error fetching data:', e);
-    },
-  });
-}else{
-  this.commonService.useredit(userid).subscribe({
-    next: (data: any) => {
-      this.formdetaillistArray.clear();
-      this.userRightsview = data.userrightsedit;
-      const viewdata = data.username;
-      this.adminForm.patchValue({
-        'username':  viewdata,
-        });
-     
-    },
-    error: (e: any) => {
-      console.error('Error fetching data:', e);
-    },
-  });
-}
-}
-
-  viewUserrights(item: any):void{
-    this.isList = false;
-    this.isEdit = false;
-    this.isView=true;
-    this.loadvalue(item.userid);
-  }
-  deleteUserrights(item: any):void{
-    this.isList = true;
-    this.isEdit = false;
-    this.isView=false;
-    this.commonService.userDelete(item.userid).subscribe({
+    this.commonService.useredit(userid).subscribe({
       next: (data: any) => {
-        if(data.sucess){
-        this._snackBar.open('Deleted successfully', '', {
-          duration: 3000,
-          verticalPosition: 'top',
-          horizontalPosition: 'right',
+        this.formdetaillistArray.clear();
+        const uname = data.username;
+        const userRightsEdit = data.userrightsedit || [];
+        this.adminForm.patchValue({
+          username: uname,
         });
-      }
-      this.getList();
+
+        userRightsEdit.forEach((item: any, index: number) => {
+          const group = this.formBuilder.group({
+            formid: [item.formid],
+            formname: [item.formname],
+            all: [item.all === 'true'],
+            create: [item.create === 'true'],
+            read: [item.read === 'true'],
+            update: [item.update === 'true'],
+            delete: [item.delete === 'true'],
+          });
+          this.formdetaillistArray.push(group);
+        });
       },
       error: (e: any) => {
-        console.error('Error delete data:', e);
+        console.error('Error fetching data:', e);
       },
     });
   }
+
+  viewUserrights(item: any): void {
+    this.isList = false;
+    this.isEdit = false;
+    this.isView = true;
+    this.loadvalue(item.userid);
+  }
+
+  deleteUserrights(item: any): void {
+    this.commonService.userDelete(item.userid).subscribe({
+      next: (data: any) => {
+        if (data.sucess) {
+          this._snackBar.open('Deleted successfully', '', {
+            duration: 3000,
+            verticalPosition: 'top',
+            horizontalPosition: 'right',
+          });
+          this.getList();
+        }
+      },
+      error: (e: any) => {
+        console.error('Error deleting data:', e);
+      },
+    });
+  }
+  // <----pagenation start here ---->
+  updatePagedData(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsByPage;
+    const endIndex = startIndex + this.itemsByPage;
+    this.pagedUserRights = this.userrightslist.slice(startIndex, endIndex);
+  }
+
+  onPageChange(newPage: number): void {
+    this.currentPage = newPage;
+    this.updatePagedData();
+    this.pageChanged.emit(newPage);  
+  }
+
+  updatePagination() {
+    this.numPages = Math.ceil(this.totalItems / this.itemsByPage);
+    if (this.currentPage > this.numPages) {
+      this.currentPage = this.numPages;
+    }
+    this.pageChanged.emit(this.currentPage);
+  }
+
+  selectPage(page: number) {
+    if (page < 1 || page > this.numPages) {
+      return;
+    }
+    this.currentPage = page;
+    this.updatePagedData();
+  }
+
+  onPageNumberChange() {
+    if (this.currentPage < 1) {
+      this.currentPage = 1;
+    } else if (this.currentPage > this.numPages) {
+      this.currentPage = this.numPages;
+    }
+  }
+  //<---- pagenation end  here ---->
+
 }
