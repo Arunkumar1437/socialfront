@@ -61,18 +61,18 @@ export class SidebarComponent {
     this.isCollapsed = !this.isCollapsed;
   }
 
-  logout() {this.router.navigate(['/Login/login']);}
-  newform(){this.router.navigate(['/EtmsAdd/etmsadd']);}
-  task(){this.router.navigate(['/Taskmanage/taskmanage']);}
-  attend() {this.router.navigate(['/Attend/attend']); }
-  message() {this.router.navigate(['/message/message']); }
-  dashboard(){this.router.navigate(['/dashboard/dash']); }
-  post(){this.router.navigate(['/post/post']); }
-  notification(){this.router.navigate(['/notification/notification']);}
-  ChangePassword(){this.router.navigate(['/Forget/forget']);}
-  setting(){this.router.navigate(['/Setting/setting']);}
-  profile() {this.router.navigate([`/profile/profile/${this.LuserId}`]);}
-  Admin(){this.router.navigate(['/Admin/admin']);}
+   logout() {this.router.navigate(['/Login/login']);}
+  // newform(){this.router.navigate(['/EtmsAdd/etmsadd']);}
+  // task(){this.router.navigate(['/Taskmanage/taskmanage']);}
+  // attend() {this.router.navigate(['/Attend/attend']); }
+  // message() {this.router.navigate(['/message/message']); }
+  // dashboard(){this.router.navigate(['/dashboard/dash']); }
+  // post(){this.router.navigate(['/post/post']); }
+  // notification(){this.router.navigate(['/notification/notification']);}
+  // ChangePassword(){this.router.navigate(['/Forget/forget']);}
+  // setting(){this.router.navigate(['/Setting/setting']);}
+  // profile() {this.router.navigate([`/profile/profile/${this.LuserId}`]);}
+  // Admin(){this.router.navigate(['/Admin/admin']);}
   
   updateDateTime(): void {
     setInterval(() => {
