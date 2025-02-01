@@ -27,6 +27,9 @@ import { RouterModule } from "@angular/router";
 import { AdminComponent } from './admin/admin.component';
 import { NgSelectModule } from "@ng-select/ng-select";
 import { FormComponent } from './form/form.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatOptionModule } from "@angular/material/core";
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -53,7 +56,9 @@ import { FormComponent } from './form/form.component';
     MatButtonModule,
     MatIconModule,
     MatSidenavModule,
-    MatListModule, NgChartsModule,PickerModule,RouterModule,NgSelectModule,FormsModule
+    MatListModule, NgChartsModule,PickerModule,RouterModule,NgSelectModule,FormsModule,MatCardModule,
+    NgSelectModule, MatFormFieldModule, MatIconModule,
+    MatIconModule,MatOptionModule
 
   ], providers: [CommonService,
       {

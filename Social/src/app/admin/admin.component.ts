@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators, FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { CommonService } from '../common.service';
@@ -25,11 +25,13 @@ export class AdminComponent implements OnInit {
   pagedUserRights: any[] = [];
   filteredData: any[] = [];
   searchTerm: string = '';
+  searchTerm1: string = '';
   @Input() totalItems: number = 0;  
   @Input() itemsByPage: number = 10;
   @Input() currentPage: number = 1;
   @Output() pageChanged = new EventEmitter<number>();  
   numPages: number = 1;
+  isSelectVisible: boolean = false;  
 
   constructor(
     private formBuilder: FormBuilder,
@@ -70,33 +72,6 @@ export class AdminComponent implements OnInit {
     return this.adminForm.get('formdetaillist') as FormArray;
   }
 
-  // getFormDetails(usrid:any): void {
-  //   this.commonService.formdetails(usrid).subscribe({
-  //     next: (data: any) => {
-  //       this.formList = data.formlist || [];
-  //       //this.userList = data.userlist || [];
-  //       this.formdetaillist = data.formdetaillist || [];
-  //       const userRightsadd = data.userrightsedit || [];
-  //       this.populateFormDetails();
-
-  //       userRightsadd.forEach((item: any, index: number) => {
-  //         const group = this.formBuilder.group({
-  //           formid: [item.formid],
-  //           formname: [item.formname],
-  //           all: [item.all === 'true'],
-  //           create: [item.create === 'true'],
-  //           read: [item.read === 'true'],
-  //           update: [item.update === 'true'],
-  //           delete: [item.delete === 'true'],
-  //         });
-  //         this.formdetaillistArray.push(group);
-  //       });
-  //     },
-  //     error: (e: any) => {
-  //       console.error('Error fetching data:', e);
-  //     },
-  //   });
-  // }
   getFormDetails(usrid: any): void {
     this.commonService.formdetails(usrid).subscribe({
       next: (data: any) => {
@@ -114,7 +89,6 @@ export class AdminComponent implements OnInit {
           !this.formdetaillist.some((form: any) => form.formid === item.formid)
         );
 
-        // Add unmatched formids from formdetaillist into userRightsadd
         this.formdetaillist.forEach((form: any) => {
           if (!userRightsMap.has(form.formid)) {
             userRightsadd.push({
@@ -128,11 +102,7 @@ export class AdminComponent implements OnInit {
             });
           }
         });
-
-        // Clear existing formdetaillistArray before repopulating
         this.formdetaillistArray.clear();
-
-        // Populate formdetaillistArray with updated userRightsadd
         userRightsadd.forEach((item: any) => {
           const group = this.formBuilder.group({
             formid: [item.formid],
@@ -151,7 +121,6 @@ export class AdminComponent implements OnInit {
       },
     });
 }
-
 
   populateFormDetails(): void {
     this.formdetaillistArray.clear();
@@ -365,4 +334,5 @@ export class AdminComponent implements OnInit {
             this.getList(); 
     
   }
+
 }

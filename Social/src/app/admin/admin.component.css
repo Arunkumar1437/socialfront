@@ -4,3 +4,24 @@ body{
 #select{
 border: 2px solid black;
 }
+ ::ng-deep .ng-select .ng-dropdown-panel .ng-option {
+    margin-top: 3px;
+    border-radius: 13px;
+    
+    text-align: center;
+    background-color: #80808030 !important;
+    height: 35px;
+    line-height: 35px;             
+}
+::ng-deep .ng-select .ng-dropdown-panel .ng-option:hover {
+    background-color: #b0b0b0 !important; 
+} 
+::ng-deep .ng-dropdown-panel .scroll-host {
+    overflow: hidden;
+    overflow-y: auto;
+    position: relative;
+    display: block;
+    margin-top: 10px;
+    -webkit-overflow-scrolling: touch;
+}
+  

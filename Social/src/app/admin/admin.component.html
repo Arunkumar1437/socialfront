@@ -71,9 +71,9 @@
   <div class="row align-items-center mb-2">
     <label class="col-sm-2 col-form-label text-end">Full Name:<span class="text-danger">*</span></label>
     <div class="col-sm-3">
-      <ng-container *ngIf="!isEdit">
-      <ng-select
-      style="border: 2px solid blue; border-radius: 5px;"
+      <ng-container *ngIf="!isEdit" > 
+      <ng-select 
+      style="border: 2px solid blue; border-radius: 5px;height: 35px;"
       formControlName="username"
       [items]="userList"
       bindLabel="username"
