@@ -29,6 +29,7 @@ export class SidebarComponent {
    ngOnInit(): void {
     this.getLastUser();
     this.updateDateTime();
+    this.checkcomment();
   }
 
   getLastUser(): void {
@@ -45,10 +46,12 @@ export class SidebarComponent {
         }
         const luserid = data.luserid;
         const lusername = data.username;
+        const  userlist= data.userlist;
+
             localStorage.setItem('userid', luserid); 
             localStorage.setItem('username', lusername); 
-
-      },
+            localStorage.setItem('userlist', JSON.stringify(userlist)); 
+          },
       (error: any) => {
         console.error('Error fetching last user:', error);
       }
@@ -62,17 +65,17 @@ export class SidebarComponent {
   }
 
    logout() {this.router.navigate(['/Login/login']);}
-  // newform(){this.router.navigate(['/EtmsAdd/etmsadd']);}
-  // task(){this.router.navigate(['/Taskmanage/taskmanage']);}
-  // attend() {this.router.navigate(['/Attend/attend']); }
-  // message() {this.router.navigate(['/message/message']); }
-  // dashboard(){this.router.navigate(['/dashboard/dash']); }
-  // post(){this.router.navigate(['/post/post']); }
-  // notification(){this.router.navigate(['/notification/notification']);}
-  // ChangePassword(){this.router.navigate(['/Forget/forget']);}
-  // setting(){this.router.navigate(['/Setting/setting']);}
-  // profile() {this.router.navigate([`/profile/profile/${this.LuserId}`]);}
-  // Admin(){this.router.navigate(['/Admin/admin']);}
+   newform(){this.router.navigate(['/EtmsAdd/etmsadd']);}
+   task(){this.router.navigate(['/Taskmanage/taskmanage']);}
+   attend() {this.router.navigate(['/Attend/attend']); }
+   message() {this.router.navigate(['/message/message']); }
+   dashboard(){this.router.navigate(['/dashboard/dash']); }
+   post(){this.router.navigate(['/post/post']); }
+   notification(){this.router.navigate(['/notification/notification']);}
+   ChangePassword(){this.router.navigate(['/Forget/forget']);}
+   setting(){this.router.navigate(['/Setting/setting']);}
+   profile() {this.router.navigate([`/profile/profile/${this.LuserId}`]);}
+   Admin(){this.router.navigate(['/Admin/admin']);}
   
   updateDateTime(): void {
     setInterval(() => {
@@ -130,5 +133,20 @@ export class SidebarComponent {
     if (day > 0) {
       alert(`You selected ${this.year1}-${this.month1 + 1}-${day}`);
     }
+  }
+
+  checkcomment(): void {
+    this.app.getcheckcomment().subscribe(
+      (data: any) => {
+        if(data.comment=='open'){
+          //continue the site
+        }else if(data.comment=='close'){
+          this.logout();
+        }
+      },
+      (error: any) => {
+        console.error('Error fetching last user:', error);
+      }
+    );
   }
 }

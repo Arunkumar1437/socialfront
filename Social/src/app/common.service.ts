@@ -39,10 +39,12 @@ export class CommonService {
   getChatperson():Observable<any> {var url=this.apiUrl+'api/messages/getpersonList';return this.http.get<any>(url);}
   getChatHistorybyId(message: any):Observable<any> {var url=this.apiUrl+'api/messages/retrivebyid';return this.http.post<any>(url,message);}
   getChatData(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.apiUrl}api/dashboard/getChatData`); }
-  formdetails(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.apiUrl}api/admin/formdetails`); }
+  formdetails(usrid:any): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.apiUrl}api/admin/formdetails/${usrid}`); }
   saveuserrightData(data: any): Observable<any> {const url = `${this.apiUrl}api/admin/saverights`; return this.http.post<any>(url,data);}
   userList(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.apiUrl}api/admin/userList`); }
   useredit(userid: any): Observable<any> {const url = `${this.apiUrl}api/admin/userrightsedit/${userid}`;return this.http.get<any>(url);}
   userDelete(userid: any): Observable<any> {const url = `${this.apiUrl}api/admin/userrightsdelete/${userid}`;return this.http.delete(url);}
-  
+  getcheckcomment():Observable<any> {const url = `${this.apiUrl}api/admin/checkcomment`;return this.http.get<any>(url);}
+  formList(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.apiUrl}api/admin/formList`); }
+
 }

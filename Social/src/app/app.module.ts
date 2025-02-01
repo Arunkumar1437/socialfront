@@ -26,6 +26,7 @@ import { PickerModule } from "@ctrl/ngx-emoji-mart";
 import { RouterModule } from "@angular/router";
 import { AdminComponent } from './admin/admin.component';
 import { NgSelectModule } from "@ng-select/ng-select";
+import { FormComponent } from './form/form.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { NgSelectModule } from "@ng-select/ng-select";
           OcrComponent,
           ChatComponent,
           AdminComponent,
+          FormComponent,
   ],
   imports: [
     CommonModule,

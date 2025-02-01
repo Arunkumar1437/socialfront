@@ -3,8 +3,17 @@
 
 <body>
 <div *ngIf="isList">
-  <div><span (click)="openAddUserrights()">➕</span></div>
-  <div class="table-container">
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <span (click)="openAddUserrights()" style="cursor: pointer;">➕</span>
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      placeholder="Search"
+      (input)="filterTable()"
+      class="form-control"
+      style="margin-bottom: 10px; width: 300px;"
+    />
+  </div>  <div class="table-container">
     <table class="table table-striped table-bordered">
       <thead>
         <tr>
@@ -14,7 +23,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of pagedUserRights">
+        <tr *ngFor="let item of (filteredData?.length ? filteredData : pagedUserRights)">
           <td style="text-align: center;">{{ item.userid }}</td>
           <td style="text-align: center;">{{ item.username }}</td>
           <td  style="text-align: center;"><button class="btn btn-primary" style="background: transparent; border: none;" (click)="editUserrights(item)"><span>✏️</span></button><button class="btn btn-primary" style="background: transparent; border: none;" (click)="viewUserrights(item)"><span>👀</span></button><button class="btn btn-primary" style="background: transparent; border: none;"(click)="deleteUserrights(item)"><span>🗑️</span></button></td>

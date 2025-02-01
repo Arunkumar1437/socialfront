@@ -20,6 +20,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { OcrComponent } from './ocr/ocr.component';
 import { ChatComponent } from './chat/chat.component';
 import { AdminComponent } from './admin/admin.component';
+import { FormComponent } from './form/form.component';
 
 export const routes: Routes = [
     //configure the modules
@@ -44,6 +45,10 @@ export const routes: Routes = [
     {path:"ocr",loadChildren:()=>import("./ocr/ocr.module").then((m)=>m.OcrModule)},
     {path:"chat",loadChildren:()=>import("./chat/chat.module").then((m)=>m.ChatModule)},
     {path:"Admin",loadChildren:()=>import("./admin/admin.module").then((m)=>m.AdminModule)},
+    {path:"Form",loadChildren:()=>import("./form/form.module").then((m)=>m.FormModule)},
+
+
+
     //configure the Components 
     {path:"dash",component:DashboardComponent},
     {path:"main",component:MainpageComponent},
@@ -66,6 +71,9 @@ export const routes: Routes = [
     {path:"ocr",component:OcrComponent},
     {path:"chat",component:ChatComponent},
     { path:'admin', component: AdminComponent},
+    {path:"form",component:FormComponent },
+
+
     //Redirect to Login Page Directly
     {path: '', redirectTo: 'Login/login', pathMatch: 'full' },
    

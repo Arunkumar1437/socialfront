@@ -21,8 +21,10 @@ export class AdminComponent implements OnInit {
   userid: any;
   user: any;
   userRightsview: any[] = [];
+  userRightsadd: any[] = [];
   pagedUserRights: any[] = [];
-
+  filteredData: any[] = [];
+  searchTerm: string = '';
   @Input() totalItems: number = 0;  
   @Input() itemsByPage: number = 10;
   @Input() currentPage: number = 1;
@@ -37,6 +39,7 @@ export class AdminComponent implements OnInit {
   ) {
     this.adminForm = this.formBuilder.group({
       username: ['', Validators.required],
+      userid: ['',],
       edit: [false],
       view: [false],
       formdetaillist: this.formBuilder.array([]),
@@ -48,8 +51,18 @@ export class AdminComponent implements OnInit {
     const lusername = localStorage.getItem('username');
     this.user = lusername;
     this.userid = luserid;
+    const userlistlocal = localStorage.getItem('userlist');
 
-    this.getFormDetails();
+    if (userlistlocal) {
+      this.userList = JSON.parse(userlistlocal); 
+    } else {
+      this.userList = [];  
+    }
+    this.adminForm.get('username')?.valueChanges.subscribe(usrid => {
+      if (usrid && !this.isEdit) {
+        this.getFormDetails(usrid);
+      }
+    });
     this.getList();
   }
 
@@ -57,19 +70,88 @@ export class AdminComponent implements OnInit {
     return this.adminForm.get('formdetaillist') as FormArray;
   }
 
-  getFormDetails(): void {
-    this.commonService.formdetails().subscribe({
+  // getFormDetails(usrid:any): void {
+  //   this.commonService.formdetails(usrid).subscribe({
+  //     next: (data: any) => {
+  //       this.formList = data.formlist || [];
+  //       //this.userList = data.userlist || [];
+  //       this.formdetaillist = data.formdetaillist || [];
+  //       const userRightsadd = data.userrightsedit || [];
+  //       this.populateFormDetails();
+
+  //       userRightsadd.forEach((item: any, index: number) => {
+  //         const group = this.formBuilder.group({
+  //           formid: [item.formid],
+  //           formname: [item.formname],
+  //           all: [item.all === 'true'],
+  //           create: [item.create === 'true'],
+  //           read: [item.read === 'true'],
+  //           update: [item.update === 'true'],
+  //           delete: [item.delete === 'true'],
+  //         });
+  //         this.formdetaillistArray.push(group);
+  //       });
+  //     },
+  //     error: (e: any) => {
+  //       console.error('Error fetching data:', e);
+  //     },
+  //   });
+  // }
+  getFormDetails(usrid: any): void {
+    this.commonService.formdetails(usrid).subscribe({
       next: (data: any) => {
         this.formList = data.formlist || [];
-        this.userList = data.userlist || [];
         this.formdetaillist = data.formdetaillist || [];
+        let userRightsadd = data.userrightsedit || [];
+
         this.populateFormDetails();
+
+        // Convert userRightsadd to a Map for quick lookup
+        const userRightsMap = new Map(userRightsadd.map((item: any) => [item.formid, item]));
+
+        // Remove matching formids from userRightsadd
+        userRightsadd = userRightsadd.filter((item: any) => 
+          !this.formdetaillist.some((form: any) => form.formid === item.formid)
+        );
+
+        // Add unmatched formids from formdetaillist into userRightsadd
+        this.formdetaillist.forEach((form: any) => {
+          if (!userRightsMap.has(form.formid)) {
+            userRightsadd.push({
+              formid: form.formid,
+              formname: form.formname,
+              all: false,
+              create: false,
+              read: false,
+              update: false,
+              delete: false,
+            });
+          }
+        });
+
+        // Clear existing formdetaillistArray before repopulating
+        this.formdetaillistArray.clear();
+
+        // Populate formdetaillistArray with updated userRightsadd
+        userRightsadd.forEach((item: any) => {
+          const group = this.formBuilder.group({
+            formid: [item.formid],
+            formname: [item.formname],
+            all: [item.all === true],
+            create: [item.create === true],
+            read: [item.read === true],
+            update: [item.update === true],
+            delete: [item.delete === true],
+          });
+          this.formdetaillistArray.push(group);
+        });
       },
       error: (e: any) => {
         console.error('Error fetching data:', e);
       },
     });
-  }
+}
+
 
   populateFormDetails(): void {
     this.formdetaillistArray.clear();
@@ -102,6 +184,8 @@ export class AdminComponent implements OnInit {
 
   onSubmit(): void {
     if (this.adminForm.valid) {
+      const useris= this.adminForm.get('username')?.value;
+      console.log(useris);
       this.commonService.saveuserrightData(this.adminForm.value).subscribe({
         next: (res: any) => {
           if (res.sucess === true) {
@@ -175,6 +259,7 @@ export class AdminComponent implements OnInit {
         const userRightsEdit = data.userrightsedit || [];
         this.adminForm.patchValue({
           username: uname,
+          userid:userid
         });
 
         userRightsEdit.forEach((item: any, index: number) => {
@@ -222,22 +307,28 @@ export class AdminComponent implements OnInit {
   }
   // <----pagenation start here ---->
   updatePagedData(): void {
+    const sourceData = this.searchTerm ? this.filteredData : this.userrightslist;
     const startIndex = (this.currentPage - 1) * this.itemsByPage;
     const endIndex = startIndex + this.itemsByPage;
-    this.pagedUserRights = this.userrightslist.slice(startIndex, endIndex);
+    this.pagedUserRights = sourceData.slice(startIndex, endIndex);
   }
 
   onPageChange(newPage: number): void {
     this.currentPage = newPage;
     this.updatePagedData();
-    this.pageChanged.emit(newPage);  
+    this.pageChanged.emit(newPage);
   }
 
-  updatePagination() {
+  updatePagination(): void {
+    const sourceData = this.searchTerm ? this.filteredData : this.userrightslist;
+    this.totalItems = sourceData.length;
     this.numPages = Math.ceil(this.totalItems / this.itemsByPage);
+  
     if (this.currentPage > this.numPages) {
       this.currentPage = this.numPages;
     }
+  
+    this.updatePagedData();
     this.pageChanged.emit(this.currentPage);
   }
 
@@ -249,13 +340,29 @@ export class AdminComponent implements OnInit {
     this.updatePagedData();
   }
 
-  onPageNumberChange() {
+  onPageNumberChange(): void {
     if (this.currentPage < 1) {
       this.currentPage = 1;
     } else if (this.currentPage > this.numPages) {
       this.currentPage = this.numPages;
     }
+  
+    this.updatePagedData();
   }
   //<---- pagenation end  here ---->
-
+  filterTable(): void {
+    const term = this.searchTerm.toLowerCase();
+    this.filteredData = this.userrightslist.filter(
+      item =>
+        item.userid.toLowerCase().includes(term) ||
+        item.username.toLowerCase().includes(term)
+    );
+    this.currentPage = 1; 
+    this.updatePagination();
+    this.isList = true;
+            this.adminForm.reset();
+            this.isEdit = false;
+            this.getList(); 
+    
+  }
 }
