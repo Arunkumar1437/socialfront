@@ -1,10 +1,30 @@
-<div class="card">
-  <div class="card-body">
-    <h5 class="card-title">Login Data Chart</h5>
-    <canvas baseChart 
-            [data]="loginData" 
-            [options]="chartOptions" 
-            [type]="'line'">
-    </canvas>
+<div class="topbar">
+  <div class="logo">
+    <img src="/assets/sociallogo.png" alt="Social Logo">
+  </div>
+
+  <div class="nav-links">
+    <ul>
+      <li *ngFor="let module of modules" 
+          (mouseenter)="sendModuleCode(module.modulecode)"
+          (mouseleave)="clearModuleCode()">
+        {{ module.modulename }}
+        
+        <ol *ngIf="hoveredModuleCode === module.modulecode" class="dropdown">
+          <li *ngFor="let form of forms">
+            <a [routerLink]="form.redirect === '/profile/profile' ? ['/profile/profile', LuserId] : [form.redirect]" 
+               routerLinkActive="active-link">{{ form.formname }}</a>
+          </li>
+        </ol>
+      </li>
+    </ul>
+  </div>
+  
+
+  <div class="user-info">
+    <h3>{{ username }}</h3>
+    <h3>Date: {{ currentDate }}</h3>
+    <h3>Time: {{ currentTime }}</h3>
+    <a class="logout" (click)="logout()">🚪 Logout</a>
   </div>
 </div>

@@ -4,6 +4,14 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { io } from 'socket.io-client';
 
+export interface Notification {
+  id: number;
+  message: string;
+  type: string;
+  isRead: boolean;
+  createdAt: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -44,7 +52,19 @@ export class CommonService {
   userList(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.apiUrl}api/admin/userList`); }
   useredit(userid: any): Observable<any> {const url = `${this.apiUrl}api/admin/userrightsedit/${userid}`;return this.http.get<any>(url);}
   userDelete(userid: any): Observable<any> {const url = `${this.apiUrl}api/admin/userrightsdelete/${userid}`;return this.http.delete(url);}
-  getcheckcomment():Observable<any> {const url = `${this.apiUrl}api/admin/checkcomment`;return this.http.get<any>(url);}
+  getcheckcomment(userid: any):Observable<any> {const url = `${this.apiUrl}api/admin/checkcomment/${userid}`;return this.http.get<any>(url);}
   formList(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.apiUrl}api/admin/formList`); }
-
+  saveformData(data: any): Observable<any> {const url = `${this.apiUrl}api/admin/saveform`; return this.http.post<any>(url,data);}
+  formedit(formid: any): Observable<any> {const url = `${this.apiUrl}api/admin/editform/${formid}`;return this.http.get<any>(url);}
+  updateformData(data: any): Observable<any> {const url = `${this.apiUrl}api/admin/updateform`; return this.http.post<any>(url,data);}
+  formDelete(formid: any): Observable<any> {const url = `${this.apiUrl}api/admin/deleteform/${formid}`;return this.http.delete(url);}
+  getUnreadNotifications(): Observable<Notification[]> { return this.http.get<Notification[]>(`${this.apiUrl}api/notification/unread`);}
+  markAsRead(id: number): Observable<void> {return this.http.put<void>(`${this.apiUrl}api/notification/markAsRead/${id}`, {}); }
+  createNotification(notification: { message: string; type: string }): Observable<Notification> {return this.http.post<Notification>(`${this.apiUrl}api/notification/create`, notification);}
+  loadCommands(): Observable<Notification[]> { return this.http.get<Notification[]>(`${this.apiUrl}api/notification/unreadcommand`);}
+  commandmarkAsRead(id: number): Observable<void> {return this.http.put<void>(`${this.apiUrl}api/notification/markAsReadcommand/${id}`, {}); }
+  createCommand(command: { command: string; userid: string }): Observable<any> {return this.http.post<any>(`${this.apiUrl}api/notification/createcommand`, command);}
+  getSettings(): Observable<any> {return this.http.get(`${this.apiUrl}`);}
+  updateSettings(settings: any): Observable<any> {return this.http.put(`${this.apiUrl}`, settings);}
+  getformlist(data: any):Observable<any> {const url = `${this.apiUrl}api/admin/getform`;return this.http.post<any>(url,data);}
 }

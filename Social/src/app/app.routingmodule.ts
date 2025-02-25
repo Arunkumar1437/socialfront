@@ -44,7 +44,7 @@ export const routes: Routes = [
     {path:"profile",loadChildren:()=>import("./profile/profile.module").then((m)=>m.ProfileModule)},
     {path:"ocr",loadChildren:()=>import("./ocr/ocr.module").then((m)=>m.OcrModule)},
     {path:"chat",loadChildren:()=>import("./chat/chat.module").then((m)=>m.ChatModule)},
-    {path:"Admin",loadChildren:()=>import("./admin/admin.module").then((m)=>m.AdminModule)},
+    {path:"userrights",loadChildren:()=>import("./admin/admin.module").then((m)=>m.AdminModule)},
     {path:"Form",loadChildren:()=>import("./form/form.module").then((m)=>m.FormModule)},
 
 
@@ -70,7 +70,7 @@ export const routes: Routes = [
     {path:"profile/:id",component:ProfileComponent},
     {path:"ocr",component:OcrComponent},
     {path:"chat",component:ChatComponent},
-    { path:'admin', component: AdminComponent},
+    { path:'user', component: AdminComponent},
     {path:"form",component:FormComponent },
 
 

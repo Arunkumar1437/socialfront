@@ -1,0 +1,109 @@
+.notification-wrapper {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 20px;
+  }
+  
+  .notification-container {
+    flex: 1; 
+    max-width: 350px; 
+    min-width: 300px;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .notification-container ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .notification-container li {
+    background: #fff;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    border-left: 5px solid #28a745; 
+  }
+  
+  .notification-container button {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    margin :10px;
+    transition: background 0.3s ease;
+  }
+  
+  .notification-container button:hover {
+    background: #218838;
+  }
+  
+  .info {
+    color: blue;
+    font-weight: bold;
+  }
+  
+  .warning {
+    color: red;
+    font-weight: bold;
+  }
+  .add{
+    max-width: 350px; 
+    min-width: 300px;
+  }
+  .add button{
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-top :10px;
+    margin-left: 10px;
+    transition: background 0.3s ease;
+  }
+
+  .command-container {
+    flex: 1; 
+    max-width: 350px; 
+    min-width: 300px;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .command-container ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .command-container li {
+    background: #fff;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    border-left: 5px solid #28a745; 
+  }
+  
+  .command-container button {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    margin :10px;
+    transition: background 0.3s ease;
+  }
+  
+  .command-container button:hover {
+    background: #218838;
+  }

@@ -27,6 +27,7 @@ pagedUserRights: any[] = [];
   isList: boolean = true;
   isEdit: boolean = false;
   isView: boolean = false;
+  iconlist:any[]=[];
   constructor(
       private formBuilder: FormBuilder,
       private router: Router,
@@ -34,11 +35,16 @@ pagedUserRights: any[] = [];
       private _snackBar: MatSnackBar
     ) {
       this.formForm = this.formBuilder.group({
-        username: ['', Validators.required],
-        userid: ['',],
-        edit: [false],
-        view: [false],
-        formdetaillist: this.formBuilder.array([]),
+        formid:[''],
+        formname: ['',Validators.required],
+        icon: ['',],
+        displayorder: ['',],
+        redirect: ['',],
+        link: ['',],
+        active:['',],
+        userid:[],
+        iconemoj:['',],
+        edit:this.isEdit
       });
     }
   
@@ -48,7 +54,6 @@ pagedUserRights: any[] = [];
       this.user = lusername;
       this.userid = luserid;
       const userlistlocal = localStorage.getItem('userlist');
-  
       this.getList();
     }
 
@@ -56,6 +61,7 @@ pagedUserRights: any[] = [];
       this.commonService.formList().subscribe({
         next: (data: any) => {
           this.formList = data.formpagelist || [];
+          this.iconlist=data.iconlist||[];
           this.totalItems = this.formList.length;
           this.numPages = Math.ceil(this.totalItems / this.itemsByPage);  
           this.updatePagedData(); 
@@ -130,11 +136,11 @@ pagedUserRights: any[] = [];
       this.isList = false;
       this.isEdit = false;
       this.isView = true;
-      this.loadvalue(item.userid);
+      this.loadvalue(item.formid);
     }
   
     deleteForm(item: any): void {
-      this.commonService.userDelete(item.userid).subscribe({
+      this.commonService.formDelete(item.formid).subscribe({
         next: (data: any) => {
           if (data.sucess) {
             this._snackBar.open('Deleted successfully', '', {
@@ -153,26 +159,21 @@ pagedUserRights: any[] = [];
     editForm(item: any): void {
       this.isList = false;
       this.isEdit = true;
-      const usernameControl = this.formForm.get('username');
-      const usernameControl1 = this.formForm.get('edit');
-  
-      if (usernameControl && usernameControl1) {
-        usernameControl.setValue(item.userid);
-        usernameControl1.setValue(this.isEdit);
-        this.loadvalue(item.userid);
-      } else {
-        console.error("Form control 'username' does not exist.");
-      }
+        this.loadvalue(item.formid);
     }
   
-    loadvalue(userid: any): void {
-      this.commonService.useredit(userid).subscribe({
+    loadvalue(formid: any): void {
+      this.commonService.formedit(formid).subscribe({
         next: (data: any) => {
-          const uname = data.username;
-          const userRightsEdit = data.userrightsedit || [];
           this.formForm.patchValue({
-            username: uname,
-            userid:userid
+            formid:data.formid,
+            formname: data.formname,
+            icon:data.icon ,
+            displayorder: data.displayorder,
+            redirect: data.redirect,
+            link: data.link,
+            active:data.active,
+            iconemoj:data.iconemoj,
           });
   
           
@@ -182,5 +183,73 @@ pagedUserRights: any[] = [];
         },
       });
     }
+
+    openAddForm(): void {
+      this.isList = false;
+    }
+
+    cancel() {
+      this.isEdit = false;
+      this.isView=false;
+      this.isList=true;
+    }
+ 
+    clearSelection() {
+      this.formForm.controls['icon'].setValue(""); 
+    }
+
+    submit(): void {
+      if (this.formForm.valid) {
+        if(!this.isEdit){
+        this.commonService.saveformData(this.formForm.value).subscribe({
+          next: (res: any) => {
+            if (res.sucess === true) {
+              const message = 'Saved successfully';
+              this._snackBar.open(message, '', {
+                duration: 3000,
+                verticalPosition: 'top',
+                horizontalPosition: 'right',
+              });
+              this.isList = true;
+              this.isEdit = false;
+              this.getList();
+            }
+          },
+          error: (err: any) => {
+            console.error('Error:', err);
+            this._snackBar.open('An error occurred while saving', '', {
+              duration: 3000,
+              horizontalPosition: 'end',
+              verticalPosition: 'top',
+            });
+          },
+        });
+      }else{
+        this.commonService.updateformData(this.formForm.value).subscribe({
+          next: (res: any) => {
+            if (res.sucess === true) {
+              const message = 'Update successfully';
+              this._snackBar.open(message, '', {
+                duration: 3000,
+                verticalPosition: 'top',
+                horizontalPosition: 'right',
+              });
+              this.isList = true;
+              this.isEdit = false;
+              this.getList();
+            }
+          },
+          error: (err: any) => {
+            console.error('Error:', err);
+            this._snackBar.open('An error occurred while saving', '', {
+              duration: 3000,
+              horizontalPosition: 'end',
+              verticalPosition: 'top',
+            });
+          },
+        });
+      }
+    }
+  }
 }
 

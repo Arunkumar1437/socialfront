@@ -135,12 +135,12 @@ export class SidebarComponent {
     }
   }
 
-  checkcomment(): void {
-    this.app.getcheckcomment().subscribe(
+  checkcomment(): void { 
+    const userid = localStorage.getItem('userid');
+    this.app.getcheckcomment(userid).subscribe(
       (data: any) => {
-        if(data.comment=='open'){
-          //continue the site
-        }else if(data.comment=='close'){
+        if (data.commend === 'open') {
+        } else if (data.commend === 'close') {
           this.logout();
         }
       },
@@ -148,5 +148,6 @@ export class SidebarComponent {
         console.error('Error fetching last user:', error);
       }
     );
-  }
+}
+
 }

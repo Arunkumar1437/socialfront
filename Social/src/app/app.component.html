@@ -1,11 +1,21 @@
-<body>
+<!-- <body>
   <div class="fullbar">
     <div class="sidebar" *ngIf="!isLoginPage()">
-      <app-sidebar></app-sidebar>
+      <app-mainpage></app-mainpage>
     </div>
     <div class="mainbar">
       <router-outlet></router-outlet>
     </div>
   </div>
 </body>
-
+ -->
+ <body>
+  <div class="fullbar">
+    <div class="topbar" *ngIf="!isLoginPage()">
+      <app-mainpage></app-mainpage>
+    </div>
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</body>

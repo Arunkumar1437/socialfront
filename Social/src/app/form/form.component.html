@@ -3,7 +3,8 @@
 
 <div *ngIf="isList">
     <div style="display: flex; align-items: center; gap: 10px;">
-      <input
+        <span (click)="openAddForm()" style="cursor: pointer;">➕</span>
+        <input
         type="text"
         [(ngModel)]="searchTerm"
         placeholder="Search"
@@ -74,4 +75,105 @@
           </div>
       </footer>
     </div>
+</div>
+<div *ngIf="!isList && !isView" >
+<form [formGroup]="formForm" (ngSubmit)="submit()" class="form-container">
+  <div>
+    <h4 class="heading text-center border border-0 bg-primary text-white rounded py-2" *ngIf="!isEdit">Add Form </h4>
+    <h4 class="heading text-center border border-0 bg-primary text-white rounded py-2" *ngIf="isEdit">Edit Form </h4>
+
+  </div>
+  <div class="demo border border-1 rounded p-4" style="background-color: #f8d7da;">
+    <!-- Formid -->
+    <div class="form-group d-flex align-items-center mb-3" *ngIf="isEdit">
+      <label  for="formid" class="control-label col-4 text-right">Form ID</label>
+      <span style="margin-left: 315px" >{{formForm.get('formid')?.value || 'N/A'}}</span> 
+    </div>
+
+    <!-- Formname -->
+    <div class="form-group d-flex align-items-center mb-3">
+      <label for="formname" class="control-label col-4 text-right">Form Name:</label>
+      <input type="text" id="formname" formControlName="formname" class="form-control w-50" placeholder="Enter Form Name" required />
+    </div>
+
+    <!-- Icon -->
+    <div class="form-group d-flex align-items-center mb-3">
+      <label for="icon" class="control-label col-4 text-right">Icon:</label>
+      <ng-select style="border: 2px solid #fff;border-radius: 5px;margin-left: 50px;height: 35px;width: 592px;background-color: white;"formControlName="icon"[items]="iconlist"
+      bindLabel="text"bindValue="id" [searchable]="true">
+    </ng-select>
+    </div>
+
+    <!-- Display Order -->
+    <div class="form-group d-flex align-items-center mb-3">
+      <label for="displayorder" class="control-label col-4 text-right">Display Order:</label>
+      <input type="number" id="displayorder" formControlName="displayorder" class="form-control w-50"  min="1" max="100" placeholder="Enter Display Order" required />
+    </div>
+
+    <!-- Redirect Link -->
+    <div class="form-group d-flex align-items-center mb-3">
+      <label for="redirect" class="control-label col-4 text-right">Redirect Link:</label>
+      <input type="text" id="redirect" formControlName="redirect" class="form-control w-50" placeholder="Enter Redirect Link" />
+    </div>
+
+    <!-- Link -->
+    <div class="form-group d-flex align-items-center mb-3">
+      <label for="link" class="control-label col-4 text-right">Link:</label>
+      <input type="text" id="link" formControlName="link" class="form-control w-50" placeholder="Enter Link" required />
+    </div>
+
+   <!-- Active -->
+   <div class="form-group d-flex align-items-center mb-3">
+    <label for="active" class="control-label col-4 text-right">Active:</label>
+    <div class="w-75">
+      <div class="form-check form-switch">
+        <input type="checkbox" class="form-check-input" id="active" formControlName="active">
+        <label class="form-check-label" for="active"></label>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Buttons -->
+    <div class="form-group d-flex justify-content-center mt-4">
+      <button type="submit" id="submit" class="btn btn-success mx-2" *ngIf="!isEdit">Save </button>
+      <button type="submit" id="submit" class="btn btn-success mx-2" *ngIf="isEdit">Update</button>
+      <button type="button" class="btn btn-danger mx-2" (click)="cancel()">Cancel</button>
+    </div>
+  </div>
+</form>
+</div>
+<div *ngIf="isView">
+  <div class="container mt-5">
+   <div class="card shadow-lg">
+     <div class="card-header bg-secondary text-white text-center">
+       <h4>Form View</h4>
+     </div>
+     <div class="card-body">
+       <div class="row mb-3">
+         <div class="col-md-3 font-weight-bold" id="gridhead"><b>Form ID</b></div>
+         <div class="col-md-3">{{ formForm.get('formid')?.value || 'N/A' }}</div>
+         <div class="col-md-3 font-weight-bold" id="gridhead"><b>Form Name</b></div>
+         <div class="col-md-3">{{ formForm.get('formname')?.value || 'N/A' }}</div>
+       </div>
+       <div class="row mb-3">
+         <div class="col-md-3 font-weight-bold"><b>Icon</b></div>
+         <div class="col-md-3">{{ formForm.get('iconemoj')?.value || 'N/A' }}</div>
+         <div class="col-md-3 font-weight-bold"><b>Display Order</b></div>
+         <div class="col-md-3">{{ formForm.get('displayorder')?.value || 'N/A' }}</div>
+       </div>
+       <div class="row mb-3">
+         <div class="col-md-3 font-weight-bold"><b>Redirect</b></div>
+         <div class="col-md-3">{{ formForm.get('redirect')?.value || 'N/A' }}</div>
+         <div class="col-md-3 font-weight-bold"><b>Link</b></div>
+         <div class="col-md-3">{{ formForm.get('link')?.value || 'N/A' }}</div>
+       </div>
+       <div class="row mb-3">
+         <div class="col-md-3 font-weight-bold"><b>Active</b></div>
+         <div class="col-md-3">{{ formForm.get('active')?.value || 'N/A' }}</div>
+       </div>
+     <div class="card-footer text-center">
+       <button class="btn btn-danger me-2" (click)="cancel()">Cancel</button>
+     </div>
+   </div>
+ </div>
 </div>

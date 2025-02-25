@@ -30,6 +30,7 @@ import { FormComponent } from './form/form.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatOptionModule } from "@angular/material/core";
 import { MatCardModule } from '@angular/material/card';
+import { MainpageComponent } from "./mainpage/mainpage.component";
 
 @NgModule({
   declarations: [
@@ -47,7 +48,7 @@ import { MatCardModule } from '@angular/material/card';
           OcrComponent,
           ChatComponent,
           AdminComponent,
-          FormComponent,
+          FormComponent,MainpageComponent
   ],
   imports: [
     CommonModule,
@@ -68,7 +69,7 @@ import { MatCardModule } from '@angular/material/card';
       },
   ],
   exports: [
-    SidebarComponent,
+    SidebarComponent,MainpageComponent
   ],
 })
 export class AppModule { }

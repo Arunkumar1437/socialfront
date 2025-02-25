@@ -226,6 +226,7 @@ export class AdminComponent implements OnInit {
         this.formdetaillistArray.clear();
         const uname = data.username;
         const userRightsEdit = data.userrightsedit || [];
+        this.userRightsview=data.userrightsedit;
         this.adminForm.patchValue({
           username: uname,
           userid:userid
