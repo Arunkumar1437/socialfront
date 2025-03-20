@@ -15,10 +15,16 @@ pagedUserRights: any[] = [];
   filteredData: any[] = [];
   searchTerm: string = '';
   @Input() totalItems: number = 0;  
-  @Input() itemsByPage: number = 10;
+  @Input() itemsByPage: number = 5;
   @Input() currentPage: number = 1;
-  @Output() pageChanged = new EventEmitter<number>();  
+  @Output() pageChanged = new EventEmitter<number>();
+  @Input() totalItems1: number = 0;  
+  @Input() itemsByPage1: number = 5;
+  @Input() currentPage1: number = 1;
+  @Output() pageChanged1 = new EventEmitter<number>();   
   numPages: number = 1;
+  numPages1: number = 1;
+  moduleForm: FormGroup;
   userid: any;
   user: any;
   formForm: FormGroup;
@@ -28,6 +34,15 @@ pagedUserRights: any[] = [];
   isEdit: boolean = false;
   isView: boolean = false;
   iconlist:any[]=[];
+  moduleList: any[] = [];
+  pagedmodule: any[]= [];
+  filteredData1: any[] = [];
+  searchTerm1: string = '';
+  isform: boolean = false;
+  ismaster: boolean = false;
+  isformview: boolean = false;
+  ismasterview: boolean = false;
+  moduledropdown:any[]=[];
   constructor(
       private formBuilder: FormBuilder,
       private router: Router,
@@ -44,6 +59,14 @@ pagedUserRights: any[] = [];
         active:['',],
         userid:[],
         iconemoj:['',],
+        modulecode:['',],
+        edit:this.isEdit
+      });
+      this.moduleForm = this.formBuilder.group({
+        modulecode:[''],
+        modulename: ['',Validators.required],
+        active:['',],
+        userid:[],
         edit:this.isEdit
       });
     }
@@ -55,13 +78,15 @@ pagedUserRights: any[] = [];
       this.userid = luserid;
       const userlistlocal = localStorage.getItem('userlist');
       this.getList();
+      this.getModuleList();
     }
 
     getList(): void {
       this.commonService.formList().subscribe({
         next: (data: any) => {
-          this.formList = data.formpagelist || [];
+          this.formList = data.formlist || [];
           this.iconlist=data.iconlist||[];
+          this.moduledropdown=data.moduledropdown||[];
           this.totalItems = this.formList.length;
           this.numPages = Math.ceil(this.totalItems / this.itemsByPage);  
           this.updatePagedData(); 
@@ -131,11 +156,13 @@ pagedUserRights: any[] = [];
               this.formForm.reset();
               this.getList(); 
     }
-
+    
     viewform(item: any): void {
       this.isList = false;
       this.isEdit = false;
       this.isView = true;
+      this.ismasterview=false;
+      this.isformview=true;
       this.loadvalue(item.formid);
     }
   
@@ -159,6 +186,8 @@ pagedUserRights: any[] = [];
     editForm(item: any): void {
       this.isList = false;
       this.isEdit = true;
+      this.ismaster=false;
+      this.isform=true;
         this.loadvalue(item.formid);
     }
   
@@ -173,6 +202,7 @@ pagedUserRights: any[] = [];
             redirect: data.redirect,
             link: data.link,
             active:data.active,
+            modulecode:data.modulecode,
             iconemoj:data.iconemoj,
           });
   
@@ -186,6 +216,8 @@ pagedUserRights: any[] = [];
 
     openAddForm(): void {
       this.isList = false;
+      this.isform=true;
+      this.ismaster=false;
     }
 
     cancel() {
@@ -251,5 +283,186 @@ pagedUserRights: any[] = [];
       }
     }
   }
+
+  submitmodule(): void {
+    if (this.moduleForm.valid) {
+      if(!this.isEdit){
+      this.commonService.savemoduleData(this.moduleForm.value).subscribe({
+        next: (res: any) => {
+          if (res.sucess === true) {
+            const message = 'Saved successfully';
+            this._snackBar.open(message, '', {
+              duration: 3000,
+              verticalPosition: 'top',
+              horizontalPosition: 'right',
+            });
+            this.isList = true;
+            this.isEdit = false;
+            this.getModuleList();
+          }
+        },
+        error: (err: any) => {
+          console.error('Error:', err);
+          this._snackBar.open('An error occurred while saving', '', {
+            duration: 3000,
+            horizontalPosition: 'end',
+            verticalPosition: 'top',
+          });
+        },
+      });
+    }else{
+      this.commonService.updatemoduleData(this.moduleForm.value).subscribe({
+        next: (res: any) => {
+          if (res.sucess === true) {
+            const message = 'Update successfully';
+            this._snackBar.open(message, '', {
+              duration: 3000,
+              verticalPosition: 'top',
+              horizontalPosition: 'right',
+            });
+            this.isList = true;
+            this.isEdit = false;
+            this.getModuleList();
+          }
+        },
+        error: (err: any) => {
+          console.error('Error:', err);
+          this._snackBar.open('An error occurred while saving', '', {
+            duration: 3000,
+            horizontalPosition: 'end',
+            verticalPosition: 'top',
+          });
+        },
+      });
+    }
+  }
+}
+
+getModuleList(): void {
+  this.commonService.moduleList().subscribe({
+    next: (data: any) => {
+      this.moduleList = data.modulelist || [];
+      this.totalItems1 = this.moduleList.length;
+      this.numPages1 = Math.ceil(this.totalItems1 / this.itemsByPage1);  
+      this.updatePagedData1(); 
+    },
+    error: (e: any) => {
+      console.error('Error fetching data:', e);
+    },
+  });
+}
+updatePagedData1(): void {
+  const sourceData = this.searchTerm1 ? this.filteredData1 : this.moduleList;
+  const startIndex = (this.currentPage1 - 1) * this.itemsByPage1;
+  const endIndex = startIndex + this.itemsByPage1;
+  this.pagedmodule = sourceData.slice(startIndex, endIndex);
+}
+
+onPageChange1(newPage: number): void {
+  this.currentPage1 = newPage;
+  this.updatePagedData1();
+  this.pageChanged.emit(newPage);
+}
+updatePagination1(): void {
+  const sourceData = this.searchTerm1 ? this.filteredData1 : this.moduleList;
+  this.totalItems1 = sourceData.length;
+  this.numPages1 = Math.ceil(this.totalItems1 / this.itemsByPage1);
+
+  if (this.currentPage1 > this.numPages1) {
+    this.currentPage1 = this.numPages1;
+  }
+
+  this.updatePagedData1();
+  this.pageChanged1.emit(this.currentPage1);
+}
+
+selectPage1(page: number) {
+  if (page < 1 || page > this.numPages1) {
+    return;
+  }
+  this.currentPage1 = page;
+  this.updatePagedData1();
+}
+
+onPageNumberChange1(): void {
+  if (this.currentPage1 < 1) {
+    this.currentPage1 = 1;
+  } else if (this.currentPage1 > this.numPages1) {
+    this.currentPage1 = this.numPages1;
+  }
+
+  this.updatePagedData1();
+}
+filterTable1(): void {
+  const term = this.searchTerm1.toLowerCase();
+  this.filteredData1 = this.moduleList.filter(
+    item =>
+      item.modulecode.toLowerCase().includes(term) ||
+      item.modulename.toLowerCase().includes(term)||
+      item.active.toString().toLowerCase().includes(term) 
+    );
+  this.currentPage = 1; 
+  this.updatePagination1();
+  this.isList = true;
+          this.formForm.reset();
+          this.getModuleList(); 
+}
+
+openAddModule(): void {
+  this.isList = false;
+  this.isform=false;
+  this.ismaster=true;
+}
+editmodule(item1: any): void {
+  this.isList = false;
+  this.isEdit = true;
+  this.ismaster=true;
+  this.isform=false;
+
+    this.loadvalue1(item1.modulecode);
+}
+viewmodule(item1: any): void {
+  this.isList = false;
+  this.isEdit = false;
+  this.isView = true;
+  this.isformview=false;
+  this.ismasterview=true;
+  this.loadvalue1(item1.modulecode);
+}
+
+deletemodule(item: any): void {
+  this.commonService.formDelete(item.formid).subscribe({
+    next: (data: any) => {
+      if (data.sucess) {
+        this._snackBar.open('Deleted successfully', '', {
+          duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'right',
+        });
+        this.getModuleList();
+      }
+    },
+    error: (e: any) => {
+      console.error('Error deleting data:', e);
+    },
+  });
+}
+
+loadvalue1(moduleid: any): void {
+  this.commonService.moduleedit(moduleid).subscribe({
+    next: (data: any) => {
+      this.moduleForm.patchValue({
+        modulecode:data.modulecode,
+        modulename: data.modulename,
+        active:data.active,
+      });
+
+      
+    },
+    error: (e: any) => {
+      console.error('Error fetching data:', e);
+    },
+  });
+}
 }
 

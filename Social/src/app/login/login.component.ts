@@ -20,7 +20,7 @@ export class LoginComponent {
     private _snackBar: MatSnackBar
   ) {
     this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
+      userid: ['', Validators.required],
       password: ['', Validators.required]
     });
   }
@@ -31,7 +31,7 @@ export class LoginComponent {
   
       if (userid && password) {
         this.loginForm.patchValue({
-          username: userid,
+          userid: userid,
           password: password,
         });
       }
@@ -39,10 +39,10 @@ export class LoginComponent {
   }
   login(): void {
     if (this.loginForm.valid) {
-      const username = this.loginForm.get('username')?.value;
+      const userid = this.loginForm.get('userid')?.value;
       const password = this.loginForm.get('password')?.value;
 
-      this.loginService.login(username, password).subscribe(
+      this.loginService.login(userid, password).subscribe(
         (response: any) => {
          if(response.logged==true){
             console.log('Login successful:', response);
@@ -76,6 +76,10 @@ export class LoginComponent {
           else{
            console.log('Login Failed :', response);
            this.errorMessage = 'Invalid credentials. Please try again.';
+           this._snackBar.open('Invalid credentials. Please try again.', '', {
+            duration: 300,
+            verticalPosition: 'top',horizontalPosition: 'right',
+          });
           }
 
          }
@@ -87,4 +91,5 @@ export class LoginComponent {
   }
   register(){this.router.navigate(['/Register/register']);}
   openForgetPassword(): void {this.router.navigate(['/Forget/forget']);}
+ 
 }

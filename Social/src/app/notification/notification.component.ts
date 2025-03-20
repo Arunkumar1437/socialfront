@@ -58,6 +58,7 @@ export class NotificationComponent implements OnInit {
     this.commonService.markAsRead(id).subscribe({
       next: () => {
         this.notifications = this.notifications.filter(n => n.id !== id);
+        this.loadNotifications();
       },
       error: (error) => {
         console.error('Error marking notification as read:', error);
@@ -71,7 +72,6 @@ export class NotificationComponent implements OnInit {
         message: this.notificationForm.value.message, 
         type: "info" 
       };
-
       this.commonService.createNotification(newNotification).subscribe(() => {
         this.isnotificationAdd = false;
         this.iscommendAdd = false;
@@ -94,7 +94,7 @@ export class NotificationComponent implements OnInit {
       this.commonService.createCommand(newCommand).subscribe(() => {
         this.isnotificationAdd = false;
         this.iscommendAdd = false;
-        this.loadNotifications();
+        this.loadCommands();
         this.notificationForm.reset(); 
       });
     } 
@@ -113,6 +113,7 @@ export class NotificationComponent implements OnInit {
     this.commonService.commandmarkAsRead(id).subscribe({
       next: () => {
         this.notifications = this.notifications.filter(n => n.id !== id);
+        this.loadCommands();
       },
       error: (error) => {
         console.error('Error marking notification as read:', error);

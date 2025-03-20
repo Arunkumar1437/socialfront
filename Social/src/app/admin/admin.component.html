@@ -13,7 +13,8 @@
       class="form-control"
       style="margin-bottom: 10px; width: 300px;"
     />
-  </div>  <div class="table-container">
+  </div> 
+   <div class="table-container">
     <table class="table table-striped table-bordered">
       <thead>
         <tr>
@@ -26,7 +27,7 @@
         <tr *ngFor="let item of (filteredData?.length ? filteredData : pagedUserRights)">
           <td style="text-align: center;">{{ item.userid }}</td>
           <td style="text-align: center;">{{ item.username }}</td>
-          <td  style="text-align: center;"><button class="btn btn-primary" style="background: transparent; border: none;" (click)="editUserrights(item)"><span>✏️</span></button><button class="btn btn-primary" style="background: transparent; border: none;" (click)="viewUserrights(item)"><span>👀</span></button><button class="btn btn-primary" style="background: transparent; border: none;"(click)="deleteUserrights(item)"><span>🗑️</span></button></td>
+          <td  style="text-align: center;"><button class="btn btn-primary" style="background: transparent; border: none;" (click)="editUserrights(item)"><span>✏️</span></button><button class="btn btn-primary" style="background: transparent; border: none;" (click)="viewUserrights(item)"><span>👁️</span></button><button class="btn btn-primary" style="background: transparent; border: none;"(click)="deleteUserrights(item)"><span>🗑️</span></button></td>
         </tr> 
       </tbody>
     </table>
@@ -119,6 +120,24 @@
             <td>
               <input type="checkbox" formControlName="delete" [disabled]="group.get('all')?.value">
             </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-container">
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th style="background: rgb(162, 88, 223);">Module Code</th>
+            <th style="background: rgb(162, 88, 223);">Module Name</th>
+            <th style="background: rgb(162, 88, 223);">Rights</th>
+          </tr>
+        </thead>
+        <tbody formArrayName="moduledetaillist">
+          <tr *ngFor="let group of moduledetaillistArray.controls; let i = index" [formGroupName]="i">
+            <td>{{ group.get('modulecode')?.value }}</td>
+            <td>{{ group.get('modulename')?.value }}</td>
+            <td><input type="checkbox" formControlName="rights" [disabled]="group.get('rights')?.value"></td>
           </tr>
         </tbody>
       </table>

@@ -21,23 +21,26 @@ export class SidebarComponent {
   month1: number ;
   year1!: number;
   weekDays: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  modules: any;
    constructor(private router: Router,    private app: CommonService) {
     this.month1 = this.currentDate1.getMonth();
     this.month1 = this.currentDate1.getFullYear();
     this.generateCalendar();
    }
    ngOnInit(): void {
-    this.getLastUser();
+    const luserid = localStorage.getItem('userid');
+    this.LuserId=luserid
+    this.getLastUser(this.LuserId);
     this.updateDateTime();
     this.checkcomment();
   }
 
-  getLastUser(): void {
-    this.app.getLastUser().subscribe(
+  getLastUser(LuserId:any): void {
+    this.app.getLastUser(LuserId).subscribe(
       (data: any) => {
         this.LuserId = data.luserid;
         this.username = data.username;
-        this.forms=data.forms;
+        this.modules=data.modules;
         console.log(this.LuserId);
         if( this.LuserId==='N001'){
            this.adminvalidation=true;

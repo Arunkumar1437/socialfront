@@ -31,6 +31,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatOptionModule } from "@angular/material/core";
 import { MatCardModule } from '@angular/material/card';
 import { MainpageComponent } from "./mainpage/mainpage.component";
+import { EmployeeComponent } from "./employee/employee.component";
+import { EmployeeModule } from "./employee/employee.module";
 
 @NgModule({
   declarations: [
@@ -48,7 +50,7 @@ import { MainpageComponent } from "./mainpage/mainpage.component";
           OcrComponent,
           ChatComponent,
           AdminComponent,
-          FormComponent,MainpageComponent
+          FormComponent,MainpageComponent, EmployeeComponent,
   ],
   imports: [
     CommonModule,
@@ -59,7 +61,7 @@ import { MainpageComponent } from "./mainpage/mainpage.component";
     MatSidenavModule,
     MatListModule, NgChartsModule,PickerModule,RouterModule,NgSelectModule,FormsModule,MatCardModule,
     NgSelectModule, MatFormFieldModule, MatIconModule,
-    MatIconModule,MatOptionModule
+    MatIconModule,MatOptionModule,
 
   ], providers: [CommonService,
       {

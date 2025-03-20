@@ -24,24 +24,26 @@ export class MainpageComponent{
   month1: number ;
   year1!: number;
   hoveredModuleCode: string | null = null;
-
-
+  isDarkMode = false;
   weekDays: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
    constructor(private router: Router,    private app: CommonService) {
     this.month1 = this.currentDate1.getMonth();
     this.month1 = this.currentDate1.getFullYear();
     this.generateCalendar();
    }
    ngOnInit(): void {
-    this.getLastUser();
+    const luserid = localStorage.getItem('UserId');
+    this.LuserId=luserid
+    this.getLastUser(this.LuserId);
     this.updateDateTime();
     this.checkcomment();
   }
 
-  getLastUser(): void {
-    this.app.getLastUser().subscribe(
+  getLastUser(LuserId:any): void {
+    this.app.getLastUser(LuserId).subscribe(
       (data: any) => {
-        this.LuserId = data.luserid;
+        this.LuserId = LuserId;
         this.username = data.username;
         this.modules=data.modules;
         console.log(this.LuserId);
@@ -54,7 +56,7 @@ export class MainpageComponent{
         const lusername = data.username;
         const  userlist= data.userlist;
 
-            localStorage.setItem('userid', luserid); 
+            localStorage.setItem('userid', LuserId); 
             localStorage.setItem('username', lusername); 
             localStorage.setItem('userlist', JSON.stringify(userlist)); 
           },

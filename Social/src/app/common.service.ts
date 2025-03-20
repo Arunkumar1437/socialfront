@@ -16,55 +16,116 @@ export interface Notification {
   providedIn: 'root'
 })
 export class CommonService {
-   
+  private logindashapi = 'http://localhost:8080/';
+  private adminmoduleapi = 'http://localhost:8081/';
+  private communicationocrmoduleapi = 'http://localhost:8082/';
+  private mastermoduleapi = 'http://localhost:8083/';
+
   private apiUrl = 'http://localhost:8073/';
   constructor(private http: HttpClient,private router: Router) {}
 
-  list(): Observable<string> {return this.http.get<string>(`${this.apiUrl}api/admin/loginlist`);}
+  //list(): Observable<string> {return this.http.get<string>(`${this.apiUrl}api/admin/loginlist`);}
   deleteData(id: number): Observable<any> {const url = `${this.apiUrl}/delete/${id}`;return this.http.delete(url);}
-  updateData(data: any,id: String): Observable<any> {const url = `${this.apiUrl}api/profile/update/${id}`; return this.http.post<any>(url,data);}
+  //updateData(data: any,id: String): Observable<any> {const url = `${this.apiUrl}api/profile/update/${id}`; return this.http.post<any>(url,data);}
   edit(id: number): Observable<any> {const url = `${this.apiUrl}/edit/${id}`;return this.http.get<any>(url);}
   saveData(data: any): Observable<any> {var url=this.apiUrl+'api/admin/save';return this.http.post<any>(url,data);}
   sendMail(id: number): Observable<any> {const url = `${this.apiUrl}/mail/${id}`; return this.http.post(url, {});}
   uploadExcel(formData: FormData): Observable<any> {return this.http.post<any>(`${this.apiUrl}/upload`, formData);}
   downloadExcel(): Observable<Blob> {return this.http.get(`${this.apiUrl}/download`, { responseType: 'blob' });}
-  getLastUser():Observable<any> {const url = `${this.apiUrl}api/admin/lastuser`;return this.http.get<any>(url);}
-  admindata():Observable<string> {return this.http.get<string>(`${this.apiUrl}api/admin/adminlist`);}
-  getempdata(): Observable<string> {return this.http.get<string>(`${this.apiUrl}api/admin/emplistdata`);}
-  getLoginData(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.apiUrl}api/dashboard/getlogindata`); }
-  login(username: string, password: string): Observable<any> {const data = { username, password };return this.http.post(`${this.apiUrl}auth/login`, { username, password });}
-  view(id: String): Observable<any> {const url = `${this.apiUrl}api/profile/view/${id}`;return this.http.get<any>(url);}
-  ocruploadinvoice(formData:FormData):Observable<any> {return this.http.post<any>(`${this.apiUrl}api/ocr/PDFofPo`, formData);}
-  ocruploadpo(formData:FormData):Observable<any> {return this.http.post<any>(`${this.apiUrl}api/ocr/PDFofAgree`, formData);}
-  ocruploadcompare(detailTable: any[], aggreDetail: any[]): Observable<any> {const requestBody = {detailTable: detailTable,aggreDetail: aggreDetail};return this.http.post<any>(`${this.apiUrl}api/ocr/compare`, requestBody);}
+ // getLastUser():Observable<any> {const url = `${this.apiUrl}api/admin/lastuser`;return this.http.get<any>(url);}
+  //admindata():Observable<string> {return this.http.get<string>(`${this.apiUrl}api/admin/adminlist`);}
+  //getempdata(): Observable<string> {return this.http.get<string>(`${this.apiUrl}api/admin/emplistdata`);}
+ // getLoginData(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.apiUrl}api/dashboard/getlogindata`); }
+ // login(username: string, password: string): Observable<any> {const data = { username, password };return this.http.post(`${this.apiUrl}auth/login`, { username, password });}
+  //view(id: String): Observable<any> {const url = `${this.apiUrl}api/profile/view/${id}`;return this.http.get<any>(url);}
+  //ocruploadinvoice(formData:FormData):Observable<any> {return this.http.post<any>(`${this.apiUrl}api/ocr/PDFofPo`, formData);}
+  //ocruploadpo(formData:FormData):Observable<any> {return this.http.post<any>(`${this.apiUrl}api/ocr/PDFofAgree`, formData);}
+  //ocruploadcompare(detailTable: any[], aggreDetail: any[]): Observable<any> {const requestBody = {detailTable: detailTable,aggreDetail: aggreDetail};return this.http.post<any>(`${this.apiUrl}api/ocr/compare`, requestBody);}
  // sendMessage(message: string) {this.socket.emit('chat_message', message);}
-  sendmail(data:any): Observable<any> {var url=this.apiUrl+'api/email/send';return this.http.post<any>(url,data);}
-  newReg(data: any): Observable<any> {var url=this.apiUrl+'api/register/save';return this.http.post<any>(url,data);}
-  changepass(data: any): Observable<any> {var url=this.apiUrl+'api/register/passchange';return this.http.post<any>(url,data);}
-  sendMessage(message: any):Observable<any> {var url=this.apiUrl+'api/messages/save';return this.http.post<any>(url,message);}
+  //sendmail(data:any): Observable<any> {var url=this.apiUrl+'api/email/send';return this.http.post<any>(url,data);}
+  //newReg(data: any): Observable<any> {var url=this.apiUrl+'api/register/save';return this.http.post<any>(url,data);}
+  //changepass(data: any): Observable<any> {var url=this.apiUrl+'api/register/passchange';return this.http.post<any>(url,data);}
+  //sendMessage(message: any):Observable<any> {var url=this.apiUrl+'api/messages/save';return this.http.post<any>(url,message);}
   //getChatHistory(details:any): Observable<any> {var url=this.apiUrl+'api/messages/chat';return this.http.get<any>(url,details);}
-  getChatHistory(message: any):Observable<any> {var url=this.apiUrl+'api/messages/retrive';return this.http.post<any>(url,message);}
-  getChatperson():Observable<any> {var url=this.apiUrl+'api/messages/getpersonList';return this.http.get<any>(url);}
-  getChatHistorybyId(message: any):Observable<any> {var url=this.apiUrl+'api/messages/retrivebyid';return this.http.post<any>(url,message);}
-  getChatData(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.apiUrl}api/dashboard/getChatData`); }
-  formdetails(usrid:any): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.apiUrl}api/admin/formdetails/${usrid}`); }
-  saveuserrightData(data: any): Observable<any> {const url = `${this.apiUrl}api/admin/saverights`; return this.http.post<any>(url,data);}
-  userList(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.apiUrl}api/admin/userList`); }
-  useredit(userid: any): Observable<any> {const url = `${this.apiUrl}api/admin/userrightsedit/${userid}`;return this.http.get<any>(url);}
-  userDelete(userid: any): Observable<any> {const url = `${this.apiUrl}api/admin/userrightsdelete/${userid}`;return this.http.delete(url);}
+  //getChatHistory(message: any):Observable<any> {var url=this.apiUrl+'api/messages/retrive';return this.http.post<any>(url,message);}
+  //getChatperson():Observable<any> {var url=this.apiUrl+'api/messages/getpersonList';return this.http.get<any>(url);}
+  //getChatHistorybyId(message: any):Observable<any> {var url=this.apiUrl+'api/messages/retrivebyid';return this.http.post<any>(url,message);}
+  //getChatData(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.apiUrl}api/dashboard/getChatData`); }
+  //formdetails(usrid:any): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.apiUrl}api/admin/formdetails/${usrid}`); }
+  //saveuserrightData(data: any): Observable<any> {const url = `${this.apiUrl}api/admin/saverights`; return this.http.post<any>(url,data);}
+  //userList(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.apiUrl}api/admin/userList`); }
+  //useredit(userid: any): Observable<any> {const url = `${this.apiUrl}api/admin/userrightsedit/${userid}`;return this.http.get<any>(url);}
+  //userDelete(userid: any): Observable<any> {const url = `${this.apiUrl}api/admin/userrightsdelete/${userid}`;return this.http.delete(url);}
   getcheckcomment(userid: any):Observable<any> {const url = `${this.apiUrl}api/admin/checkcomment/${userid}`;return this.http.get<any>(url);}
-  formList(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.apiUrl}api/admin/formList`); }
-  saveformData(data: any): Observable<any> {const url = `${this.apiUrl}api/admin/saveform`; return this.http.post<any>(url,data);}
-  formedit(formid: any): Observable<any> {const url = `${this.apiUrl}api/admin/editform/${formid}`;return this.http.get<any>(url);}
-  updateformData(data: any): Observable<any> {const url = `${this.apiUrl}api/admin/updateform`; return this.http.post<any>(url,data);}
-  formDelete(formid: any): Observable<any> {const url = `${this.apiUrl}api/admin/deleteform/${formid}`;return this.http.delete(url);}
-  getUnreadNotifications(): Observable<Notification[]> { return this.http.get<Notification[]>(`${this.apiUrl}api/notification/unread`);}
-  markAsRead(id: number): Observable<void> {return this.http.put<void>(`${this.apiUrl}api/notification/markAsRead/${id}`, {}); }
-  createNotification(notification: { message: string; type: string }): Observable<Notification> {return this.http.post<Notification>(`${this.apiUrl}api/notification/create`, notification);}
-  loadCommands(): Observable<Notification[]> { return this.http.get<Notification[]>(`${this.apiUrl}api/notification/unreadcommand`);}
-  commandmarkAsRead(id: number): Observable<void> {return this.http.put<void>(`${this.apiUrl}api/notification/markAsReadcommand/${id}`, {}); }
-  createCommand(command: { command: string; userid: string }): Observable<any> {return this.http.post<any>(`${this.apiUrl}api/notification/createcommand`, command);}
+  //formList(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.apiUrl}api/admin/formList`); }
+  //saveformData(data: any): Observable<any> {const url = `${this.apiUrl}api/admin/saveform`; return this.http.post<any>(url,data);}
+  //formedit(formid: any): Observable<any> {const url = `${this.apiUrl}api/admin/editform/${formid}`;return this.http.get<any>(url);}
+  //updateformData(data: any): Observable<any> {const url = `${this.apiUrl}api/admin/updateform`; return this.http.post<any>(url,data);}
+  //formDelete(formid: any): Observable<any> {const url = `${this.apiUrl}api/admin/deleteform/${formid}`;return this.http.delete(url);}
+  //getUnreadNotifications(): Observable<Notification[]> { return this.http.get<Notification[]>(`${this.apiUrl}api/notification/unread`);}
+  //markAsRead(id: number): Observable<void> {return this.http.put<void>(`${this.apiUrl}api/notification/markAsRead/${id}`, {}); }
+  //createNotification(notification: { message: string; type: string }): Observable<Notification> {return this.http.post<Notification>(`${this.apiUrl}api/notification/create`, notification);}
+  //loadCommands(): Observable<Notification[]> { return this.http.get<Notification[]>(`${this.apiUrl}api/notification/unreadcommand`);}
+  //commandmarkAsRead(id: number): Observable<void> {return this.http.put<void>(`${this.apiUrl}api/notification/markAsReadcommand/${id}`, {}); }
+  //createCommand(command: { command: string; userid: string }): Observable<any> {return this.http.post<any>(`${this.apiUrl}api/notification/createcommand`, command);}
   getSettings(): Observable<any> {return this.http.get(`${this.apiUrl}`);}
   updateSettings(settings: any): Observable<any> {return this.http.put(`${this.apiUrl}`, settings);}
-  getformlist(data: any):Observable<any> {const url = `${this.apiUrl}api/admin/getform`;return this.http.post<any>(url,data);}
+  //getformlist(data: any):Observable<any> {const url = `${this.apiUrl}api/admin/getform`;return this.http.post<any>(url,data);}
+  
+  //microservice 
+  //Login Dashboard Header
+  login(userid: string, password: string): Observable<any> {const data = { userid, password };return this.http.post(`${this.logindashapi}api/loginmodule/login`, { userid, password });}
+  getLoginData(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.logindashapi}api/loginmodule/getlogindata`); }
+  getChatData(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.logindashapi}api/loginmodule/getChatData`); }
+  list(): Observable<string> {return this.http.get<string>(`${this.logindashapi}api/loginmodule/loginlist`);}
+  getLastUser(LuserId:any):Observable<any> {const url = `${this.logindashapi}api/loginmodule/lastuser/${LuserId}`;return this.http.get<any>(url);}
+  getformlist(data: any):Observable<any> {const url = `${this.logindashapi}api/loginmodule/getform`;return this.http.post<any>(url,data);}
+  newReg(data: any): Observable<any> {var url=this.logindashapi+'api/loginmodule/save';return this.http.post<any>(url,data);}
+  changepass(data: any): Observable<any> {var url=this.logindashapi+'api/loginmodule/passchange';return this.http.post<any>(url,data);}
+ 
+  //Admin Module
+  getUnreadNotifications(): Observable<Notification[]> { return this.http.get<Notification[]>(`${this.adminmoduleapi}api/adminmodule/unread`);}
+  markAsRead(id: number): Observable<void> {return this.http.put<void>(`${this.adminmoduleapi}api/adminmodule/markAsRead/${id}`, {}); }
+  createNotification(notification: { message: string; type: string }): Observable<Notification> {return this.http.post<Notification>(`${this.adminmoduleapi}api/adminmodule/create`, notification);}
+  loadCommands(): Observable<Notification[]> { return this.http.get<Notification[]>(`${this.adminmoduleapi}api/adminmodule/unreadcommand`);}
+  commandmarkAsRead(id: number): Observable<void> {return this.http.put<void>(`${this.adminmoduleapi}api/adminmodule/markAsReadcommand/${id}`, {}); }
+  createCommand(command: { command: string; userid: string }): Observable<any> {return this.http.post<any>(`${this.adminmoduleapi}api/adminmodule/createcommand`, command);}
+  view(id: String): Observable<any> {const url = `${this.adminmoduleapi}api/adminmodule/view/${id}`;return this.http.get<any>(url);}
+  updateData(data: any,id: String): Observable<any> {const url = `${this.adminmoduleapi}api/adminmodule/update/${id}`; return this.http.post<any>(url,data);}
+  formdetails(usrid:any): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.adminmoduleapi}api/adminmodule/formdetails/${usrid}`); }
+  saveuserrightData(data: any): Observable<any> {const url = `${this.adminmoduleapi}api/adminmodule/saverights`; return this.http.post<any>(url,data);}
+  userList(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.adminmoduleapi}api/adminmodule/userList`); }
+  useredit(userid: any): Observable<any> {const url = `${this.adminmoduleapi}api/adminmodule/userrightsedit/${userid}`;return this.http.get<any>(url);}
+  userDelete(userid: any): Observable<any> {const url = `${this.adminmoduleapi}api/adminmodule/userrightsdelete/${userid}`;return this.http.delete(url);}
+  formList(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.adminmoduleapi}api/adminmodule/formList`); }
+  saveformData(data: any): Observable<any> {const url = `${this.adminmoduleapi}api/adminmodule/saveform`; return this.http.post<any>(url,data);}
+  formedit(formid: any): Observable<any> {const url = `${this.adminmoduleapi}api/adminmodule/editform/${formid}`;return this.http.get<any>(url);}
+  updateformData(data: any): Observable<any> {const url = `${this.adminmoduleapi}api/adminmodule/updateform`; return this.http.post<any>(url,data);}
+  formDelete(formid: any): Observable<any> {const url = `${this.adminmoduleapi}api/adminmodule/deleteform/${formid}`;return this.http.delete(url);}
+  savemoduleData(data: any): Observable<any> {const url = `${this.adminmoduleapi}api/adminmodule/savemodule`; return this.http.post<any>(url,data);}
+  moduleList(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.adminmoduleapi}api/adminmodule/moduleList`); }
+  moduleedit(moduleid: any): Observable<any> {const url = `${this.adminmoduleapi}api/adminmodule/editmodule/${moduleid}`;return this.http.get<any>(url);}
+  updatemoduleData(data: any): Observable<any> {const url = `${this.adminmoduleapi}api/adminmodule/updatemodule`; return this.http.post<any>(url,data);}
+
+
+  //communicationocrmodule
+  sendMessage(message: any):Observable<any> {var url=this.communicationocrmoduleapi+'api/communicationocrmodule/save';return this.http.post<any>(url,message);}
+  getChatHistory(message: any):Observable<any> {var url=this.communicationocrmoduleapi+'api/communicationocrmodule/retrive';return this.http.post<any>(url,message);}
+  getChatperson():Observable<any> {var url=this.communicationocrmoduleapi+'api/communicationocrmodule/getpersonList';return this.http.get<any>(url);}
+  getChatHistorybyId(message: any):Observable<any> {var url=this.communicationocrmoduleapi+'api/communicationocrmodule/retrivebyid';return this.http.post<any>(url,message);}
+  sendmail(data:any): Observable<any> {var url=this.communicationocrmoduleapi+'api/communicationocrmodule/send';return this.http.post<any>(url,data);}
+  ocruploadinvoice(formData:FormData):Observable<any> {return this.http.post<any>(`${this.communicationocrmoduleapi}api/communicationocrmodule/PDFofPo`, formData);}
+  ocruploadpo(formData:FormData):Observable<any> {return this.http.post<any>(`${this.communicationocrmoduleapi}api/communicationocrmodule/PDFofAgree`, formData);}
+  ocruploadcompare(detailTable: any[], aggreDetail: any[]): Observable<any> {const requestBody = {detailTable: detailTable,aggreDetail: aggreDetail};return this.http.post<any>(`${this.communicationocrmoduleapi}api/communicationocrmodule/compare`, requestBody);}
+
+
+  //MasterModule
+  empList(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/mastermodule/getEmployeeList`); }
+  empedit(userId: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/editemp/${userId}`;return this.http.get<any>(url);}
+  updateempData(data: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/updateemp`; return this.http.post<any>(url,data);}
+  saveempData(data: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/saveemp`; return this.http.post<any>(url,data);}
+  empDelete(userId: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/deleteemp/${userId}`;return this.http.delete(url);}
+  getempdata(): Observable<string> {return this.http.get<string>(`${this.mastermoduleapi}api/mastermodule/emplistdata`);}
+  admindata():Observable<string> {return this.http.get<string>(`${this.mastermoduleapi}api/mastermodule/adminlist`);}
+
 }

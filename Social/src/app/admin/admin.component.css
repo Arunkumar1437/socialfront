@@ -24,4 +24,9 @@ border: 2px solid black;
     margin-top: 10px;
     -webkit-overflow-scrolling: touch;
 }
+::ng-deep .mat-snack-bar-container {
+    background-color: green !important;
+    color: white !important;
+  }
   
+    

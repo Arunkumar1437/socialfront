@@ -1,0 +1,174 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> 
+
+<div *ngIf="isList">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <span (click)="openAddForm()" style="cursor: pointer;">➕</span>
+        <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        placeholder="Search"
+        (input)="filterTable()"
+        class="form-control"
+        style="margin-bottom: 10px; width: 300px;"
+      />
+      <span style="cursor: pointer;width:150px;border: 1px solid rgb(59, 174, 176); border-radius: 10px;" (click)="getAdminList()">👤 Only Admin</span> <span style="cursor: pointer;width:150px;border: 1px solid rgb(59, 174, 176); border-radius: 10px;"(click)="getEmpList()">👤 Only Employee</span>
+
+    </div>
+    <div class="table-container">
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th style="background: rgb(90, 237, 156);text-align: center;">Employee Id</th>
+            <th style="background: rgb(90, 237, 156);text-align: center;">Employee Name</th>
+            <th style="background: rgb(90, 237, 156);text-align: center;">Employee Email</th>
+            <th style="background: rgb(90, 237, 156);text-align: center;">Description</th>
+            <th style="background: rgb(90, 237, 156);text-align: center;">Active</th>
+            <th style="background: rgb(90, 237, 156);text-align: center;">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of (filteredData?.length ? filteredData : pagedUserRights)">
+            <td style="text-align: center;">{{ item.userId }}</td>
+            <td style="text-align: center;">{{ item.empname }}</td>
+            <td style="text-align: center;">{{ item.emailId }}</td>
+            <td style="text-align: center;">{{ item.description }}</td>
+            <td style="text-align: center;">{{ item.active }}</td>
+            <td  style="text-align: center;">
+              <button class="btn btn-primary" style="background: transparent; border: none;" (click)="editemp(item)"><span>✏️</span></button>
+              <button class="btn btn-primary" style="background: transparent; border: none;" (click)="viewemp(item)"><span>👁️</span></button>
+              <button class="btn btn-primary" style="background: transparent; border: none;"(click)="deleteemp(item)"><span>🗑️</span></button>
+            </td>
+        </tr> 
+        </tbody>
+      </table>
+      <footer class="panel-footer panel-footer-list" style="background-color: #e2e2e2;">	
+          <div class="row" style="margin-left: 483px;">
+            <div class="col-sm-12 col-md-7">
+              <div class="pagination" *ngIf="numPages > 1">
+                <ul class="pagination pagination-bottom">
+                  <li class="footable-page-arrow" [ngClass]="{'disabled': currentPage === 1}">
+                    <a (click)="selectPage(1)">
+                      <span class="text-info">⏪</span>
+                  </a>
+                  </li>
+                  <li class="footable-page-arrow" [ngClass]="{'disabled': currentPage === 1}">
+                    <a (click)="selectPage(currentPage - 1)">
+                      <span class="text-info">⬅️</span>
+                    </a>
+                  </li>
+                  <li class="footable-page active">
+                    <input type="number" [(ngModel)]="currentPage" min="1" [max]="numPages" (change)="selectPage(currentPage)">
+                  </li>
+                  <li class="footable-page-arrow" [ngClass]="{'disabled': currentPage === numPages}">
+                    <a (click)="selectPage(currentPage + 1)">
+                      <span class="text-info">➡️</span>
+                  </a>
+                  </li>
+                  <li class="footable-page-arrow" [ngClass]="{'disabled': currentPage === numPages}">
+                    <a (click)="selectPage(numPages)">
+                      <span class="text-info">⏩</span>
+                    </a>
+                  </li>
+                </ul>
+                <small class="inline m-t-sm m-b-sm"> Showing page {{currentPage}} of {{numPages}} </small>
+              </div>
+            </div>
+          </div>
+      </footer>
+    </div>
+</div>
+<div *ngIf="!isList && !isView" >
+  <form [formGroup]="empForm" (ngSubmit)="submit()" class="form-container">
+    <div>
+      <h4 class="heading text-center border border-0 bg-primary text-white rounded py-2" *ngIf="!isEdit">Add Employee </h4>
+      <h4 class="heading text-center border border-0 bg-primary text-white rounded py-2" *ngIf="isEdit">Edit Employee </h4>
+    </div>
+  
+    <div class="demo border border-1 rounded p-4" style="background-color: #f8d7da;">
+      <div class="row mb-3"  *ngIf="isEdit">
+        <div class="col-md-2 font-weight-bold" id="gridhead"><b>Employee ID</b></div>
+        <div class="col-md-2">{{ empForm.get('userId')?.value || 'N/A' }}</div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-2 font-weight-bold" id="gridhead"><b>Employee Name</b></div>
+        <div class="col-md-2">
+          <input type="text" id="empname" formControlName="empname" class="form-control w-75" placeholder="Employee Name" required />
+        </div>
+        <div class="col-md-2 font-weight-bold" id="gridhead"><b>PassWord</b></div>
+        <div class="col-md-2">
+          <input type="text" id="pass" formControlName="pass" class="form-control w-75" placeholder="Enter PassWord" />
+        </div>
+        <div class="col-md-2 font-weight-bold" id="gridhead"><b>Description</b></div>
+        <div class="col-md-2">
+          <select id="desc" formControlName="description" class="form-control mt-0 w-75"  placeholder="Enter Description">
+            <option value="Employee">Employee</option>
+            <option value="Admin">Admin</option>
+          </select>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-2 font-weight-bold" id="gridhead"><b>Email:</b></div>
+        <div class="col-md-2">
+          <input type="email" id="empemail" formControlName="emailId" class="form-control w-75" placeholder="Enter Email" />
+        </div>
+        <div class="col-md-2 font-weight-bold" id="gridhead"><b>Gender</b></div>
+        <div class="col-md-2">
+          <select id="gender" formControlName="gender" class="form-control mt-0 w-75"  placeholder="Enter Gender">
+            <option value="">Select</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Trans">Transgender</option>
+          </select>
+        </div>
+        <div class="col-md-2 font-weight-bold" id="gridhead"><b>Active</b></div>
+        <div class="col-md-2">
+          <div class="form-check form-switch">
+            <input type="checkbox" class="form-check-input" id="active" formControlName="active">
+            <label class="form-check-label" for="active"></label>
+          </div>
+        </div>
+      </div>
+    
+  
+      <!-- Buttons -->
+      <div class="form-group d-flex justify-content-center mt-4">
+        <button type="submit" class="btn btn-success mx-2" *ngIf="!isEdit">Save </button>
+        <button type="submit" class="btn btn-success mx-2" *ngIf="isEdit">Update </button>
+        <button type="button" class="btn btn-danger mx-2" (click)="cancel()">Cancel </button>
+      </div>
+    </div>
+  </form>
+  
+</div>
+<div *ngIf="isView">
+  <div class="container mt-5">
+   <div class="card shadow-lg">
+     <div class="card-header bg-primary text-white text-center">
+       <h4>Employee View</h4>
+     </div>
+     <div class="card-body">
+       <div class="row mb-3">
+         <div class="col-md-3 font-weight-bold" id="gridhead"><b>Employee ID</b></div>
+         <div class="col-md-3">{{ empForm.get('userId')?.value || 'N/A' }}</div>
+         <div class="col-md-3 font-weight-bold" id="gridhead"><b>Employee Name</b></div>
+         <div class="col-md-3">{{ empForm.get('empname')?.value || 'N/A' }}</div>
+       </div>
+       <div class="row mb-3">
+         <div class="col-md-3 font-weight-bold"><b>PassWord</b></div>
+         <div class="col-md-3">{{ empForm.get('pass')?.value || 'N/A' }}</div>
+         <div class="col-md-3 font-weight-bold"><b>Description</b></div>
+         <div class="col-md-3">{{ empForm.get('description')?.value || 'N/A' }}</div>
+       </div>
+       <div class="row mb-3">
+         <div class="col-md-3 font-weight-bold"><b>Email ID</b></div>
+         <div class="col-md-3">{{ empForm.get('emailId')?.value || 'N/A' }}</div>
+         <div class="col-md-3 font-weight-bold"><b>Active</b></div>
+         <div class="col-md-3">{{ empForm.get('active')?.value || 'N/A' }}</div>
+       </div>
+     <div class="card-footer text-center">
+       <button class="btn btn-danger me-2" (click)="cancel()">Cancel</button>
+     </div>
+   </div>
+ </div>
+</div>

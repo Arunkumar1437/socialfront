@@ -95,7 +95,6 @@ export class OcrComponent {
        }
      });
 
-    (document.getElementById('fileUpload') as HTMLInputElement).value = '';
   }
 
    uploadpo(): void {
@@ -127,7 +126,6 @@ export class OcrComponent {
        }
      });
 
-    (document.getElementById('fileUpload') as HTMLInputElement).value = '';
   }
   compare():void{
     this.detailTable=this.invoiceDetail;

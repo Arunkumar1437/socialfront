@@ -4,8 +4,6 @@ import { LoginComponent } from './login/login.component';
 import { MainpageComponent } from './mainpage/mainpage.component';
 import { PrintComponent } from './print/print.component';
 import { ViewComponent } from './view/view.component';
-import { EtmsAddComponent } from './newForm/etms-add/etms-add.component';
-import { AddEmpComponent } from './newForm/etms-add/add-emp/add-emp.component';
 import { TaskmangeComponent } from './taskmange/taskmange.component';
 import { AssignTaskComponent } from './taskmange/assign-task/assign-task.component';
 import { AttendanceComponent } from './attendance/attendance.component';
@@ -21,6 +19,7 @@ import { OcrComponent } from './ocr/ocr.component';
 import { ChatComponent } from './chat/chat.component';
 import { AdminComponent } from './admin/admin.component';
 import { FormComponent } from './form/form.component';
+import { EmployeeComponent } from './employee/employee.component';
 
 export const routes: Routes = [
     //configure the modules
@@ -29,8 +28,6 @@ export const routes: Routes = [
     {path:"Login",loadChildren:()=>import("./login/login.module").then((m)=>m.LoginModule)},
     {path:"Print",loadChildren:()=>import("./print/print.module").then((m)=>m.PrintModule)},
     {path:"View",loadChildren:()=>import("./view/view.module").then((m)=>m.ViewModule)},
-    {path:"EtmsAdd",loadChildren:()=>import("./newForm/etms-add/etms-add.module").then((m)=>m.EtmsAddModule)},
-    {path:"Addemp",loadChildren:()=>import("./newForm/etms-add/add-emp/add-emp.module").then((m)=>m.AddEmpModule)},
     {path:"Taskmanage",loadChildren:()=>import("./taskmange/taskmange.module").then((m)=>m.TaskmangeModule)},
     {path:"Assigntask",loadChildren:()=>import("./taskmange/assign-task/assign-task.module").then((m)=>m.AssignTaskModule)},
     {path:"Attend",loadChildren:()=>import("./attendance/attendance.module").then((m)=>m.AttendanceModule)},
@@ -46,7 +43,7 @@ export const routes: Routes = [
     {path:"chat",loadChildren:()=>import("./chat/chat.module").then((m)=>m.ChatModule)},
     {path:"userrights",loadChildren:()=>import("./admin/admin.module").then((m)=>m.AdminModule)},
     {path:"Form",loadChildren:()=>import("./form/form.module").then((m)=>m.FormModule)},
-
+    {path:"emp",loadChildren:()=>import("./employee/employee.module").then((m)=>m.EmployeeModule)},
 
 
     //configure the Components 
@@ -56,8 +53,6 @@ export const routes: Routes = [
     {path: 'login',component: LoginComponent},
     {path:"print/:id",component:PrintComponent},
     {path:"view/:id", component:ViewComponent},
-    {path: 'etmsadd', component: EtmsAddComponent},
-    {path: 'addemp/:id', component: AddEmpComponent},
     {path: 'taskmanage', component:TaskmangeComponent },
     {path: 'assigntask/:id', component:AssignTaskComponent },
     {path: 'attend', component: AttendanceComponent},
@@ -72,6 +67,7 @@ export const routes: Routes = [
     {path:"chat",component:ChatComponent},
     { path:'user', component: AdminComponent},
     {path:"form",component:FormComponent },
+    {path:"employee",component:EmployeeComponent},
 
 
     //Redirect to Login Page Directly

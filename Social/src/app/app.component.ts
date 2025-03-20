@@ -21,5 +21,6 @@ export class AppComponent {
         /^\/View\/view\/\d+$/.test(this.router.url) ||  /^\/Login\/login(\/\d+)?$/.test(this.router.url)
       );
     }
+    
 }
 

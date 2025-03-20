@@ -27,6 +27,7 @@ export class DashboardComponent {
     @Input() currentPage: number = 1;
     @Output() pageChanged = new EventEmitter<number>();  
     numPages: number = 1;
+    selectedTab: string = 'login'; 
 
   loginData: ChartData<'line'> = {
     labels: this.header,
@@ -95,6 +96,7 @@ export class DashboardComponent {
   ) {}
 
   ngOnInit(): void {
+    const mode = localStorage.getItem('mode');
     this.fetchLoginData();
     this.fetchLastLoginList();
     this.fetchChatData();
@@ -137,8 +139,8 @@ export class DashboardComponent {
   fetchLastLoginList(): void {
     this.app.list().subscribe({
       next: (data: any) => {
-        if (data.list) {
-          this.lastloginlist = data.list;
+        if (data.loginlist) {
+          this.lastloginlist = data.loginlist;
           this.totalItems = this.lastloginlist.length;
           this.numPages = Math.ceil(this.totalItems / this.itemsByPage);  
           this.updatePagedData(); 
@@ -223,4 +225,14 @@ export class DashboardComponent {
     }
   }
   //<---- pagenation end  here ---->
+
+  onchangemode(mode: string ){
+    if(mode==='dark'){
+        
+    }else if(mode==='light'){
+      
+    }else{
+
+    }
+  }
 }

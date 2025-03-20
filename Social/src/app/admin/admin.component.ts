@@ -14,6 +14,7 @@ export class AdminComponent implements OnInit {
   formList: any[] = [];
   userList: any[] = [];
   formdetaillist: any[] = [];
+  moduledetaillist: any[] = [];
   isList: boolean = true;
   userrightslist: any[] = [];
   isEdit: boolean = false;
@@ -21,6 +22,8 @@ export class AdminComponent implements OnInit {
   userid: any;
   user: any;
   userRightsview: any[] = [];
+  usermoduleRightsview: any[] = [];
+
   userRightsadd: any[] = [];
   pagedUserRights: any[] = [];
   filteredData: any[] = [];
@@ -45,6 +48,8 @@ export class AdminComponent implements OnInit {
       edit: [false],
       view: [false],
       formdetaillist: this.formBuilder.array([]),
+      moduledetaillist: this.formBuilder.array([]),
+
     });
   }
 
@@ -67,9 +72,12 @@ export class AdminComponent implements OnInit {
     });
     this.getList();
   }
-
   get formdetaillistArray(): FormArray {
     return this.adminForm.get('formdetaillist') as FormArray;
+  }
+
+  get moduledetaillistArray(): FormArray {
+    return this.adminForm.get('moduledetaillist') as FormArray;
   }
 
   getFormDetails(usrid: any): void {
@@ -77,16 +85,22 @@ export class AdminComponent implements OnInit {
       next: (data: any) => {
         this.formList = data.formlist || [];
         this.formdetaillist = data.formdetaillist || [];
+        this.moduledetaillist = data.moduledetaillist || [];
         let userRightsadd = data.userrightsedit || [];
+        let userRightsModuleEdit = data.userrightsmoduleedit || [];
 
         this.populateFormDetails();
+        this.populateModuleDetails();
 
-        // Convert userRightsadd to a Map for quick lookup
         const userRightsMap = new Map(userRightsadd.map((item: any) => [item.formid, item]));
+        const userRightsModuleMap = new Map(userRightsModuleEdit.map((item: any) => [item.modulecode, item]));
 
-        // Remove matching formids from userRightsadd
-        userRightsadd = userRightsadd.filter((item: any) => 
+        userRightsadd = userRightsadd.filter((item: any) =>
           !this.formdetaillist.some((form: any) => form.formid === item.formid)
+        );
+
+        userRightsModuleEdit = userRightsModuleEdit.filter((item: any) =>
+          !this.moduledetaillist.some((module: any) => module.modulecode === item.modulecode)
         );
 
         this.formdetaillist.forEach((form: any) => {
@@ -102,9 +116,22 @@ export class AdminComponent implements OnInit {
             });
           }
         });
+
+        this.moduledetaillist.forEach((module: any) => {
+          if (!userRightsModuleMap.has(module.modulecode)) {
+            userRightsModuleEdit.push({
+              modulecode: module.modulecode,
+              modulename: module.modulename,
+              rights: false,
+            });
+          }
+        });
+
         this.formdetaillistArray.clear();
+        this.moduledetaillistArray.clear();
+
         userRightsadd.forEach((item: any) => {
-          const group = this.formBuilder.group({
+          this.formdetaillistArray.push(this.formBuilder.group({
             formid: [item.formid],
             formname: [item.formname],
             all: [item.all === true],
@@ -112,33 +139,48 @@ export class AdminComponent implements OnInit {
             read: [item.read === true],
             update: [item.update === true],
             delete: [item.delete === true],
-          });
-          this.formdetaillistArray.push(group);
+          }));
+        });
+
+        userRightsModuleEdit.forEach((item: any) => {
+          this.moduledetaillistArray.push(this.formBuilder.group({
+            modulecode: [item.modulecode],
+            modulename: [item.modulename],
+            rights: [item.rights === true],
+          }));
         });
       },
       error: (e: any) => {
         console.error('Error fetching data:', e);
       },
     });
-}
+  }
 
   populateFormDetails(): void {
     this.formdetaillistArray.clear();
     this.formdetaillist.forEach((item: any) => {
-      this.formdetaillistArray.push(
-        this.formBuilder.group({
-          formid: [item.formid],
-          formname: [item.formname],
-          all: [false],
-          create: [false],
-          read: [false],
-          update: [false],
-          delete: [false],
-        })
-      );
+      this.formdetaillistArray.push(this.formBuilder.group({
+        formid: [item.formid],
+        formname: [item.formname],
+        all: [false],
+        create: [false],
+        read: [false],
+        update: [false],
+        delete: [false],
+      }));
     });
   }
 
+  populateModuleDetails(): void {
+    this.moduledetaillistArray.clear();
+    this.moduledetaillist.forEach((item: any) => {
+      this.moduledetaillistArray.push(this.formBuilder.group({
+        modulecode: [item.modulecode],
+        modulename: [item.modulename],
+        rights: [false],
+      }));
+    });
+  }
   toggleAll(index: number): void {
     const group = this.formdetaillistArray.at(index) as FormGroup;
     const isChecked = group.get('all')?.value;
@@ -163,6 +205,7 @@ export class AdminComponent implements OnInit {
               duration: 3000,
               verticalPosition: 'top',
               horizontalPosition: 'right',
+
             });
             this.isList = true;
             this.adminForm.reset();
@@ -224,15 +267,21 @@ export class AdminComponent implements OnInit {
     this.commonService.useredit(userid).subscribe({
       next: (data: any) => {
         this.formdetaillistArray.clear();
+        this.moduledetaillistArray.clear();
+  
         const uname = data.username;
         const userRightsEdit = data.userrightsedit || [];
-        this.userRightsview=data.userrightsedit;
+        const userrightsmoduleedit = data.userrightsmoduleedit || [];
+  
+        this.userRightsview = userRightsEdit;
+        this.usermoduleRightsview = userrightsmoduleedit;
+  
         this.adminForm.patchValue({
           username: uname,
-          userid:userid
+          userid: userid
         });
-
-        userRightsEdit.forEach((item: any, index: number) => {
+  
+        userRightsEdit.forEach((item: any) => {
           const group = this.formBuilder.group({
             formid: [item.formid],
             formname: [item.formname],
@@ -244,12 +293,22 @@ export class AdminComponent implements OnInit {
           });
           this.formdetaillistArray.push(group);
         });
+  
+        userrightsmoduleedit.forEach((item: any) => {
+          const group = this.formBuilder.group({
+            modulecode: [item.modulecode],
+            modulename: [item.modulename],
+            rights: [item.rights === 'true'],
+          });
+          this.moduledetaillistArray.push(group);
+        });
       },
       error: (e: any) => {
-        console.error('Error fetching data:', e);
+        console.error('Error fetching user rights:', e);
       },
     });
   }
+  
 
   viewUserrights(item: any): void {
     this.isList = false;
