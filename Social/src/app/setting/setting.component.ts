@@ -28,7 +28,9 @@ export class SettingComponent implements OnInit{
   saveSettings(): void {
     this.settingsService.updateSettings(this.settingsForm.value).subscribe(response => {
       alert('Settings updated successfully!');
+      localStorage.setItem('theme', this.settingsForm.value.theme); 
+      console.log('Theme Saved:', this.settingsForm.value.theme);
     });
   }
-
+  
 }

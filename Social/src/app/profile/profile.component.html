@@ -44,44 +44,6 @@
  </div>
  </div>
 
- <!-- <div *ngIf="isEdit && !isViewOnly">
-  <form [formGroup]="EmpForm" (ngSubmit)="updateProfile()">
-    <div>
-      <h4 class="ml-4 heading text-center border border-0 bg-primary rounded">Edit Info</h4>
-    </div>
-    <div class="ml-2 demo text-center border border-0 bg-warning rounded">
-      <label class="control-label col-sm-4">Fullname:</label>
-      <input type="text" id="fname" formControlName="name" class="form-control mt-4 w-75" required ><br> -->
-
-      <!-- <div class="form-group position-relative">
-        <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password" class="form-control mt-4 w-75" required >
-        <span *ngIf="!showPassword" (click)="togglePasswordVisibility()" class="password-toggle-icon position-absolute" style="right: 20px; top: 35%; cursor: pointer;">
-          <span>👁️</span></span>
-          <span *ngIf="showPassword" (click)="togglePassworddisable()" class="password-toggle-icon position-absolute" style="right: 20px; top: 35%; cursor: pointer;">
-            <span>🙈</span></span>  
-      </div> -->
-      
-      <!-- <label class="control-label col-sm-4">Gender</label>
-      <select id="gender" formControlName="gender" class="form-control mt-4 w-75" required >
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-      </select>
-
-      <label for="dob">Date of Birth:</label>
-      <input type="date" id="dob" formControlName="dob" class="form-control mt-4 w-75" required><br>
-
-      <label for="age">Age:</label>
-      <input type="number" id="age" formControlName="age" class="form-control mt-4 w-75" min="1" max="100"><br>
-
-      <label for="email">Email:</label>
-      <input type="email" id="email" formControlName="email" class="form-control mt-4 w-75" required /><br>
-
-      <button type="submit" id="submit" class="btn btn-success mt-4">Update Profile</button>
-      <button class="btn btn-danger mt-4" (click)="cancel()">Cancel</button>
-    </div>
-  </form>
-</div> -->
-
 <div *ngIf="isEdit && !isViewOnly" class="edit-container">
   <form [formGroup]="EmpForm" (ngSubmit)="updateProfile()" class="form-container">
     <div>

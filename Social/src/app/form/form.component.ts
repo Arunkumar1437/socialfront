@@ -431,7 +431,7 @@ viewmodule(item1: any): void {
 }
 
 deletemodule(item: any): void {
-  this.commonService.formDelete(item.formid).subscribe({
+  this.commonService.moduleDelete(item.modulecode).subscribe({
     next: (data: any) => {
       if (data.sucess) {
         this._snackBar.open('Deleted successfully', '', {

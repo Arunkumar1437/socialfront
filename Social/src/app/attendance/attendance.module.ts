@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CommonService } from '../common.service';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 @NgModule({
@@ -14,7 +15,7 @@ import { CommonService } from '../common.service';
     HttpClientModule,
     CommonModule,
     ReactiveFormsModule,
-    MatSnackBarModule,
+    MatSnackBarModule,NgSelectModule,
     AttendanceRoutingModule
   ],providers: [CommonService],
 })

@@ -14,6 +14,19 @@ import { AppModule } from "./app.module";
     imports: [CommonModule, RouterOutlet, AppModule]
 })
 export class AppComponent {
+  themeblack:boolean=false;
+  themewhite:boolean=false;
+
+  ngOnInit(): void {
+    const theme = localStorage.getItem('theme');
+    if(theme==='light'){
+      this.themewhite=true;
+    }else if(theme==='dark'){
+      this.themeblack=true;
+    }else{
+      
+    }
+  }
   constructor(private router: Router){}
     isLoginPage(): boolean {
       return (

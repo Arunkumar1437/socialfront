@@ -4,7 +4,7 @@ import { AttendanceComponent } from './attendance.component';
 
 export const routes: Routes = [
 
-  { path: 'attend', component: AttendanceComponent},
+  { path:'attend', component: AttendanceComponent},
 
 ];
 

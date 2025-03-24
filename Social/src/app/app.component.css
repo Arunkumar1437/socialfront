@@ -1,27 +1,3 @@
-/* .fullbar {
-  display: flex;
-  width: 100%; 
-  height: 100vh; 
-  margin: 0; 
-  padding: 0; 
-  box-sizing: border-box; 
-}
-
-.sidebar {
-  flex: 0 0 250px;
-  background-color: #f4f4f4; 
-  border-right: 1px solid #ddd; 
-  padding: 1rem;
-  box-sizing: border-box; 
-}
-
-.mainbar {
-  flex: 1; 
-  background-color: #fff; 
-  padding: 1rem;
-  overflow-y: auto; 
-  box-sizing: border-box; 
-} */
 .fullbar {
   display: flex;
   flex-direction: column; 
@@ -45,4 +21,14 @@
   padding: 1rem;
   overflow-y: auto;
   box-sizing: border-box;
+  color: rgb(0, 0, 0);
+}
+
+.content1 {
+  flex: 1;
+  background-color: rgb(0, 0, 0);
+  padding: 1rem;
+  overflow-y: auto;
+  box-sizing: border-box;
+  color: white;
 }

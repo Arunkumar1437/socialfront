@@ -16,6 +16,7 @@ export interface Notification {
   providedIn: 'root'
 })
 export class CommonService {
+  [x: string]: any;
   private logindashapi = 'http://localhost:8080/';
   private adminmoduleapi = 'http://localhost:8081/';
   private communicationocrmoduleapi = 'http://localhost:8082/';
@@ -106,6 +107,7 @@ export class CommonService {
   moduleList(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.adminmoduleapi}api/adminmodule/moduleList`); }
   moduleedit(moduleid: any): Observable<any> {const url = `${this.adminmoduleapi}api/adminmodule/editmodule/${moduleid}`;return this.http.get<any>(url);}
   updatemoduleData(data: any): Observable<any> {const url = `${this.adminmoduleapi}api/adminmodule/updatemodule`; return this.http.post<any>(url,data);}
+  moduleDelete(moduleid: any): Observable<any> {const url = `${this.adminmoduleapi}api/adminmodule/deletemodule/${moduleid}`;return this.http.delete(url);}
 
 
   //communicationocrmodule
@@ -127,5 +129,10 @@ export class CommonService {
   empDelete(userId: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/deleteemp/${userId}`;return this.http.delete(url);}
   getempdata(): Observable<string> {return this.http.get<string>(`${this.mastermoduleapi}api/mastermodule/emplistdata`);}
   admindata():Observable<string> {return this.http.get<string>(`${this.mastermoduleapi}api/mastermodule/adminlist`);}
+  checkIn(userid: any): Observable<void> {return this.http.put<void>(`${this.mastermoduleapi}api/hrmsmodule/checkin/${userid}`, {}); }
+  attendanceList(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/hrmsmodule/getAttendanceList`); }
+  checkOut(attendanceid: any): Observable<void> {return this.http.put<void>(`${this.mastermoduleapi}api/hrmsmodule/checkout/${attendanceid}`, {}); }
+  deleteattendance(attendanceid: any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/deleteattendance/${attendanceid}`;return this.http.delete(url);}
+  attendanceEdit(attendanceid: any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/editattendance/${attendanceid}`;return this.http.get<any>(url);}
 
 }
