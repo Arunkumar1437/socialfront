@@ -7,5 +7,15 @@ button
 {
   margin-left: 10px;
   margin-top: -10px;
-
+}
+.delete{
+  --background:#2B3844;
+  --background-hover:#1E2235;
+  --text:#ffff;
+  --shadow:rgba();
+  --paper:#5C86FF;
+  --paper-lines:#ffff;
+  --trash:#E1E6F9;
+  --trash-lines:#BBC1E1;
+ 
 }

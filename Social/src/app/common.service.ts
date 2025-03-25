@@ -134,5 +134,6 @@ export class CommonService {
   checkOut(attendanceid: any): Observable<void> {return this.http.put<void>(`${this.mastermoduleapi}api/hrmsmodule/checkout/${attendanceid}`, {}); }
   deleteattendance(attendanceid: any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/deleteattendance/${attendanceid}`;return this.http.delete(url);}
   attendanceEdit(attendanceid: any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/editattendance/${attendanceid}`;return this.http.get<any>(url);}
-
+  attendanceExcell(): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/attendanceexcell`;return this.http.get<any>(url);
+  }
 }

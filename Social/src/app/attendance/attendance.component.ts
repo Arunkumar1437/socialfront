@@ -30,6 +30,10 @@ export class AttendanceComponent {
     numPages: number = 1;
     attendForm:FormGroup;
     empList: any;
+    fileUrl: string = '';
+    filePath: string = '';
+    downloadFile: string = '';
+      logger: any;
   constructor(
     private router: Router, private commonService: CommonService, private _snackBar: MatSnackBar,private formBuilder: FormBuilder ) {
       this.attendForm = this.formBuilder.group({
@@ -256,6 +260,37 @@ export class AttendanceComponent {
         error: (e: any) => {
           console.error('Error fetching data:', e);
         },
+      });
+  }
+  Excell():void{
+    this.commonService.attendanceExcell().subscribe({
+      next: (data: any) => {
+          if (data.filePath) {
+            this.fileUrl = data.filePath;
+            this.filePath = data.filePath;
+    
+            const downloadFilePath = data.filePath.split("/");
+            const actualLength = downloadFilePath.length;
+            const fileLength = actualLength - 1;
+            this.downloadFile = downloadFilePath[fileLength];
+    
+            console.log(this.downloadFile);
+    
+            //this.logger.logSuccess("Exported successfully!");
+    
+            const exportElement = document.getElementById("empDtlExport") as HTMLAnchorElement;
+            if (exportElement) {
+              exportElement.href = `imgFiles/${this.downloadFile}`;
+             
+            }
+          } else {
+            //this.logger.logError("No Record Found!");
+          }
+        },
+        error: (error) => {
+          console.error("Error exporting Excel:", error);
+          //this.logger.logError("Failed to export file.");
+        }
       });
   }
 }
