@@ -2,11 +2,14 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> 
 
 <ul class="nav nav-tabs">
-  <li class="nav-item">
-    <a class="nav-link active" (click)="selectedTab = 'login'" [ngClass]="{'active': selectedTab === 'login'}">Login Data</a>
+  <li class="nav-item" *ngIf="isLogin">
+    <a class="nav-link active" (click)="selectedTab = 'login'" [ngClass]="{'active': selectedTab === 'login'}">Login Dashboard</a>
   </li>
-  <li class="nav-item">
-    <a class="nav-link" (click)="selectedTab = 'chat'" [ngClass]="{'active': selectedTab === 'chat'}">Chat Data</a>
+  <li class="nav-item" *ngIf="iscomunication">
+    <a class="nav-link" (click)="selectedTab = 'communication'" [ngClass]="{'active': selectedTab === 'communication'}">Communication Dashboard</a>
+  </li>
+  <li class="nav-item" *ngIf="ishrms">
+    <a class="nav-link" (click)="selectedTab = 'hrms'" [ngClass]="{'active': selectedTab === 'hrms'}">HRMS Dashboard</a>
   </li>
 </ul>
 <div class="container" *ngIf="selectedTab === 'login'">
@@ -80,7 +83,7 @@
     </div>
   </div>
 </div>
-<div class="container"  *ngIf="selectedTab === 'chat'">
+<div class="container"  *ngIf="selectedTab === 'communication'">
   <div class="row">
     <div class="col-md-6">
       <div class="card-body">
@@ -94,6 +97,31 @@
     </div>
     <div class="col-md-6">
       
+    </div>
+  </div>
+</div> 
+<div class="container"  *ngIf="selectedTab === 'hrms'">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card-body">
+        <h5 class="card-title">Weekly Task Report</h5>
+        <canvas baseChart
+            [data]="taskData"
+            [options]="taskOptions"
+            [type]="'pie'"
+            style="height: 200px; width: 100%;">
+        </canvas>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card-body">
+        <h5 class="card-title">Weekly Attendance Report</h5>
+        <canvas baseChart
+            [data]="attendanceData"
+            [options]="attendanceOptions"
+            [type]="'bar'">
+        </canvas>
+      </div>
     </div>
   </div>
 </div> 

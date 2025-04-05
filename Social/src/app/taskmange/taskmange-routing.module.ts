@@ -4,8 +4,6 @@ import { TaskmangeComponent } from './taskmange.component';
 
 export const routes: Routes = [
   { path: 'taskmanage', component:TaskmangeComponent },
-
-
 ];
 
 @NgModule({

@@ -17,7 +17,7 @@ export class AttendanceComponent {
   isList: boolean = true;
   isEdit : boolean = false;
   isView : boolean = false;
-  userid:any;
+  luser:any;
     attendancelist: any[] = [];
     pagedattendance: any[] = [];
     filteredData: any[] = [];
@@ -50,19 +50,19 @@ export class AttendanceComponent {
     ngOnInit(): void {
       
       const luserid = localStorage.getItem('UserId');
-      this.userid=luserid;
+      this.luser=luserid;
       console.log(luserid);
-      if(this.userid==='N001'){
+      if(this.luser==='N001'){
         this.isAdmin = true; 
       }
       const emplist = localStorage.getItem('userlist');
       this.empList=emplist;
-      this.fetchAttendances();
+      this.fetchAttendances(this.luser);
     }
 
-    fetchAttendances() {
+    fetchAttendances(luser:any) {
       // Fetch attendance records from backend API
-      this.commonService.attendanceList().subscribe({
+      this.commonService.attendanceList(luser).subscribe({
         next: (data: any) => {
           this.attendancelist = data.getattendlist || [];
           this.totalItems = this.attendancelist.length;
@@ -77,7 +77,7 @@ export class AttendanceComponent {
 
     clockIn():void {
       // Send request to clock in
-      this.commonService.checkIn(this.userid).subscribe({
+      this.commonService.checkIn(this.luser).subscribe({
         next: (res: any) => {
           if (res.sucess === true) {
             const message = 'CheckIn successfully';
@@ -87,7 +87,7 @@ export class AttendanceComponent {
               horizontalPosition: 'right',
 
             });
-            this.fetchAttendances();
+            this.fetchAttendances(this.luser);
           }
         },
         error: (err: any) => {
@@ -116,7 +116,7 @@ export class AttendanceComponent {
              horizontalPosition: 'right',
 
            });
-           this.fetchAttendances();
+           this.fetchAttendances(this.luser);
          }
        },
        error: (err: any) => {
@@ -145,7 +145,7 @@ export class AttendanceComponent {
               horizontalPosition: 'right',
  
             });
-            this.fetchAttendances();
+            this.fetchAttendances(this.luser);
           }
         },
         error: (err: any) => {
@@ -220,7 +220,7 @@ export class AttendanceComponent {
       this.isList = true;
       this.attendForm.reset();
       this.isEdit = false;
-      this.fetchAttendances();
+      this.fetchAttendances(this.luser);
   }
   
     viewAttendance(item:any){
@@ -241,7 +241,32 @@ export class AttendanceComponent {
       this.isView=false;
     }
     submit():void{
-
+      if (this.attendForm.valid) {
+        this.commonService.updateattendance(this.attendForm.value).subscribe({
+          next: (res: any) => {
+            if (res.sucess === true) {
+              const message = this.isEdit ? 'Update successfully' : 'Saved successfully';
+              this._snackBar.open(message, '', {
+                duration: 3000,
+                verticalPosition: 'top',
+                horizontalPosition: 'right',
+              });
+              this.isList = true;
+              this.attendForm.reset();
+              this.isEdit = false;
+              this.fetchAttendances(this.luser);
+            }
+          },
+          error: (err: any) => {
+            console.error('Error:', err);
+            this._snackBar.open('An error occurred while saving', '', {
+              duration: 3000,
+              horizontalPosition: 'end',
+              verticalPosition: 'top',
+            });
+          },
+        });
+      }
     }
     fetchdetails(attendanceid:any) {
       this.commonService.attendanceEdit(attendanceid).subscribe({
@@ -263,7 +288,7 @@ export class AttendanceComponent {
       });
   }
   Excell():void{
-    this.commonService.attendanceExcell().subscribe({
+    this.commonService.attendanceExcell(this.luser).subscribe({
       next: (data: any) => {
           if (data.filePath) {
             this.fileUrl = data.filePath;

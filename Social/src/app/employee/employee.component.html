@@ -19,12 +19,12 @@
       <table class="table table-striped table-bordered">
         <thead>
           <tr>
-            <th style="background: rgb(90, 237, 156);text-align: center;">Employee Id</th>
-            <th style="background: rgb(90, 237, 156);text-align: center;">Employee Name</th>
-            <th style="background: rgb(90, 237, 156);text-align: center;">Employee Email</th>
-            <th style="background: rgb(90, 237, 156);text-align: center;">Description</th>
-            <th style="background: rgb(90, 237, 156);text-align: center;">Active</th>
-            <th style="background: rgb(90, 237, 156);text-align: center;">Action</th>
+            <th style="background: rgb(131, 213, 205);text-align: center;">Employee Id</th>
+            <th style="background: rgb(131, 213, 205);text-align: center;">Employee Name</th>
+            <th style="background: rgb(131, 213, 205);text-align: center;">Employee Email</th>
+            <th style="background: rgb(131, 213, 205);text-align: center;">Description</th>
+            <th style="background: rgb(131, 213, 205);text-align: center;">Active</th>
+            <th style="background: rgb(131, 213, 205);text-align: center;">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -142,10 +142,9 @@
   
 </div>
 <div *ngIf="isView">
-  <div class="container mt-5">
-   <div class="card shadow-lg">
+  <div class="container mt-5" style="border:1px solid rgb(91, 165, 197);border-radius: 10px;">
      <div class="card-header bg-primary text-white text-center">
-       <h4>Employee View</h4>
+       <h4 style="border-radius: 10px;">Employee View <span style="cursor:pointer; float:inline-end;" (click)="cancel()">❌</span></h4>
      </div>
      <div class="card-body">
        <div class="row mb-3">
@@ -166,9 +165,5 @@
          <div class="col-md-3 font-weight-bold"><b>Active</b></div>
          <div class="col-md-3">{{ empForm.get('active')?.value || 'N/A' }}</div>
        </div>
-     <div class="card-footer text-center">
-       <button class="btn btn-danger me-2" (click)="cancel()">Cancel</button>
-     </div>
    </div>
- </div>
 </div>

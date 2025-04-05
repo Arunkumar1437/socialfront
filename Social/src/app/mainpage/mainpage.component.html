@@ -1,6 +1,7 @@
 <div class="topbar">
   <div class="logo">
     <img src="/assets/sociallogo.png" alt="Social Logo">
+    <span style="margin-left: 20px;cursor: pointer;" (click)="dashboard()">🏠 Dashboard</span>
   </div>
   
   <div class="nav-links">
@@ -22,9 +23,9 @@
   
 
   <div class="user-info">
-    <h3>{{ username }}</h3>
+    <h3>Welcome Back !!</h3><span style="color: aquamarine;margin-top: -20px;">{{ username }}</span>
     <h3>Date: {{ currentDate }}</h3>
     <h3>Time: {{ currentTime }}</h3>
-    <a class="logout" (click)="logout()">🚪 Logout</a>
+    <a class="logout" style="cursor: pointer;" (click)="logout()">🚪 Logout</a>
   </div>
 </div>

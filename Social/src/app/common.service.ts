@@ -83,7 +83,9 @@ export class CommonService {
   getformlist(data: any):Observable<any> {const url = `${this.logindashapi}api/loginmodule/getform`;return this.http.post<any>(url,data);}
   newReg(data: any): Observable<any> {var url=this.logindashapi+'api/loginmodule/save';return this.http.post<any>(url,data);}
   changepass(data: any): Observable<any> {var url=this.logindashapi+'api/loginmodule/passchange';return this.http.post<any>(url,data);}
- 
+  getattendancedata(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.logindashapi}api/loginmodule/getattendancedata`); }
+  gettaskdata(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.logindashapi}api/loginmodule/gettaskdata`); }
+
   //Admin Module
   getUnreadNotifications(): Observable<Notification[]> { return this.http.get<Notification[]>(`${this.adminmoduleapi}api/adminmodule/unread`);}
   markAsRead(id: number): Observable<void> {return this.http.put<void>(`${this.adminmoduleapi}api/adminmodule/markAsRead/${id}`, {}); }
@@ -130,10 +132,16 @@ export class CommonService {
   getempdata(): Observable<string> {return this.http.get<string>(`${this.mastermoduleapi}api/mastermodule/emplistdata`);}
   admindata():Observable<string> {return this.http.get<string>(`${this.mastermoduleapi}api/mastermodule/adminlist`);}
   checkIn(userid: any): Observable<void> {return this.http.put<void>(`${this.mastermoduleapi}api/hrmsmodule/checkin/${userid}`, {}); }
-  attendanceList(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/hrmsmodule/getAttendanceList`); }
+  attendanceList(luser:any): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/hrmsmodule/getAttendanceList/${luser}`); }
   checkOut(attendanceid: any): Observable<void> {return this.http.put<void>(`${this.mastermoduleapi}api/hrmsmodule/checkout/${attendanceid}`, {}); }
   deleteattendance(attendanceid: any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/deleteattendance/${attendanceid}`;return this.http.delete(url);}
   attendanceEdit(attendanceid: any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/editattendance/${attendanceid}`;return this.http.get<any>(url);}
-  attendanceExcell(): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/attendanceexcell`;return this.http.get<any>(url);
-  }
+  attendanceExcell(luser:any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/attendanceexcell/${luser}`;return this.http.get<any>(url);}
+  updateattendance(data: any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/updateattendance`; return this.http.post<any>(url,data);}
+  savetask(data: any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/savetask`; return this.http.post<any>(url,data);}
+  taskList(luser:any): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/hrmsmodule/gettasklist/${luser}`); }
+  taskEdit(taskid: any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/edittask/${taskid}`;return this.http.get<any>(url);}
+  deletetask(taskid: any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/deletetask/${taskid}`;return this.http.delete(url);}
+  taskExcell(luser:any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/taskexcell/${luser}`;return this.http.get<any>(url);}
+
 }

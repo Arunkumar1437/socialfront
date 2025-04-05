@@ -21,7 +21,17 @@ export class DashboardComponent {
   chatheader: string[] = [];
   chatdetails: number[] = [];
   chatcolor: string[] = [];
+  taskheader: string[] = [];
+  taskdtails: number[] = [];
+  taskcolor: string[] = [];
+  attendanceheader: string[] = [];
+  attendancedtails: number[] = [];
+  attendancecolor: string[] = [];
   pageloginlist: any[] = [];
+  luser:any;
+  ishrms:boolean=false;
+  isLogin:boolean=false;
+  iscomunication:boolean=false;
    @Input() totalItems: number = 0;  
     @Input() itemsByPage: number = 5;
     @Input() currentPage: number = 1;
@@ -88,6 +98,96 @@ export class DashboardComponent {
     },
   };
 
+  attendanceData: ChartData<'bar'> = {
+    labels: this.attendanceheader,
+    datasets: [
+      {
+        data: this.attendancedtails,
+        label: 'Attendance of a week',
+        backgroundColor: this.attendancecolor, 
+        borderColor: this.attendancecolor, 
+        borderWidth: 1, 
+      },
+    ],
+  };
+
+  attendanceOptions: ChartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+      },
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Days',
+        },
+        ticks: {
+          autoSkip: false,
+          maxRotation: 90,
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Counts',
+        },
+        beginAtZero: true,
+        ticks: {
+          stepSize: 1,
+        },
+      },
+    },
+  };
+
+  taskData: ChartData<'pie'> = {
+    labels: this.taskheader,
+    datasets: [
+      {
+        data: this.taskdtails,
+        label: 'Task  of a Week',
+        backgroundColor: this.taskcolor, 
+        borderColor: this.taskcolor, 
+        borderWidth: 1, 
+      },
+    ],
+  };
+
+  taskOptions: ChartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+      },
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Days',
+        },
+        ticks: {
+          autoSkip: false,
+          maxRotation: 90,
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Counts',
+        },
+        beginAtZero: true,
+        ticks: {
+          stepSize: 1,
+        },
+      },
+    },
+  };
+
   constructor(
     private router: Router,
     private app: CommonService,
@@ -97,9 +197,16 @@ export class DashboardComponent {
 
   ngOnInit(): void {
     const mode = localStorage.getItem('mode');
+    const luserid = localStorage.getItem('UserId');
+    this.luser = luserid;
+    this.ishrms = this.luser === 'N001';
+    this.isLogin = this.luser === 'N001';
+    this.iscomunication = this.luser === 'N001' ||this.luser === 'E0001';
     this.fetchLoginData();
     this.fetchLastLoginList();
     this.fetchChatData();
+    this.fetchAttendanceData();
+    this.fetchTaskData();
   }
 
   fetchLoginData(): void {
@@ -234,5 +341,101 @@ export class DashboardComponent {
     }else{
 
     }
+  }
+
+  fetchAttendanceData(): void {
+    this.app.getattendancedata().subscribe({
+      next: (data: any) => {
+        if (data.getattendancedata) {
+          const chatDataArray = Array.isArray(data.getattendancedata)
+            ? data.getattendancedata
+            : Object.values(data.getattendancedata);
+          this.attendanceheader = chatDataArray.map((item: { dayofweek: string }) => item.dayofweek);
+          this.attendancedtails = chatDataArray.map((item: { attendancecount: number }) => item.attendancecount);
+          this.attendancecolor = chatDataArray.map((item: { dayofweek: string }) => {
+            switch (item.dayofweek) {
+              case 'Monday':
+                return '#0000ff'; 
+              case 'Tuesday':
+                return '#ffa500'; 
+              case 'Wednesday':
+                return '#ffffff'; 
+              case 'Thursday':
+                return '#ff69b4'; 
+              case 'Friday':
+                return '#ffff00'; 
+              case 'Saturday':
+                return '#008000'; 
+              default:
+                return '#87ceeb'; 
+            }
+          });
+          this.attendanceData = {
+            labels: this.attendanceheader,
+            datasets: [
+              {
+                data: this.attendancedtails,
+                label: 'Attendance of a Week',
+                backgroundColor: this.attendancecolor,
+                borderColor: this.attendancecolor,
+                borderWidth: 1, 
+              },
+            ],
+          };
+          this.cdr.detectChanges();
+        } else {
+          console.error('Attendance data not available or invalid.');
+        }
+      },
+      error: (e: any) => console.error('Error fetching Attendance data:', e),
+    });
+  }
+
+  fetchTaskData(): void {
+    this.app.gettaskdata().subscribe({
+      next: (data: any) => {
+        if (data.gettaskdata) {
+          const chatDataArray = Array.isArray(data.gettaskdata)
+            ? data.gettaskdata
+            : Object.values(data.gettaskdata);
+          this.taskheader = chatDataArray.map((item: { dayofweek: string }) => item.dayofweek);
+          this.taskdtails = chatDataArray.map((item: { taskcount: number }) => item.taskcount);
+          this.taskcolor = chatDataArray.map((item: { dayofweek: string }) => {
+            switch (item.dayofweek) {
+              case 'Monday':
+                return '#87ceeb'; // SkyBlue
+            case 'Tuesday':
+                return '#008000'; // Green
+            case 'Wednesday':
+                return '#ff69b4'; // HotPink
+            case 'Thursday':
+                return '#ffff00'; // Yellow
+            case 'Friday':
+                return '#808080'; // Grey (instead of white)
+            case 'Saturday':
+                return '#ffa500'; // Orange
+            default:
+                return '#0000ff'; // Blue
+            }
+          });
+          this.taskData = {
+            labels: this.taskheader,
+            datasets: [
+              {
+                data: this.taskdtails,
+                label: 'Task of a Week',
+                backgroundColor: this.taskcolor,
+                borderColor: this.taskcolor,
+                borderWidth: 1, 
+              },
+            ],
+          };
+          this.cdr.detectChanges();
+        } else {
+          console.error('Task data not available or invalid.');
+        }
+      },
+      error: (e: any) => console.error('Error fetching Task data:', e),
+    });
   }
 }

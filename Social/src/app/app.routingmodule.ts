@@ -1,11 +1,7 @@
 import { Routes } from '@angular/router';
-import { AddComponent } from './add/add.component';
 import { LoginComponent } from './login/login.component';
 import { MainpageComponent } from './mainpage/mainpage.component';
-import { PrintComponent } from './print/print.component';
-import { ViewComponent } from './view/view.component';
 import { TaskmangeComponent } from './taskmange/taskmange.component';
-import { AssignTaskComponent } from './taskmange/assign-task/assign-task.component';
 import { AttendanceComponent } from './attendance/attendance.component';
 import { MessageComponent } from './message/message.component';
 import { PostComponent } from './post/post.component';
@@ -24,12 +20,8 @@ import { EmployeeComponent } from './employee/employee.component';
 export const routes: Routes = [
     //configure the modules
     {path:"mainpage",loadChildren:()=>import("./mainpage/mainpage.module").then((m)=>m.MainpageModule)},
-    {path:"Add",loadChildren:()=>import("./add/add.module").then((m)=>m.AddModule)},
     {path:"Login",loadChildren:()=>import("./login/login.module").then((m)=>m.LoginModule)},
-    {path:"Print",loadChildren:()=>import("./print/print.module").then((m)=>m.PrintModule)},
-    {path:"View",loadChildren:()=>import("./view/view.module").then((m)=>m.ViewModule)},
     {path:"Taskmanage",loadChildren:()=>import("./taskmange/taskmange.module").then((m)=>m.TaskmangeModule)},
-    {path:"Assigntask",loadChildren:()=>import("./taskmange/assign-task/assign-task.module").then((m)=>m.AssignTaskModule)},
     {path:"Attendance",loadChildren:()=>import("./attendance/attendance.module").then((m)=>m.AttendanceModule)},
     {path:"message",  loadChildren:()=>import("./message/message.module").then((m)=>m.MessageModule)},
     {path:"post",loadChildren:()=>import("./post/post.module").then((m)=>m.PostModule)},
@@ -49,12 +41,8 @@ export const routes: Routes = [
     //configure the Components 
     {path:"dash",component:DashboardComponent},
     {path:"main",component:MainpageComponent},
-    {path:"add/:id",component :AddComponent},
     {path:'login',component: LoginComponent},
-    {path:"print/:id",component:PrintComponent},
-    {path:"view/:id", component:ViewComponent},
     {path:'taskmanage', component:TaskmangeComponent },
-    {path:'assigntask/:id', component:AssignTaskComponent },
     {path:"attend", component: AttendanceComponent},
     {path:"message",component:MessageComponent},
     {path:"post",component:PostComponent},

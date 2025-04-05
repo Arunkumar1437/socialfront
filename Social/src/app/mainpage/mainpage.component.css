@@ -69,6 +69,8 @@
 
 .dropdown li:hover {
   background: #FBEAEB;
+  border: 1px solid rgb(86, 198, 232);
+  border-radius: 20px;
 }
 
 .user-info {
