@@ -37,7 +37,8 @@ export class MainpageComponent{
     this.LuserId=luserid
     this.getLastUser(this.LuserId);
     this.updateDateTime();
-    this.checkcomment();
+    this.checkuserlog(this.LuserId);
+   // this.checkcomment();
   }
 
   getLastUser(LuserId:any): void {
@@ -174,5 +175,13 @@ sendModuleCode(moduleCode: string) {
 }
 clearModuleCode() {
   this.hoveredModuleCode = null;
+}
+
+checkuserlog(luser:any): void { 
+    if(luser==='' || luser===null || luser===undefined){
+      this.logout();
+    }else{
+      
+    }
 }
 }
