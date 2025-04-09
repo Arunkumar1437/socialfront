@@ -1,0 +1,198 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<div *ngIf="isList" >
+    <div style="display: flex; align-items: center; gap: 10px; ">
+      <span (click)="openAdd()" style="cursor: pointer;">➕</span>
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        placeholder="Search"
+        (input)="filterTable()"
+        class="form-control"
+        style="margin-bottom: 10px; width: 300px;"
+      />
+      <span><button  class="btn btn-success" (click)="Excell()">Excell</button></span>
+      <a id="empDtlExport" style="display: none"></a>
+    </div> 
+     <div class="table-container">
+      <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th style="background: rgb(239, 106, 154);">Task No.</th>
+                <th style="background: rgb(239, 106, 154);">Task Title</th>
+                <th style="background: rgb(239, 106, 154);">Task Description</th>
+                <th style="background: rgb(239, 106, 154);">Start Time</th>
+                <th style="background: rgb(239, 106, 154);">End time</th>
+                <th style="background: rgb(239, 106, 154);">Days</th>
+                <th style="background: rgb(239, 106, 154);">Assigned To</th>
+                <th style="background: rgb(239, 106, 154);">Assigned By</th>
+                <th style="background: rgb(239, 106, 154);">Status</th>
+                <th style="background: rgb(239, 106, 154);">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of (filteredData?.length ? filteredData : pagedattendance)">
+            <td>{{ item.taskcode}}</td>
+            <td>{{ item.ttitle}}</td>
+            <td>{{ item.tdesc }}</td>
+            <td>{{ item.stime }}</td>
+            <td>{{ item.etime }}</td>
+            <td>{{ item.days }}</td>
+            <td>{{ item.empname }}</td>
+            <td>{{ item.userId }}</td>
+            <td>{{ item.status }}</td>
+            <td  style="text-align: center;">
+              <button *ngIf="isAdmin"  class="btn btn-primary" style="background: transparent; border: none;" (click)="edittask(item)"><span>✏️</span></button>
+              <button class="btn btn-primary" style="background: transparent; border: none;" (click)="detailtask(item)"><span>👁️</span></button>
+              <button *ngIf="isAdmin"  class="delete" style="background: transparent; border: none;"(click)="deletetask(item)"><span>🗑️</span></button>
+            </td>
+          </tr> 
+        </tbody>
+      </table>
+      <footer class="panel-footer panel-footer-list" style="background-color: #e2e2e2;">	
+          <div class="row" style="margin-left: 483px;">
+            <div class="col-sm-12 col-md-7">
+              <div class="pagination" *ngIf="numPages > 1">
+                <ul class="pagination pagination-bottom">
+                  <li class="footable-page-arrow" [ngClass]="{'disabled': currentPage === 1}">
+                    <a (click)="selectPage(1)">
+                      <span class="text-info">⏪</span>
+                  </a>
+                  </li>
+                  <li class="footable-page-arrow" [ngClass]="{'disabled': currentPage === 1}">
+                    <a (click)="selectPage(currentPage - 1)">
+                      <span class="text-info">⬅️</span>
+                    </a>
+                  </li>
+                  <li class="footable-page active">
+                    <input type="number" [(ngModel)]="currentPage" min="1" [max]="numPages" (change)="selectPage(currentPage)">
+                  </li>
+                  <li class="footable-page-arrow" [ngClass]="{'disabled': currentPage === numPages}">
+                    <a (click)="selectPage(currentPage + 1)">
+                      <span class="text-info">➡️</span>
+                  </a>
+                  </li>
+                  <li class="footable-page-arrow" [ngClass]="{'disabled': currentPage === numPages}">
+                    <a (click)="selectPage(numPages)">
+                      <span class="text-info">⏩</span>
+                    </a>
+                  </li>
+                </ul>
+                <small class="inline m-t-sm m-b-sm"> Showing page {{currentPage}} of {{numPages}} </small>
+              </div>
+            </div>
+          </div>
+      </footer>
+    </div>
+</div>
+<div *ngIf="!isList && !isView" >
+  <form [formGroup]="holidayForm" (ngSubmit)="submit()" class="form-container">
+    <div>
+      <h4 class="heading text-center border border-0 bg-primary text-white rounded py-2" *ngIf="!isEdit">Add Task </h4>
+      <h4 class="heading text-center border border-0 bg-primary text-white rounded py-2" *ngIf="isEdit">Edit Task </h4>
+    </div>
+  
+    <div class="demo border border-1 rounded p-4" style="background-color: #f8d7da;">
+      <div class="row mb-3"  *ngIf="isEdit">
+        <div class="col-md-2 font-weight-bold" id="gridhead"><b>Task ID</b></div>
+        <div class="col-md-2">{{ holidayForm.get('taskcode')?.value || 'N/A' }}</div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-2 font-weight-bold" id="gridhead"><b>Assigned To</b></div>
+        <div class="col-md-2">
+            <ng-select 
+              *ngIf="empList?.length"
+              style="border: 2px solid blue; border-radius: 5px; height: 35px; width: 100%;"
+              formControlName="empname"
+              [items]="empList"
+              bindLabel="username"
+              bindValue="userid"
+              [searchable]="true"
+              [clearable]="true">
+            </ng-select>
+          </div>
+        <div class="col-md-2 font-weight-bold" id="gridhead"><b>Task Title</b></div>
+        <div class="col-md-2">
+          <input type="text" id="ttitle" formControlName="ttitle" class="form-control w-100" placeholder="Enter Title" />
+        </div>
+        <div class="col-md-2 font-weight-bold" id="gridhead"><b>Task Description</b></div>
+        <div class="col-md-2">
+          <input type="text" id="tdesc" formControlName="tdesc" class="form-control w-100" placeholder="Enter Description" />
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-2 font-weight-bold" id="gridhead"><b>Start Time</b></div>
+        <div class="col-md-2">
+            <input type="date" id="stime" formControlName="stime" class="form-control w-100" placeholder="Enter Start Time" />
+        </div>
+        <div class="col-md-2 font-weight-bold" id="gridhead"><b>End Time</b></div>
+        <div class="col-md-2">
+          <input type="date" id="etime" formControlName="etime" class="form-control w-100" placeholder="Enter End Time" />
+        </div>
+        <div class="col-md-2 font-weight-bold" id="gridhead"><b>Days</b></div>
+        <div class="col-md-2">
+          <input type="text" id="days" formControlName="days" class="form-control w-100" placeholder="Enter Days" />
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-2 font-weight-bold" id="gridhead"><b>Assigned By</b></div>
+            <div class="col-md-2">
+                <ng-select 
+                  *ngIf="empList?.length"
+                  style="border: 2px solid blue; border-radius: 5px; height: 35px; width: 100%;"
+                  formControlName="userId"
+                  [items]="empList"
+                  bindLabel="username"
+                  bindValue="userid"
+                  [searchable]="true"
+                  [clearable]="true">
+                </ng-select>
+            </div>
+        <div class="col-md-2 font-weight-bold" id="gridhead"><b>Status</b></div>
+        <div class="col-md-2">
+            <select id="status" formControlName="status" class="form-control mt-0 w-75"  placeholder="Enter status">
+                <option value="">Select</option>
+                <option value="Pending">Pending</option>
+                <option value="Completed">Completed</option>
+                <option value="notassigned">Not Assigned</option>
+              </select>
+        </div>
+      </div>
+      <div class="form-group d-flex justify-content-center mt-4">
+        <button type="submit" class="btn btn-success mx-2" *ngIf="!isEdit">Save </button>
+        <button type="submit" class="btn btn-success mx-2" *ngIf="isEdit">Update </button>
+        <button type="button" class="btn btn-danger mx-2" (click)="cancel()">Cancel </button>
+      </div>
+    </div>
+  </form>
+</div>
+<div *ngIf="isView">
+  <div class="mt-5" style="border:1px solid rgb(91, 165, 197);border-radius: 10px;">
+    <h4 class="bg-primary text-white text-center p-2" style="border-radius: 10px;">Task View <span style="cursor:pointer; float:inline-end;" (click)="cancel()">❌</span></h4>
+
+    <div class="row mb-3">
+      <div class="col-md-2 font-weight-bold"><b>Task ID</b></div>
+      <div class="col-md-2">{{ holidayForm.get('taskcode')?.value || 'N/A' }}</div>
+      <div class="col-md-2 font-weight-bold"><b>Task Title</b></div>
+      <div class="col-md-2">{{ holidayForm.get('ttitle')?.value || 'N/A' }}</div>
+      <div class="col-md-2 font-weight-bold"><b>Task Description</b></div>
+      <div class="col-md-2">{{ holidayForm.get('tdesc')?.value || 'N/A' }}</div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-2 font-weight-bold"><b>Start Time</b></div>
+      <div class="col-md-2">{{ holidayForm.get('stime')?.value || 'N/A' }}</div>
+      <div class="col-md-2 font-weight-bold"><b>End Time</b></div>
+      <div class="col-md-2">{{ holidayForm.get('etime')?.value || 'N/A' }}</div>
+      <div class="col-md-2 font-weight-bold"><b>Days</b></div>
+      <div class="col-md-2">{{ holidayForm.get('days')?.value || 'N/A' }}</div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-md-2 font-weight-bold"><b>Assigned TO</b></div>
+      <div class="col-md-2">{{ holidayForm.get('assignedto')?.value || 'N/A' }}</div>
+      <div class="col-md-2 font-weight-bold"><b>Assigned By</b></div>
+      <div class="col-md-2">{{ holidayForm.get('assignedby')?.value || 'N/A' }}</div>
+    </div>
+  </div>
+</div>

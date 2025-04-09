@@ -33,6 +33,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MainpageComponent } from "./mainpage/mainpage.component";
 import { EmployeeComponent } from "./employee/employee.component";
 import { EmployeeModule } from "./employee/employee.module";
+import { HolidayComponent } from './holiday/holiday.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,7 @@ import { EmployeeModule } from "./employee/employee.module";
           OcrComponent,
           ChatComponent,
           AdminComponent,
-          FormComponent,MainpageComponent, EmployeeComponent,
+          FormComponent,MainpageComponent, EmployeeComponent, HolidayComponent,
   ],
   imports: [
     CommonModule,

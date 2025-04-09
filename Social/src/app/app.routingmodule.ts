@@ -16,6 +16,7 @@ import { ChatComponent } from './chat/chat.component';
 import { AdminComponent } from './admin/admin.component';
 import { FormComponent } from './form/form.component';
 import { EmployeeComponent } from './employee/employee.component';
+import { HolidayComponent } from './holiday/holiday.component';
 
 export const routes: Routes = [
     //configure the modules
@@ -36,6 +37,7 @@ export const routes: Routes = [
     {path:"userrights",loadChildren:()=>import("./admin/admin.module").then((m)=>m.AdminModule)},
     {path:"Form",loadChildren:()=>import("./form/form.module").then((m)=>m.FormModule)},
     {path:"emp",loadChildren:()=>import("./employee/employee.module").then((m)=>m.EmployeeModule)},
+    {path:"Holiday",loadChildren:()=>import("./holiday/holiday.module").then((m)=>m.HolidayModule)},
 
 
     //configure the Components 
@@ -56,7 +58,7 @@ export const routes: Routes = [
     { path:'user', component: AdminComponent},
     {path:"form",component:FormComponent },
     {path:"employee",component:EmployeeComponent},
-
+    { path:'holiday', component: HolidayComponent},
 
     //Redirect to Login Page Directly
     {path: '', redirectTo: 'Login/login', pathMatch: 'full' },
