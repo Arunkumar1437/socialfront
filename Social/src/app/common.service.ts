@@ -151,4 +151,10 @@ export class CommonService {
   leavetypeList(luser:any): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/mastermodule/getleavetypelist/${luser}`); }
   leavetypeEdit(leavetypeid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/editleavetype/${leavetypeid}`;return this.http.get<any>(url);}
   deleteleavetype(leavetypeid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/deleteleavetype/${leavetypeid}`;return this.http.delete(url);}
+  leavedetails(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/mastermodule/leavedetails`); }
+  saveupdateleavedec(data: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/saveleavedecl`; return this.http.post<any>(url,data);}
+  leavedeclList(luser:any): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/mastermodule/getleavedecllist/${luser}`); }
+  editleavedecl(leavedeclid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/editleavedecl/${leavedeclid}`;return this.http.get<any>(url);}
+  leavedeclDelete(leavedeclid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/deleteleavedecl/${leavedeclid}`;return this.http.delete(url);}
+
 }

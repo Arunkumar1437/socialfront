@@ -1,0 +1,186 @@
+<!-- Bootstrap CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<body>
+  <!-- User List Section -->
+  <div *ngIf="isList">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <span (click)="openAddUserrights()" style="cursor: pointer;">➕</span>
+      <input type="text"
+             [(ngModel)]="searchTerm"
+             placeholder="Search"
+             (input)="filterTable()"
+             class="form-control"
+             style="margin-bottom: 10px; width: 300px;" />
+    </div>
+
+    <div class="table-container">
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th style="background: rgb(224, 81, 174); text-align: center;">Leave Declaration Id</th>
+            <th style="background: rgb(224, 81, 174); text-align: center;">Year</th>
+            <th style="background: rgb(224, 81, 174); text-align: center;">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of (filteredData?.length ? filteredData : pagedUserRights)">
+            <td style="text-align: center;">{{ item.leavedeclid }}</td>
+            <td style="text-align: center;">{{ item.year }}</td>
+            <td style="text-align: center;">
+              <button class="btn btn-link" (click)="editleavedecl(item)">✏️</button>
+              <button class="btn btn-link" (click)="viewleavedecl(item)">👁️</button>
+              <button class="btn btn-link" (click)="deleteleavedecl(item)">🗑️</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Pagination Footer -->
+      <footer class="panel-footer" style="background-color: #e2e2e2;">
+        <div class="row justify-content-center">
+          <div class="col-auto">
+            <div *ngIf="numPages > 1" class="pagination">
+              <ul class="pagination">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <a class="page-link" (click)="selectPage(1)">⏪</a>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <a class="page-link" (click)="selectPage(currentPage - 1)">⬅️</a>
+                </li>
+                <li class="page-item active">
+                  <input type="number"
+                         class="form-control"
+                         [(ngModel)]="currentPage"
+                         min="1"
+                         [max]="numPages"
+                         (change)="selectPage(currentPage)" />
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === numPages">
+                  <a class="page-link" (click)="selectPage(currentPage + 1)">➡️</a>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === numPages">
+                  <a class="page-link" (click)="selectPage(numPages)">⏩</a>
+                </li>
+              </ul>
+              <small>Showing page {{currentPage}} of {{numPages}}</small>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Form Section -->
+  <div *ngIf="!isList && !isView">
+    <form [formGroup]="leavedecForm" (ngSubmit)="onSubmit()">
+      <div class="row align-items-center mb-2">
+        <label class="col-sm-2 col-form-label text-end">Year:<span class="text-danger">*</span></label>
+        <div class="col-sm-3">
+            <select id="year" formControlName="year" class="form-control mt-0 w-75"  placeholder="Enter year">
+                <option value="">Select</option>
+                <option value="2026">2026</option>
+                <option value="2025">2025</option>
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+            </select> 
+        </div>
+      </div>
+      <div *ngIf="leavedecForm.get('year')?.valid && leavedecForm.get('year')?.value && !isEdit">
+        <div class="d-flex justify-content-center mt-8">
+          <div class="table-container" style="border-radius: 10px;width: 50%;">
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th style="background: rgb(162, 88, 223);">Leave ID</th>
+                <th style="background: rgb(162, 88, 223);">Leave Name</th>
+                <th style="background: rgb(162, 88, 223);">Minimum</th>
+                <th style="background: rgb(162, 88, 223);">Maximum</th>
+              </tr>
+            </thead>
+            <tbody formArrayName="leavedetaillist">
+              <tr *ngFor="let group of leavedetaillistArray.controls; let i = index" [formGroupName]="i">
+                <!-- <td><input type="text" formControlName="leavetypecode"></td>
+                <td><input type="text" formControlName="ltname"></td> -->
+                <td>{{ group.get('leavetypecode')?.value }}</td>
+                <td>{{ group.get('ltname')?.value }}</td>
+                <td><input type="text" formControlName="minimum"></td>
+                <td><input type="text" formControlName="maximum"></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="text-center mt-4">
+            <button type="submit" *ngIf="!isEdit" class="btn btn-success" [disabled]="!leavedecForm.valid">Save</button>
+            <button type="submit" *ngIf="isEdit" class="btn btn-success" [disabled]="!leavedecForm.valid">Update</button>
+            <button class="btn btn-danger" type="button" (click)="cancel()" style="margin-left:10px;">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="isEdit">
+        <div class="d-flex justify-content-center mt-8">
+          <div class="table-container" style="border-radius: 10px;width: 50%;">
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th style="background: rgb(162, 88, 223);">Leave ID</th>
+                <th style="background: rgb(162, 88, 223);">Leave Name</th>
+                <th style="background: rgb(162, 88, 223);">Minimum</th>
+                <th style="background: rgb(162, 88, 223);">Maximum</th>
+              </tr>
+            </thead>
+            <tbody formArrayName="leavedetaillist">
+              <tr *ngFor="let group of leavedetaillistArray.controls; let i = index" [formGroupName]="i">
+                <td>{{ group.get('leavetypecode')?.value }}</td>
+                <td>{{ group.get('ltname')?.value }}</td>
+                <td><input type="text" formControlName="minimum"></td>
+                <td><input type="text" formControlName="maximum"></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="text-center mt-4">
+            <button type="submit" *ngIf="!isEdit" class="btn btn-success" [disabled]="!leavedecForm.valid">Save</button>
+            <button type="submit" *ngIf="isEdit" class="btn btn-success" [disabled]="!leavedecForm.valid">Update</button>
+            <button class="btn btn-danger" type="button" (click)="cancel()" style="margin-left:10px;">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    </form>
+  </div>
+
+  <!-- View Section -->
+  <div *ngIf="isView">
+    <div class="row mb-3">
+      <div class="col-md-3"><b>Full Name</b></div>
+      <div class="col-md-3">{{ leavedecForm.get('username')?.value || 'N/A' }}</div>
+    </div>
+    <div class="table-container">
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th style="background: rgb(235, 206, 89);">Form Name</th>
+            <th style="background: rgb(235, 206, 89);">All</th>
+            <th style="background: rgb(235, 206, 89);">Create</th>
+            <th style="background: rgb(235, 206, 89);">Read</th>
+            <th style="background: rgb(235, 206, 89);">Update</th>
+            <th style="background: rgb(235, 206, 89);">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let view of userRightsview">
+            <td style="text-align: center;">{{ view.formname }}</td>
+            <td style="text-align: center;">{{ view.all }}</td>
+            <td style="text-align: center;">{{ view.create }}</td>
+            <td style="text-align: center;">{{ view.read }}</td>
+            <td style="text-align: center;">{{ view.update }}</td>
+            <td style="text-align: center;">{{ view.delete }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button class="btn btn-danger" (click)="cancel()" style="margin-left:10px;">Cancel</button>
+  </div>
+</body>
