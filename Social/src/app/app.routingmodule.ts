@@ -17,6 +17,7 @@ import { AdminComponent } from './admin/admin.component';
 import { FormComponent } from './form/form.component';
 import { EmployeeComponent } from './employee/employee.component';
 import { HolidayComponent } from './holiday/holiday.component';
+import { LeavetypeComponent } from './leavetype/leavetype.component';
 
 export const routes: Routes = [
     //configure the modules
@@ -38,6 +39,7 @@ export const routes: Routes = [
     {path:"Form",loadChildren:()=>import("./form/form.module").then((m)=>m.FormModule)},
     {path:"emp",loadChildren:()=>import("./employee/employee.module").then((m)=>m.EmployeeModule)},
     {path:"Holiday",loadChildren:()=>import("./holiday/holiday.module").then((m)=>m.HolidayModule)},
+    {path:"Leavetype",loadChildren:()=>import("./leavetype/leavetype.module").then((m)=>m.LeavetypeModule)},
 
 
     //configure the Components 
@@ -59,7 +61,7 @@ export const routes: Routes = [
     {path:"form",component:FormComponent },
     {path:"employee",component:EmployeeComponent},
     { path:'holiday', component: HolidayComponent},
-
+    { path:'leavetype', component: LeavetypeComponent},
     //Redirect to Login Page Directly
     {path: '', redirectTo: 'Login/login', pathMatch: 'full' },
    

@@ -142,9 +142,10 @@
   
 </div>
 <div *ngIf="isView">
-  <div class="container mt-5" style="border:1px solid rgb(91, 165, 197);border-radius: 10px;">
-     <div class="card-header bg-primary text-white text-center">
-       <h4 style="border-radius: 10px;">Employee View <span style="cursor:pointer; float:inline-end;" (click)="cancel()">❌</span></h4>
+  <div class="d-flex justify-content-center mt-8">
+  <div class="mt-5" style="border:1px solid rgb(91, 165, 197);border-radius: 10px;width: 50%;">
+    <div class="card-header bg-primary text-white text-center">
+       <h4 class="bg-primary text-white text-center p-2" style="border-radius: 10px;">Employee View <span style="cursor:pointer; float:inline-end;" (click)="cancel()">❌</span></h4>
      </div>
      <div class="card-body">
        <div class="row mb-3">
@@ -166,4 +167,5 @@
          <div class="col-md-3">{{ empForm.get('active')?.value || 'N/A' }}</div>
        </div>
    </div>
+</div>
 </div>

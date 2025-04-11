@@ -143,5 +143,12 @@ export class CommonService {
   taskEdit(taskid: any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/edittask/${taskid}`;return this.http.get<any>(url);}
   deletetask(taskid: any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/deletetask/${taskid}`;return this.http.delete(url);}
   taskExcell(luser:any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/taskexcell/${luser}`;return this.http.get<any>(url);}
-
+  saveholiday(data: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/saveholiday`; return this.http.post<any>(url,data);}
+  holidayList(luser:any): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/mastermodule/getholidaylist/${luser}`); }
+  holidayEdit(holidayid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/editholiday/${holidayid}`;return this.http.get<any>(url);}
+  deleteholiday(holidayid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/deleteholiday/${holidayid}`;return this.http.delete(url);}
+  saveupdateleaveType(data: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/saveleavetype`; return this.http.post<any>(url,data);}
+  leavetypeList(luser:any): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/mastermodule/getleavetypelist/${luser}`); }
+  leavetypeEdit(leavetypeid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/editleavetype/${leavetypeid}`;return this.http.get<any>(url);}
+  deleteleavetype(leavetypeid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/deleteleavetype/${leavetypeid}`;return this.http.delete(url);}
 }

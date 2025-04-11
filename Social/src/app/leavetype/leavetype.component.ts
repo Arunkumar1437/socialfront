@@ -5,13 +5,13 @@ import { Router } from '@angular/router';
 import { CommonService } from '../common.service';
 
 @Component({
-  selector: 'app-holiday',
-  templateUrl: './holiday.component.html',
-  styleUrl: './holiday.component.css'
+  selector: 'app-leavetype',
+  templateUrl: './leavetype.component.html',
+  styleUrl: './leavetype.component.css'
 })
-export class HolidayComponent {
-  attendances: any[] | undefined;
-  holidayid:string='';
+export class LeavetypeComponent {
+ attendances: any[] | undefined;
+ leavetypeid:string='';
   clockedIn: boolean = false;
   isAdmin: boolean = false;
   isList: boolean = true;
@@ -27,7 +27,7 @@ export class HolidayComponent {
     @Input() currentPage: number = 1;
     @Output() pageChanged = new EventEmitter<number>();  
     numPages: number = 1;
-    holidayForm:FormGroup;
+    leavetypeForm:FormGroup;
     empList: any;
     fileUrl: string = '';
     filePath: string = '';
@@ -35,11 +35,13 @@ export class HolidayComponent {
       logger: any;
   constructor(
     private router: Router, private commonService: CommonService, private _snackBar: MatSnackBar,private formBuilder: FormBuilder ) {
-      this.holidayForm = this.formBuilder.group({
-        holidaycode:[''],
-        hdate: ['',Validators.required],
-        hname:['',],
-        status:['',],
+      this.leavetypeForm = this.formBuilder.group({
+        leavetypecode:[''],
+        ltname: ['',],
+        ltfor: ['',],
+        carryfwd:[false,],
+        cryfwdlimit: ['',],
+        cryfwdfor: ['',],
         userid:['',],
         active:[false,],
         edit:[false,]
@@ -53,14 +55,14 @@ export class HolidayComponent {
       this.empList = emplist ? JSON.parse(emplist) : [];
       console.log('Employee List:', this.empList); 
       if(this.luser!=""){
-        this.holidayForm.get('userid')?.setValue(this.luser);
+        this.leavetypeForm.get('userid')?.setValue(this.luser);
         console.log('Login user Id:', this.luser);
       }
-      this.fetchHolidaydetails(this.luser);
+      this.fetchLeaveTypedetails(this.luser);
     }
 
-    fetchHolidaydetails(luser:any) {
-      this.commonService.holidayList(luser).subscribe({
+    fetchLeaveTypedetails(luser:any) {
+      this.commonService.leavetypeList(luser).subscribe({
         next: (data: any) => {
           this.holidaylist = data.getholidaylist || [];
           this.totalItems = this.holidaylist.length;
@@ -73,11 +75,11 @@ export class HolidayComponent {
       });
     }
 
-    deleteholiday(item:any) {
-      const holidaycode = item.holidaycode;
-      this.holidayid=holidaycode;
-      console.log(holidaycode);
-      this.commonService.deleteholiday(this.holidayid).subscribe({
+    deleteleavetype(item:any) {
+      const leavetypecode = item.leavetypecode;
+      this.leavetypeid=leavetypecode;
+      console.log(leavetypecode);
+      this.commonService.deleteleavetype(this.leavetypeid).subscribe({
         next: (res: any) => {
           if (res.sucess === true) {
             const message = 'Deleted successfully';
@@ -87,7 +89,7 @@ export class HolidayComponent {
               horizontalPosition: 'right',
  
             });
-            this.fetchHolidaydetails(this.luser);
+            this.fetchLeaveTypedetails(this.luser);
           }
         },
         error: (err: any) => {
@@ -148,31 +150,33 @@ export class HolidayComponent {
     filterTable(): void {
       const term = this.searchTerm?.toLowerCase() || ''; 
       this.filteredData = this.holidaylist.filter(item =>
-          (item.holidaycode?.toLowerCase() || '').includes(term) ||
-          (item.hdate?.toLowerCase() || '').includes(term) ||
-          (item.hname?.toLowerCase() || '').includes(term) ||
-          (item.active?.toString().toLowerCase() || '').includes(term) ||
-          (item.status?.toLowerCase() || '').includes(term)
+          (item.leavetypecode?.toLowerCase() || '').includes(term) ||
+          (item.ltname?.toLowerCase() || '').includes(term) ||
+          (item.ltfor?.toLowerCase() || '').includes(term) ||
+          (item.carryfwd?.toString().toLowerCase() || '').includes(term) ||
+          (item.cryfwdlimit?.toString().toLowerCase() || '').includes(term) ||
+          (item.cryfwdfor?.toLowerCase() || '').includes(term) ||
+          (item.active?.toString().toLowerCase() || '').includes(term)
       );
       this.currentPage = 1; 
       this.updatePagination();
       this.isList = true;
-      this.holidayForm.reset();
+      this.leavetypeForm.reset();
       this.isEdit = false;
-      this.fetchHolidaydetails(this.luser);
+      this.fetchLeaveTypedetails(this.luser);
   }
   
-   detailholiday(item:any){
+   detailleavetype(item:any){
       this.isList=false;
       this.isEdit=false;
       this.isView=true;
-      this.fetchdetails(item.holidaycode);
+      this.fetchdetails(item.leavetypecode);
     }
-    editholiday(item:any){
+    editleavetype(item:any){
       this.isList=false;
       this.isEdit=true;
       this.isView=false;
-      this.fetchdetails(item.holidaycode);
+      this.fetchdetails(item.leavetypecode);
     }
     cancel():void{
       this.isEdit=false;
@@ -180,11 +184,11 @@ export class HolidayComponent {
       this.isView=false;
     }
     submit():void{
-      if (this.holidayForm.valid) {
+      if (this.leavetypeForm.valid) {
         if(this.isEdit){
-          this.holidayForm.get('edit')?.setValue(this.isEdit);
+          this.leavetypeForm.get('edit')?.setValue(this.isEdit);
         }
-        this.commonService.saveholiday(this.holidayForm.value).subscribe({
+        this.commonService.saveupdateleaveType(this.leavetypeForm.value).subscribe({
           next: (res: any) => {
             if (res.sucess === true) {
               const message = this.isEdit ? 'Update successfully' : 'Saved successfully';
@@ -194,9 +198,9 @@ export class HolidayComponent {
                 horizontalPosition: 'right',
               });
               this.isList = true;
-              this.holidayForm.reset();
+              this.leavetypeForm.reset();
               this.isEdit = false;
-              this.fetchHolidaydetails(this.luser);
+              this.fetchLeaveTypedetails(this.luser);
             }
           },
           error: (err: any) => {
@@ -211,14 +215,17 @@ export class HolidayComponent {
       }
     }
     fetchdetails(holidayid:any) {
-      this.commonService.holidayEdit(holidayid).subscribe({
+      this.commonService.leavetypeEdit(holidayid).subscribe({
         next: (data: any) => {
-          this.holidayForm.patchValue({
-            holidaycode:data.holidaycode,
-            hdate:data.hdate ,
-            hname:data.hname,
-            status:data.status,
+          this.leavetypeForm.patchValue({
+            leavetypecode:data.leavetypecode,
+            ltname: data.ltname,
+            ltfor: data.ltfor,
+            carryfwd:data.carryfwd,
+            cryfwdlimit: data.cryfwdlimit,
+            cryfwdfor: data.cryfwdfor,
             active:data.active,
+        
           });
         },
         error: (e: any) => {

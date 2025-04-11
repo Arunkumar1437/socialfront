@@ -37,7 +37,7 @@ export class DashboardComponent {
     @Input() currentPage: number = 1;
     @Output() pageChanged = new EventEmitter<number>();  
     numPages: number = 1;
-    selectedTab: string = 'login'; 
+    selectedTab: string = ''; 
 
   loginData: ChartData<'line'> = {
     labels: this.header,
@@ -202,6 +202,10 @@ export class DashboardComponent {
     this.ishrms = this.luser === 'N001';
     this.isLogin = this.luser === 'N001';
     this.iscomunication = this.luser === 'N001' ||this.luser === 'E0001';
+    if(this.luser === 'N001' ||this.luser === 'E0001'){
+      this.selectedTab='login'
+
+    }
     this.fetchLoginData();
     this.fetchLastLoginList();
     this.fetchChatData();
@@ -359,7 +363,7 @@ export class DashboardComponent {
               case 'Tuesday':
                 return '#ffa500'; 
               case 'Wednesday':
-                return '#ffffff'; 
+                return '#808080'; 
               case 'Thursday':
                 return '#ff69b4'; 
               case 'Friday':

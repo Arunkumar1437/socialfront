@@ -117,7 +117,8 @@
   </form>
 </div>
 <div *ngIf="isView">
-  <div class="mt-5" style="border:1px solid rgb(91, 165, 197);border-radius: 10px;">
+  <div class="d-flex justify-content-center mt-8">
+  <div class="mt-5" style="border:1px solid rgb(91, 165, 197);border-radius: 10px;width: 50%;">
     <h4 class="bg-primary text-white text-center p-2" style="border-radius: 10px;">Attendance View <span style="cursor:pointer; float:inline-end;" (click)="cancel()">❌</span></h4>
 
     <div class="row mb-3">
@@ -141,4 +142,5 @@
       <div class="col-md-3">{{ attendForm.get('duration')?.value || 'N/A' }}</div>
     </div>
   </div>
+</div>
 </div>

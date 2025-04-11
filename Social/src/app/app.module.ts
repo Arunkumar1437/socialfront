@@ -34,6 +34,7 @@ import { MainpageComponent } from "./mainpage/mainpage.component";
 import { EmployeeComponent } from "./employee/employee.component";
 import { EmployeeModule } from "./employee/employee.module";
 import { HolidayComponent } from './holiday/holiday.component';
+import { LeavetypeComponent } from './leavetype/leavetype.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,7 @@ import { HolidayComponent } from './holiday/holiday.component';
           OcrComponent,
           ChatComponent,
           AdminComponent,
-          FormComponent,MainpageComponent, EmployeeComponent, HolidayComponent,
+          FormComponent,MainpageComponent, EmployeeComponent, HolidayComponent, LeavetypeComponent,
   ],
   imports: [
     CommonModule,
