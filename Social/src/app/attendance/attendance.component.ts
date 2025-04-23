@@ -21,6 +21,7 @@ export class AttendanceComponent {
     attendancelist: any[] = [];
     pagedattendance: any[] = [];
     filteredData: any[] = [];
+    userList: any[] = [];
     searchTerm: string = '';
     searchTerm1: string = '';
     @Input() totalItems: number = 0;  
@@ -29,6 +30,7 @@ export class AttendanceComponent {
     @Output() pageChanged = new EventEmitter<number>();  
     numPages: number = 1;
     attendForm:FormGroup;
+    attendsearchForm:FormGroup;
     empList: any;
     fileUrl: string = '';
     filePath: string = '';
@@ -46,15 +48,26 @@ export class AttendanceComponent {
         status:['',],
         edit:this.isEdit
        });
+       this.attendsearchForm = this.formBuilder.group({
+        employee: ['',],
+        fromdate: ['',Validators.required],
+        todate: ['',Validators.required],
+       });
     }
     ngOnInit(): void {
-      
       const luserid = localStorage.getItem('UserId');
       this.luser=luserid;
       console.log(luserid);
       if(this.luser==='N001'){
         this.isAdmin = true; 
       }
+      const userlistlocal = localStorage.getItem('userlist');
+
+    if (userlistlocal) {
+      this.userList = JSON.parse(userlistlocal); 
+    } else {
+      this.userList = [];  
+    }
       const emplist = localStorage.getItem('userlist');
       this.empList=emplist;
       this.fetchAttendances(this.luser);
@@ -287,35 +300,52 @@ export class AttendanceComponent {
         },
       });
   }
-  Excell():void{
-    this.commonService.attendanceExcell(this.luser).subscribe({
+
+  getviewreport():void{
+    if (this.attendsearchForm.valid) {
+    this.commonService.searchlist(this.attendsearchForm.value).subscribe({
+      next: (data: any) => {
+        this.attendancelist=[];
+        this.attendancelist = data.getattendlist || [];
+        this.totalItems = this.attendancelist.length;
+        this.numPages = Math.ceil(this.totalItems / this.itemsByPage);  
+        this.updatePagedData(); 
+        
+        },
+        error: (error) => {
+          console.error("Error Geting List:", error);
+        }
+      });
+    }
+  }
+  getexcellreport():void{
+    if (this.attendsearchForm.valid) {
+    this.commonService.searchExcell(this.attendsearchForm.value).subscribe({
       next: (data: any) => {
           if (data.filePath) {
             this.fileUrl = data.filePath;
             this.filePath = data.filePath;
-    
             const downloadFilePath = data.filePath.split("/");
             const actualLength = downloadFilePath.length;
             const fileLength = actualLength - 1;
             this.downloadFile = downloadFilePath[fileLength];
-    
             console.log(this.downloadFile);
-    
-            //this.logger.logSuccess("Exported successfully!");
-    
             const exportElement = document.getElementById("empDtlExport") as HTMLAnchorElement;
             if (exportElement) {
               exportElement.href = `imgFiles/${this.downloadFile}`;
-             
             }
+            this.attendsearchForm.get('employee')?.setValue('');
+            this.attendsearchForm.get('fromdate')?.setValue('');
+            this.attendsearchForm.get('todate')?.setValue('');
+
+            this.fetchAttendances(this.luser);
           } else {
-            //this.logger.logError("No Record Found!");
           }
         },
         error: (error) => {
           console.error("Error exporting Excel:", error);
-          //this.logger.logError("Failed to export file.");
         }
       });
   }
+}
 }

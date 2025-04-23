@@ -161,4 +161,7 @@ export class CommonService {
   leaveappliclList(luser:any): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/hrmsmodule/getleaveappliclList/${luser}`); }
   editlleaveapplic(leaveapplicid: any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/editlleaveapplic/${leaveapplicid}`;return this.http.get<any>(url);}
   leaveapplicDelete(leaveapplicid: any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/deleteleaveapplic/${leaveapplicid}`;return this.http.delete(url);}
+  searchlist(data: any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/getattendancesearchList`; return this.http.post<any>(url,data);}
+  searchExcell(data: any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/getattendancesearchexcell`; return this.http.post<any>(url,data);}
+
 }

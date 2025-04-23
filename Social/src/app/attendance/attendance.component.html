@@ -2,6 +2,33 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 <div *ngIf="isList" >
+  <div class="search">
+    <form [formGroup]="attendsearchForm" (ngSubmit)="submit()" class="form-container">
+    <div class="row mb-3">
+      <div class="col-md-1 font-weight-bold" id="gridhead"><b>Employee</b></div>
+      <div class="col-md-2">
+        <ng-select 
+      style="border: 2px solid blue; border-radius: 5px;height: 35px;"
+      formControlName="employee"
+      [items]="userList"
+      bindLabel="username"
+      bindValue="userid"
+      [searchable]="true"
+      [clearable]="true">
+    </ng-select>
+      </div>
+      <div class="col-md-1 font-weight-bold" id="gridhead"><b>From Date</b></div>
+      <div class="col-md-2"><input type="date" formControlName="fromdate" class="form-control" /></div>
+      <div class="col-md-1 font-weight-bold" id="gridhead"><b>To Date</b></div>
+      <div class="col-md-2"><input type="date" formControlName="todate" class="form-control" /></div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-md-2" style="align-items: center;"><button  class="btn btn-warning mx-2" (click)="getviewreport()">View Report</button></div>
+      <div class="col-md-2" style="align-items: center;"><button  class="btn btn-success mx-2" (click)="getexcellreport()">Export Report</button></div>
+      <a id="excellreportExport" style="display: none"></a>
+    </div>
+  </form>
+  </div> 
     <div style="display: flex; align-items: center; gap: 10px; ">
       <span><button  class="btn btn-primary" (click)="clockIn()">Clock In</button></span>
       <input
@@ -12,8 +39,7 @@
         class="form-control"
         style="margin-bottom: 10px; width: 300px;"
       />
-      <span><button  class="btn btn-success" (click)="Excell()">Excell</button></span>
-      <a id="empDtlExport" style="display: none"></a>
+      
     </div> 
      <div class="table-container">
       <table class="table table-striped table-bordered">
