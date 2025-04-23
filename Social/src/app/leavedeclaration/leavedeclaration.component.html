@@ -6,7 +6,7 @@
   <!-- User List Section -->
   <div *ngIf="isList">
     <div style="display: flex; align-items: center; gap: 10px;">
-      <span (click)="openAddUserrights()" style="cursor: pointer;">➕</span>
+      <span (click)="openAdd()" style="cursor: pointer;">➕</span>
       <input type="text"
              [(ngModel)]="searchTerm"
              placeholder="Search"
@@ -25,14 +25,14 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of (filteredData?.length ? filteredData : pagedUserRights)">
+          <tr *ngFor="let item of (filteredData?.length ? filteredData : pageddata)">
             <td style="text-align: center;">{{ item.leavedeclid }}</td>
             <td style="text-align: center;">{{ item.year }}</td>
             <td style="text-align: center;">
-              <button class="btn btn-link" (click)="editleavedecl(item)">✏️</button>
-              <button class="btn btn-link" (click)="viewleavedecl(item)">👁️</button>
-              <button class="btn btn-link" (click)="deleteleavedecl(item)">🗑️</button>
-            </td>
+              <button class="btn btn-primary" style="background: transparent; border: none;" (click)="editleavedecl(item)">✏️</button>
+                <!-- <button class="btn btn-primary" style="background: transparent; border: none;"(click)="viewleavedecl(item)">👁️</button> -->
+                <button class="btn btn-primary" style="background: transparent; border: none;"(click)="deleteleavedecl(item)">🗑️</button>
+              </td>
           </tr>
         </tbody>
       </table>
@@ -153,34 +153,31 @@
 
   <!-- View Section -->
   <div *ngIf="isView">
-    <div class="row mb-3">
-      <div class="col-md-3"><b>Full Name</b></div>
-      <div class="col-md-3">{{ leavedecForm.get('username')?.value || 'N/A' }}</div>
+    <div class="d-flex justify-content-center mt-8">
+      <div class="mt-5" style="border:1px solid rgb(91, 165, 197);border-radius: 10px;width: 50%;">
+        <h4 class="bg-primary text-white text-center p-2" style="border-radius: 10px;">Leave Type View <span style="cursor:pointer; float:inline-end;" (click)="cancel()">❌</span></h4>
+        <div class="row mb-4">
+          <div class="col-md-3 font-weight-bold"><b>Leave ID</b></div>
+          <div class="col-md-3">{{ leavedecForm.get('leavetypecode')?.value || 'N/A' }}</div>
+          <div class="col-md-3 font-weight-bold"><b>Leave Type Name</b></div>
+          <div class="col-md-3">{{ leavedecForm.get('ltname')?.value || 'N/A' }}</div>
+        </div>
+    
+        <div class="row mb-4">
+          <div class="col-md-3 font-weight-bold"><b>Leave Type For</b></div>
+          <div class="col-md-3">{{ leavedecForm.get('ltfor')?.value || 'N/A' }}</div>
+          <div class="col-md-3 font-weight-bold"><b>Carry Forword</b></div>
+          <div class="col-md-3">{{ leavedecForm.get('carryfwd')?.value || false }}</div>
+        </div>
+        <div class="row mb-4">
+        <div class="col-md-3 font-weight-bold"><b>Carry Forward Limit</b></div>
+        <div class="col-md-3">{{ leavedecForm.get('cryfwdlimit')?.value || 'N/A' }}</div>
+        <div class="col-md-3 font-weight-bold"><b>Carry Forward For</b></div>
+        <div class="col-md-3">{{ leavedecForm.get('cryfwdfor')?.value || 'N/A' }}</div>
+      </div>
+      <div class="row mb-4">
+        <div class="col-md-3 font-weight-bold"><b>Active</b></div>
+        <div class="col-md-3">{{ leavedecForm.get('active')?.value || 'N/A' }}</div>
+      </div>
     </div>
-    <div class="table-container">
-      <table class="table table-striped table-bordered">
-        <thead>
-          <tr>
-            <th style="background: rgb(235, 206, 89);">Form Name</th>
-            <th style="background: rgb(235, 206, 89);">All</th>
-            <th style="background: rgb(235, 206, 89);">Create</th>
-            <th style="background: rgb(235, 206, 89);">Read</th>
-            <th style="background: rgb(235, 206, 89);">Update</th>
-            <th style="background: rgb(235, 206, 89);">Delete</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let view of userRightsview">
-            <td style="text-align: center;">{{ view.formname }}</td>
-            <td style="text-align: center;">{{ view.all }}</td>
-            <td style="text-align: center;">{{ view.create }}</td>
-            <td style="text-align: center;">{{ view.read }}</td>
-            <td style="text-align: center;">{{ view.update }}</td>
-            <td style="text-align: center;">{{ view.delete }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <button class="btn btn-danger" (click)="cancel()" style="margin-left:10px;">Cancel</button>
-  </div>
-</body>
+</div>

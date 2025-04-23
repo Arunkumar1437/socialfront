@@ -1,0 +1,210 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<body>
+  <div *ngIf="isList">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <span (click)="openAdd()" style="cursor: pointer;">➕</span>
+      <input type="text"
+             [(ngModel)]="searchTerm"
+             placeholder="Search"
+             (input)="filterTable()"
+             class="form-control"
+             style="margin-bottom: 10px; width: 300px;" />
+    </div>
+
+    <div class="table-container">
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th style="background: rgb(224, 81, 174); text-align: center;">Leave Application Id</th>
+            <th style="background: rgb(224, 81, 174); text-align: center;">Employee Id</th>
+            <th style="background: rgb(224, 81, 174); text-align: center;">Employee Name</th>
+            <th style="background: rgb(224, 81, 174); text-align: center;">Reason</th>
+            <th style="background: rgb(224, 81, 174); text-align: center;">Applied Date</th>
+            <th style="background: rgb(224, 81, 174); text-align: center;">Leave From</th>
+            <th style="background: rgb(224, 81, 174); text-align: center;">Leave To</th>
+            <th style="background: rgb(224, 81, 174); text-align: center;">Leave Type</th>
+            <th style="background: rgb(224, 81, 174); text-align: center;">Status</th>
+            <th style="background: rgb(224, 81, 174); text-align: center;">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of (filteredData?.length ? filteredData : pageddata)">
+            <td style="text-align: center;">{{ item.leaveapplicid }}</td>
+            <td style="text-align: center;">{{ item.empid }}</td>
+            <td style="text-align: center;">{{ item.empname}}</td>
+            <td style="text-align: center;">{{ item.description }}</td>
+            <td style="text-align: center;">{{ item.applieddt }}</td>
+            <td style="text-align: center;">{{ item.fromdt }} -{{item.halfFrom}}</td>
+            <td style="text-align: center;">{{ item.todt}} -{{item.halfTo}}</td>
+            <td style="text-align: center;">{{ item.ltname }}</td>
+            <td style="text-align: center;">{{ item.status }}</td>
+            <td style="text-align: center;">
+                <button class="btn btn-primary"  *ngIf="userid ==='N001'" style="background: transparent; border: none;" (click)="editleaveapplic(item)">✏️</button> 
+                <button class="btn btn-primary" style="background: transparent; border: none;"(click)="viewleaveapplic(item)">👁️</button>
+                <button class="btn btn-primary"  *ngIf="userid ==='N001'" style="background: transparent; border: none;"(click)="deleteleaveapplic(item)">🗑️</button> 
+              </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Pagination Footer -->
+      <footer class="panel-footer" style="background-color: #e2e2e2;">
+        <div class="row justify-content-center">
+          <div class="col-auto">
+            <div *ngIf="numPages > 1" class="pagination">
+              <ul class="pagination">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <a class="page-link" (click)="selectPage(1)">⏪</a>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <a class="page-link" (click)="selectPage(currentPage - 1)">⬅️</a>
+                </li>
+                <li class="page-item active">
+                  <input type="number"
+                         class="form-control"
+                         [(ngModel)]="currentPage"
+                         min="1"
+                         [max]="numPages"
+                         (change)="selectPage(currentPage)" />
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === numPages">
+                  <a class="page-link" (click)="selectPage(currentPage + 1)">➡️</a>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === numPages">
+                  <a class="page-link" (click)="selectPage(numPages)">⏩</a>
+                </li>
+              </ul>
+              <small>Showing page {{currentPage}} of {{numPages}}</small>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Form Section -->
+  <div *ngIf="!isList && !isView">
+    <form [formGroup]="leaveapplicForm" (ngSubmit)="onSubmit()">
+        <div class="d-flex justify-content-center mt-8">
+            <div class="table-container" style="border-radius: 10px;width: 75%;">
+        <div class="row mb-3">
+            <div class="col-md-2 font-weight-bold" id="gridhead"><b>Employee ID</b></div>
+            <div class="col-md-2">{{ leaveapplicForm.get('empid')?.value || 'N/A' }}</div>
+            <div class="col-md-2 font-weight-bold" id="gridhead"><b>Employee Name</b></div>
+            <div class="col-md-2">{{ leaveapplicForm.get('empname')?.value || 'N/A' }}</div>
+            <div class="col-md-2 font-weight-bold" id="gridhead"><b>Reason</b></div>
+            <div class="col-md-2" *ngIf="!isEdit"><input type="text" formControlName="description"></div>
+            <div class="col-md-2" *ngIf="isEdit">{{ leaveapplicForm.get('description')?.value || 'N/A' }}</div>
+        </div>
+          <table class="table table-striped table-bordered" *ngIf="!isEdit">
+            <thead>
+              <tr>
+                <th style="background: rgb(162, 88, 223);">Select</th>
+                <th style="background: rgb(162, 88, 223);">Leave ID</th>
+                <th style="background: rgb(162, 88, 223);">Leave Name</th>
+                <th style="background: rgb(162, 88, 223);">Available</th>
+                <th style="background: rgb(162, 88, 223);">Consumed</th>
+                <th style="background: rgb(162, 88, 223);">Balance</th>
+              </tr>
+            </thead>
+            <tbody formArrayName="leavedetaillist">
+              <tr *ngFor="let group of leavedetaillistArray.controls; let i = index" [formGroupName]="i">
+                <td><input type="checkbox" formControlName="select" (change)="onLeaveSelectChange(i)"/></td>
+                <td>{{ group.get('leavetypecode')?.value }}</td>
+                <td>{{ group.get('ltname')?.value }}</td>
+                <td><input type="text" formControlName="available"></td>
+                <td><input type="text" formControlName="consumed"></td>
+                <td><input type="text" formControlName="balance"></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="row mb-3">
+            <div class="col-md-2 font-weight-bold" id="gridhead"><b>Leave From</b></div>
+            <div class="col-md-2" *ngIf="!isEdit"><input type="date" formControlName="fromdt"></div>
+            <div class="col-md-2" *ngIf="isEdit">{{leaveapplicForm.get('fromdt')?.value || 'N/A'}}</div>
+
+            <div class="col-md-2 font-weight-bold" id="gridhead"><b>Leave To</b></div>
+            <div class="col-md-2" *ngIf="!isEdit"><input type="date" formControlName="todt"></div>
+            <div class="col-md-2" *ngIf="isEdit">{{leaveapplicForm.get('todt')?.value || 'N/A'}}</div>
+
+            <div class="col-md-2 font-weight-bold" id="gridhead"><b>Days</b></div>
+            <div class="col-md-2">{{ leaveapplicForm.get('days')?.value || 'N/A' }}</div>
+        </div>
+        
+        <div class="row mb-3">
+            <div class="col-md-2 font-weight-bold" id="gridhead"><b>Half From</b></div>
+            <div class="col-md-2" *ngIf="!isEdit">
+                <select formControlName="halfFrom" class="form-control mt-0 w-75">
+                    <option value="">Select</option>
+                    <option value="First">First</option>
+                    <option value="Second">Second</option>
+                </select> 
+            </div>
+            <div class="col-md-2" *ngIf="isEdit">{{ leaveapplicForm.get('halfFrom')?.value || 'N/A' }}</div>
+
+            <div class="col-md-2 font-weight-bold" id="gridhead"><b>Half To</b></div>
+            <div class="col-md-2" *ngIf="!isEdit">
+                <select formControlName="halfTo" class="form-control mt-0 w-75">
+                    <option value="">Select</option>
+                    <option value="First">First</option>
+                    <option value="Second">Second</option>
+                </select> 
+            </div>
+            <div class="col-md-2" *ngIf="isEdit">{{ leaveapplicForm.get('halfTo')?.value || 'N/A' }}</div>
+
+            <div class="col-md-2 font-weight-bold" id="gridhead" *ngIf="isEdit"><b>Status</b></div>
+            <div class="col-md-2" *ngIf="isEdit">
+                <select formControlName="status" class="form-control mt-0 w-75">
+                    <option value="">Select</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Reject">Reject</option>
+                    <option value="Cancel">Cancel</option>
+                </select> 
+            </div>
+        </div>
+
+        
+          <div class="text-center mt-4">
+            <button type="submit" *ngIf="!isEdit" class="btn btn-success" [disabled]="!leaveapplicForm.valid">Save</button>
+            <button type="submit" *ngIf="isEdit" class="btn btn-success" [disabled]="!leaveapplicForm.valid">Update</button>
+            <button class="btn btn-danger" type="button" (click)="cancel()" style="margin-left:10px;">Cancel</button>
+          </div>
+      </div>
+    </div>
+    </form>
+  </div>
+
+  <!-- View Section -->
+  <div *ngIf="isView">
+    <div class="d-flex justify-content-center mt-8">
+      <div class="mt-5" style="border:1px solid rgb(91, 165, 197);border-radius: 10px;width: 50%;">
+        <h4 class="bg-primary text-white text-center p-2" style="border-radius: 10px;">Leave Application View <span style="cursor:pointer; float:inline-end;" (click)="cancel()">❌</span></h4>
+        <div class="row mb-4">
+          <div class="col-md-3 font-weight-bold"><b>Leave ID</b></div>
+          <div class="col-md-3">{{ leaveapplicForm.get('leaveapplicid')?.value || 'N/A' }}</div>
+          <div class="col-md-3 font-weight-bold"><b>Applied Date</b></div>
+          <div class="col-md-3">{{ leaveapplicForm.get('applieddt')?.value || 'N/A' }}</div>
+        </div>
+        <div class="row mb-4">
+          <div class="col-md-3 font-weight-bold"><b>Employee Name</b></div>
+          <div class="col-md-3">{{ leaveapplicForm.get('empid')?.value}}-{{ leaveapplicForm.get('empname')?.value || 'N/A' }}</div>
+          <div class="col-md-3 font-weight-bold"><b>Reason</b></div>
+          <div class="col-md-3">{{ leaveapplicForm.get('description')?.value || 'N/A' }}</div>
+        </div>
+        <div class="row mb-4">
+        <div class="col-md-3 font-weight-bold"><b>From</b></div>
+        <div class="col-md-3">{{ leaveapplicForm.get('fromdt')?.value || 'N/A' }}-{{ leaveapplicForm.get('halfFrom')?.value || 'N/A' }}</div>
+        <div class="col-md-3 font-weight-bold"><b>To</b></div>
+        <div class="col-md-3">{{ leaveapplicForm.get('todt')?.value || 'N/A' }}-{{ leaveapplicForm.get('halfTo')?.value || 'N/A' }}</div>
+      </div>
+      <div class="row mb-4">
+        <div class="col-md-3 font-weight-bold"><b>Days</b></div>
+        <div class="col-md-3">{{ leaveapplicForm.get('days')?.value || 'N/A' }}</div>
+        <div class="col-md-3 font-weight-bold"><b>Status</b></div>
+        <div class="col-md-3">{{ leaveapplicForm.get('status')?.value || 'N/A' }}</div>
+      </div>
+    </div>
+</div>

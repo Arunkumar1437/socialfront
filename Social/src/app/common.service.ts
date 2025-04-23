@@ -156,5 +156,9 @@ export class CommonService {
   leavedeclList(luser:any): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/mastermodule/getleavedecllist/${luser}`); }
   editleavedecl(leavedeclid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/editleavedecl/${leavedeclid}`;return this.http.get<any>(url);}
   leavedeclDelete(leavedeclid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/deleteleavedecl/${leavedeclid}`;return this.http.delete(url);}
-
+  empleavedetails(emp:any): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/mastermodule/empleavedetails/${emp}`); }
+  saveleaveapplic(data: any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/saveleaveapplic`; return this.http.post<any>(url,data);}
+  leaveappliclList(luser:any): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/hrmsmodule/getleaveappliclList/${luser}`); }
+  editlleaveapplic(leaveapplicid: any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/editlleaveapplic/${leaveapplicid}`;return this.http.get<any>(url);}
+  leaveapplicDelete(leaveapplicid: any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/deleteleaveapplic/${leaveapplicid}`;return this.http.delete(url);}
 }

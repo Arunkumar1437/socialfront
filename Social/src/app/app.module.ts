@@ -36,24 +36,14 @@ import { EmployeeModule } from "./employee/employee.module";
 import { HolidayComponent } from './holiday/holiday.component';
 import { LeavetypeComponent } from './leavetype/leavetype.component';
 import { LeavedeclarationComponent } from './leavedeclaration/leavedeclaration.component';
+import { LeaveapplicationComponent } from './leaveapplication/leaveapplication.component';
 
 @NgModule({
   declarations: [
-    TaskmangeComponent,
-    AttendanceComponent,
-    SidebarComponent,
-     MessageComponent, 
-     PostComponent,
-      NotificationComponent,
-       SettingComponent,
-        RegisterComponent, 
-        ForgetpasswordComponent,
-         DashboardComponent,
-          ProfileComponent,
-          OcrComponent,
-          ChatComponent,
-          AdminComponent,
-          FormComponent,MainpageComponent, EmployeeComponent, HolidayComponent, LeavetypeComponent, LeavedeclarationComponent,
+    TaskmangeComponent,AttendanceComponent,SidebarComponent,MessageComponent,PostComponent,NotificationComponent,
+    SettingComponent,RegisterComponent,ForgetpasswordComponent,DashboardComponent,ProfileComponent,
+    OcrComponent,ChatComponent,AdminComponent,FormComponent,MainpageComponent,EmployeeComponent, 
+    HolidayComponent, LeavetypeComponent, LeavedeclarationComponent, LeaveapplicationComponent,
   ],
   imports: [
     CommonModule,

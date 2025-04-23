@@ -13,7 +13,7 @@ export class LeavedeclarationComponent implements OnInit {
   leavedecForm: FormGroup;
   leavedetail: any[] = [];
   leavedeclList: any[] = [];
-  pagedUserRights: any[] = [];
+  pageddata: any[] = [];
   filteredData: any[] = [];
 
   isList: boolean = true;
@@ -125,7 +125,7 @@ export class LeavedeclarationComponent implements OnInit {
     }
   }
 
-  openAddUserrights(): void {
+  openAdd(): void {
     this.isList = false;
     this.isEdit = false;
     this.isView = false;
@@ -217,7 +217,7 @@ export class LeavedeclarationComponent implements OnInit {
     const sourceData = this.searchTerm ? this.filteredData : this.leavedeclList;
     const startIndex = (this.currentPage - 1) * this.itemsByPage;
     const endIndex = startIndex + this.itemsByPage;
-    this.pagedUserRights = sourceData.slice(startIndex, endIndex);
+    this.pageddata = sourceData.slice(startIndex, endIndex);
   }
 
   onPageChange(newPage: number): void {

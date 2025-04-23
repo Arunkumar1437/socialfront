@@ -15,6 +15,7 @@ export class MainpageComponent{
   route: any;
   LuserId: any;
   username: any;
+  description:any;
   isCollapsed:boolean=false;
   currentDate: string | undefined;
   currentTime: string | undefined;
@@ -53,13 +54,12 @@ export class MainpageComponent{
         }else{
           this.adminvalidation=false;
         }
-        const luserid = data.luserid;
+        const ldescription = data.description;
         const lusername = data.username;
         const  userlist= data.userlist;
-
-            localStorage.setItem('userid', LuserId); 
-            localStorage.setItem('username', lusername); 
-            localStorage.setItem('userlist', JSON.stringify(userlist)); 
+        localStorage.setItem('description', ldescription);
+        localStorage.setItem('username', lusername); 
+        localStorage.setItem('userlist', JSON.stringify(userlist)); 
           },
       (error: any) => {
         console.error('Error fetching last user:', error);
