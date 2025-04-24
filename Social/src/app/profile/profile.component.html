@@ -4,47 +4,44 @@
  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
  <div *ngIf="!isEdit && isViewOnly">
-  <div class="container mt-5">
-   <div class="card shadow-lg">
-     <div class="card-header bg-primary text-white text-center">
-       <h4>Employee Details</h4>
-     </div>
-     <div class="card-body">
-       <div class="row mb-3">
-         <div class="col-md-3 font-weight-bold" id="gridhead"><b>Fullname</b></div>
-         <div class="col-md-3">{{ EmpForm.get('name')?.value || 'N/A' }}</div>
-         <div class="col-md-3 font-weight-bold" id="gridhead"><b>Age</b></div>
-         <div class="col-md-3">{{ EmpForm.get('age')?.value || 'N/A' }}</div>
-       </div>
-       <div class="row mb-3">
-         <div class="col-md-3 font-weight-bold"><b>UserID</b></div>
-         <div class="col-md-3">{{ EmpForm.get('userid')?.value || 'N/A' }}</div>
-         <div class="col-md-3 font-weight-bold"><b>DOb</b></div>
-         <div class="col-md-3">{{ EmpForm.get('dob')?.value || 'N/A' }}</div>
-       </div>
-       <div class="row mb-3">
-         <div class="col-md-3 font-weight-bold"><b>Password</b></div>
-         <div class="col-md-3">{{ EmpForm.get('password')?.value || 'N/A' }}</div>
-         <div class="col-md-3 font-weight-bold"><b>Gender</b></div>
-         <div class="col-md-3">{{ EmpForm.get('gender')?.value || 'N/A' }}</div>
-       </div>
-       <div class="row mb-3">
-         <div class="col-md-3 font-weight-bold"><b>Description</b></div>
-         <div class="col-md-3">{{ EmpForm.get('desc')?.value || 'N/A' }}</div>
-       </div>
-       <div class="row mb-3">
-         <div class="col-md-3 font-weight-bold"><b>Email</b></div>
-         <div class="col-md-3">{{ EmpForm.get('email')?.value || 'N/A' }}</div>
-       </div>
-     </div>
-     <div class="card-footer text-center">
-       <button class="btn btn-primary me-2" (click)="toggleEdit()">Edit Info</button>
-     </div>
-   </div>
- </div>
- </div>
+  <div class="d-flex justify-content-center mt-8">
+    <div class="mt-5" style="border:1px solid rgb(91, 165, 197);border-radius: 10px;width: 50%;">
+      <h4 class="bg-primary text-white text-center p-2" style="border-radius: 10px;">Employee Details</h4>
+  
+      <div class="row mb-3">
+        <div class="col-md-3 font-weight-bold" id="gridhead"><b>Fullname</b></div>
+        <div class="col-md-3">{{ EmpForm.get('name')?.value || 'N/A' }}</div>
+        <div class="col-md-3 font-weight-bold" id="gridhead"><b>Age</b></div>
+        <div class="col-md-3">{{ EmpForm.get('age')?.value || 'N/A' }}</div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-3 font-weight-bold"><b>UserID</b></div>
+        <div class="col-md-3">{{ EmpForm.get('userid')?.value || 'N/A' }}</div>
+        <div class="col-md-3 font-weight-bold"><b>DOb</b></div>
+        <div class="col-md-3">{{ EmpForm.get('dob')?.value || 'N/A' }}</div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-3 font-weight-bold"><b>Password</b></div>
+        <div class="col-md-3">{{ EmpForm.get('password')?.value || 'N/A' }}</div>
+        <div class="col-md-3 font-weight-bold"><b>Gender</b></div>
+        <div class="col-md-3">{{ EmpForm.get('gender')?.value || 'N/A' }}</div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-3 font-weight-bold"><b>Description</b></div>
+        <div class="col-md-3">{{ EmpForm.get('desc')?.value || 'N/A' }}</div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-3 font-weight-bold"><b>Email</b></div>
+        <div class="col-md-3">{{ EmpForm.get('email')?.value || 'N/A' }}</div>
+      </div>
+    <div class="card-footer text-center">
+      <button class="btn btn-primary me-2" (click)="toggleEdit()">Edit Info</button>
+    </div>
+    </div>
+  </div>
+  </div>
 
-<div *ngIf="isEdit && !isViewOnly" class="edit-container">
+  <div *ngIf="isEdit && !isViewOnly" class="edit-container">
   <form [formGroup]="EmpForm" (ngSubmit)="updateProfile()" class="form-container">
     <div>
       <h4 class="heading text-center border border-0 bg-primary text-white rounded py-2">
