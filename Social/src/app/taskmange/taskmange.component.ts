@@ -57,8 +57,13 @@ export class TaskmangeComponent {
       const emplist = localStorage.getItem('userlist');
       this.empList = emplist ? JSON.parse(emplist) : [];
       console.log('Employee List:', this.empList); 
-      
       this.fetchTaskdetails(this.luser);
+      this.taskForm.get('stime')?.valueChanges.subscribe(() => {
+        this.calculateDays();
+      });
+      this.taskForm.get('etime')?.valueChanges.subscribe(() => {
+        this.calculateDays();
+      });
     }
     
 
@@ -265,5 +270,19 @@ export class TaskmangeComponent {
   }
   openAdd():void{
     this.isList = false;
+  }
+
+  calculateDays(): void {
+    const fromDate = this.taskForm.get('stime')?.value;
+    const toDate = this.taskForm.get('etime')?.value;
+  
+    if (fromDate && toDate) {
+      const from = new Date(fromDate);
+      const to = new Date(toDate);
+      let diffDays = (to.getTime() - from.getTime()) / (1000 * 3600 * 24) + 1;
+      this.taskForm.get('days')?.setValue(diffDays);
+    } else {
+      this.taskForm.get('days')?.setValue(0.0);
+    }
   }
 }

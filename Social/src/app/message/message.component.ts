@@ -38,10 +38,15 @@ export class MessageComponent {
       this.dataService.sendmail(this.emailForm.value).subscribe(
         res => {
           if (res.sucess==true) {
-          this._snackBar.open('Data Saved successfully', '', {
+          this._snackBar.open('Mail send successfully', '', {
             duration: 300,horizontalPosition: 'end',
             verticalPosition: 'top'
           });
+          this.emailForm.get('to')?.setValue('');
+          this.emailForm.get('cc')?.setValue('');
+          this.emailForm.get('bcc')?.setValue('');
+          this.emailForm.get('subject')?.setValue('');
+          this.emailForm.get('message')?.setValue('');
         }
         },
         error => {
