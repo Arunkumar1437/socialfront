@@ -111,7 +111,6 @@ export class CommonService {
   updatemoduleData(data: any): Observable<any> {const url = `${this.adminmoduleapi}api/adminmodule/updatemodule`; return this.http.post<any>(url,data);}
   moduleDelete(moduleid: any): Observable<any> {const url = `${this.adminmoduleapi}api/adminmodule/deletemodule/${moduleid}`;return this.http.delete(url);}
 
-
   //communicationocrmodule
   sendMessage(message: any):Observable<any> {var url=this.communicationocrmoduleapi+'api/communicationocrmodule/save';return this.http.post<any>(url,message);}
   getChatHistory(message: any):Observable<any> {var url=this.communicationocrmoduleapi+'api/communicationocrmodule/retrive';return this.http.post<any>(url,message);}
@@ -121,8 +120,8 @@ export class CommonService {
   ocruploadinvoice(formData:FormData):Observable<any> {return this.http.post<any>(`${this.communicationocrmoduleapi}api/communicationocrmodule/PDFofPo`, formData);}
   ocruploadpo(formData:FormData):Observable<any> {return this.http.post<any>(`${this.communicationocrmoduleapi}api/communicationocrmodule/PDFofAgree`, formData);}
   ocruploadcompare(detailTable: any[], aggreDetail: any[]): Observable<any> {const requestBody = {detailTable: detailTable,aggreDetail: aggreDetail};return this.http.post<any>(`${this.communicationocrmoduleapi}api/communicationocrmodule/compare`, requestBody);}
-
-
+  createpost(formData: FormData): Observable<any> {return this.http.post<any>(`${this.communicationocrmoduleapi}api/communicationocrmodule/createpost`,formData);}
+  
   //MasterModule
   empList(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/mastermodule/getEmployeeList`); }
   empedit(userId: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/editemp/${userId}`;return this.http.get<any>(url);}

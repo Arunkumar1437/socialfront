@@ -30,9 +30,9 @@ export class ChatComponent implements OnInit {
   }
 
   ngOnInit() {
-    const UserId = localStorage.getItem('UserId');
-    if (UserId) {
-      this.senderId = UserId;
+    const luserid = localStorage.getItem('UserId');
+    if (luserid) {
+      this.senderId = luserid;
     } else {
       this._snackBar.open('Sender ID not found!', 'Close', { duration: 3000 });
       return;

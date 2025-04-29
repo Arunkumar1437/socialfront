@@ -12,7 +12,7 @@ body, html {
 .chat-person {
   display: flex;
   flex-direction: column;
-  height: 650px;
+  height: 450px;
   border: 2px solid #2ae1a8;
   width: 295px; 
   border-radius: 23px;
@@ -23,7 +23,7 @@ body, html {
 .chat-container {
   display: flex;
   flex-direction: column;
-  height: 650px;
+  height: 450px;
   border: 2px solid #1f83c1;
   max-width: 800px;
   background-color: #fff;
