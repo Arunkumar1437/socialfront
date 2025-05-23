@@ -289,8 +289,17 @@ export class LeaveapplicationComponent implements OnInit {
     const term = this.searchTerm.toLowerCase();
     this.filteredData = this.leaveappliclList.filter(
       item =>
-        item.userid.toLowerCase().includes(term) ||
-        item.username.toLowerCase().includes(term)
+        item.leaveapplicid.toLowerCase().includes(term) ||
+        item.empid.toLowerCase().includes(term) ||
+        item.empname.toLowerCase().includes(term) ||
+        item.description.toLowerCase().includes(term) ||
+        item.applieddt.toLowerCase().includes(term) ||
+        item.fromdt.toLowerCase().includes(term) ||
+        item.halfFrom.toLowerCase().includes(term) ||
+        item.todt.toLowerCase().includes(term) ||
+        item.halfTo.toLowerCase().includes(term) ||
+        item.ltname.toLowerCase().includes(term) ||
+        item.status.toLowerCase().includes(term)
     );
     this.currentPage = 1;
     this.updatePagination();
