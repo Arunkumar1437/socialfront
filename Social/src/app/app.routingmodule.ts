@@ -20,6 +20,8 @@ import { HolidayComponent } from './holiday/holiday.component';
 import { LeavetypeComponent } from './leavetype/leavetype.component';
 import { LeavedeclarationComponent } from './leavedeclaration/leavedeclaration.component';
 import { LeaveapplicationComponent } from './leaveapplication/leaveapplication.component';
+import { CurrencyComponent } from './currency/currency.component';
+import { EmojComponent } from './emoj/emoj.component';
 
 export const routes: Routes = [
     //configure the modules
@@ -45,6 +47,7 @@ export const routes: Routes = [
     {path:"Leavedeclaration",loadChildren:()=>import("./leavedeclaration/leavedeclaration.module").then((m)=>m.LeavedeclarationModule)},
     {path:"Leaveapplication",loadChildren:()=>import("./leaveapplication/leaveapplication.module").then((m)=>m.LeaveapplicationModule)},
     {path:"Emoj",loadChildren:()=>import("./emoj/emoj.module").then((m)=>m.EmojModule)},
+    {path:"Currency",loadChildren:()=>import("./currency/currency.module").then((m)=>m.CurrencyModule)},
 
 
     //configure the Components 
@@ -69,8 +72,8 @@ export const routes: Routes = [
     { path:'leavetype', component: LeavetypeComponent},
     {path:"leavedeclaration",component:LeavedeclarationComponent},
     {path:"leaveapplication",component:LeaveapplicationComponent},
-    {path:"emoj",component:DashboardComponent},
-
+    {path:"emoj",component:EmojComponent},
+    {path:'currency',component:CurrencyComponent},
     //Redirect to Login Page Directly
     {path: '', redirectTo: 'Login/login', pathMatch: 'full' },
    

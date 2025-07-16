@@ -161,5 +161,9 @@ export class CommonService {
   leaveapplicDelete(leaveapplicid: any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/deleteleaveapplic/${leaveapplicid}`;return this.http.delete(url);}
   searchlist(data: any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/getattendancesearchList`; return this.http.post<any>(url,data);}
   searchExcell(data: any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/getattendancesearchexcell`; return this.http.post<any>(url,data);}
-
+  saveemoj(data: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/saveemoj`; return this.http.post<any>(url,data);}
+  emojList(luser:any): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/mastermodule/getemojlist/${luser}`); }
+  emojEdit(emojid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/editemoj/${emojid}`;return this.http.get<any>(url);}
+  deleteemoj(emojid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/deleteemoj/${emojid}`;return this.http.delete(url);}
+  
 }

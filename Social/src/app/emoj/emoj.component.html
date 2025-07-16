@@ -18,7 +18,7 @@
     <table class="table table-striped table-bordered">
         <thead>
             <tr>
-                <th style="background: rgb(110, 102, 52); text-align: center;">Emoj No.</th>
+                <th style="background: rgb(110, 102, 52); text-align: center;">Emoj ID</th>
                 <th style="background: rgb(110, 102, 52); text-align: center;">Emoj Name</th>
                 <th style="background: rgb(110, 102, 52); text-align: center;">Emoj Icon</th>
                 <th style="background: rgb(110, 102, 52); text-align: center;">Active</th>
@@ -26,15 +26,15 @@
             </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of (filteredData?.length ? filteredData : pageholiday)">
-            <td style="text-align: center;">{{ item.holidaycode}}</td>
-            <td style="text-align: center;">{{ item.hname }}</td>
-            <td style="text-align: center;">{{ item.status }}</td>
+          <tr *ngFor="let item of (filteredData?.length ? filteredData : pageemoj)">
+            <td style="text-align: center;">{{ item.emojcode}}</td>
+            <td style="text-align: center;">{{ item.emojname }}</td>
+            <td style="text-align: center;">{{ item.emojicon }}</td>
             <td style="text-align: center;">{{ item.active }}</td>
             <td  style="text-align: center;">
-              <button *ngIf="isAdmin"  class="btn btn-primary" style="background: transparent; border: none;" (click)="editholiday(item)"><span>✏️</span></button>
-              <button class="btn btn-primary" style="background: transparent; border: none;" (click)="detailholiday(item)"><span>👁️</span></button>
-              <button *ngIf="isAdmin"  class="delete" style="background: transparent; border: none;"(click)="deleteholiday(item)"><span>🗑️</span></button>
+              <button *ngIf="isAdmin"  class="btn btn-primary" style="background: transparent; border: none;" (click)="editemoj(item)"><span>✏️</span></button>
+              <button class="btn btn-primary" style="background: transparent; border: none;" (click)="detailemoj(item)"><span>👁️</span></button>
+              <button *ngIf="isAdmin"  class="delete" style="background: transparent; border: none;"(click)="deleteemoj(item)"><span>🗑️</span></button>
             </td>
           </tr> 
         </tbody>

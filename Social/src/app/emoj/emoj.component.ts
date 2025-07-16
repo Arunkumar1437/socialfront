@@ -10,19 +10,19 @@ import { CommonService } from '../common.service';
   styleUrl: './emoj.component.css'
 })
 export class EmojComponent {
-holidayid:string='';
+ emojid:string='';
   clockedIn: boolean = false;
   isAdmin: boolean = false;
   isList: boolean = true;
   isEdit : boolean = false;
   isView : boolean = false;
   luser:any;
-  holidaylist: any[] = [];
-  pageholiday: any[] = [];
+  emojlist: any[] = [];
+  pageemoj: any[] = [];
     filteredData: any[] = [];
     searchTerm: string = '';
     @Input() totalItems: number = 0;  
-    @Input() itemsByPage: number = 10;
+    @Input() itemsByPage: number = 5;
     @Input() currentPage: number = 1;
     @Output() pageChanged = new EventEmitter<number>();  
     numPages: number = 1;
@@ -53,14 +53,14 @@ holidayid:string='';
         this.EmojForm.get('userid')?.setValue(this.luser);
         console.log('Login user Id:', this.luser);
       }
-      this.fetchHolidaydetails(this.luser);
+      this.fetchEmojdetails(this.luser);
     }
 
-    fetchHolidaydetails(luser:any) {
-      this.commonService.holidayList(luser).subscribe({
+    fetchEmojdetails(luser:any) {
+      this.commonService.emojList(luser).subscribe({
         next: (data: any) => {
-          this.holidaylist = data.getholidaylist || [];
-          this.totalItems = this.holidaylist.length;
+          this.emojlist = data.getemojlist || [];
+          this.totalItems = this.emojlist.length;
           this.numPages = Math.ceil(this.totalItems / this.itemsByPage);  
           this.updatePagedData(); 
         },
@@ -70,11 +70,11 @@ holidayid:string='';
       });
     }
 
-    deleteholiday(item:any) {
-      const holidaycode = item.holidaycode;
-      this.holidayid=holidaycode;
-      console.log(holidaycode);
-      this.commonService.deleteholiday(this.holidayid).subscribe({
+    deleteemoj(item:any) {
+      const emojcode = item.emojcode;
+      this.emojid=emojcode;
+      console.log(emojcode);
+      this.commonService.deleteemoj(this.emojid).subscribe({
         next: (res: any) => {
           if (res.sucess === true) {
             const message = 'Deleted successfully';
@@ -84,7 +84,7 @@ holidayid:string='';
               horizontalPosition: 'right',
  
             });
-            this.fetchHolidaydetails(this.luser);
+            this.fetchEmojdetails(this.luser);
           }
         },
         error: (err: any) => {
@@ -99,10 +99,10 @@ holidayid:string='';
     }
 
     updatePagedData(): void {
-      const sourceData = this.searchTerm ? this.filteredData : this.holidaylist;
+      const sourceData = this.searchTerm ? this.filteredData : this.emojlist;
       const startIndex = (this.currentPage - 1) * this.itemsByPage;
       const endIndex = startIndex + this.itemsByPage;
-      this.pageholiday = sourceData.slice(startIndex, endIndex);
+      this.pageemoj = sourceData.slice(startIndex, endIndex);
     }
   
     onPageChange(newPage: number): void {
@@ -112,7 +112,7 @@ holidayid:string='';
     }
   
     updatePagination(): void {
-      const sourceData = this.searchTerm ? this.filteredData : this.holidaylist;
+      const sourceData = this.searchTerm ? this.filteredData : this.emojlist;
       this.totalItems = sourceData.length;
       this.numPages = Math.ceil(this.totalItems / this.itemsByPage);
     
@@ -144,7 +144,7 @@ holidayid:string='';
 
     filterTable(): void {
       const term = this.searchTerm?.toLowerCase() || ''; 
-      this.filteredData = this.holidaylist.filter(item =>
+      this.filteredData = this.emojlist.filter(item =>
           (item.holidaycode?.toLowerCase() || '').includes(term) ||
           (item.hdate?.toLowerCase() || '').includes(term) ||
           (item.hname?.toLowerCase() || '').includes(term) ||
@@ -156,20 +156,20 @@ holidayid:string='';
       this.isList = true;
       this.EmojForm.reset();
       this.isEdit = false;
-      this.fetchHolidaydetails(this.luser);
+      this.fetchEmojdetails(this.luser);
   }
   
-   detailholiday(item:any){
+   detailemoj(item:any){
       this.isList=false;
       this.isEdit=false;
       this.isView=true;
-      this.fetchdetails(item.holidaycode);
+      this.fetchdetails(item.emojcode);
     }
-    editholiday(item:any){
+    editemoj(item:any){
       this.isList=false;
       this.isEdit=true;
       this.isView=false;
-      this.fetchdetails(item.holidaycode);
+      this.fetchdetails(item.emojcode);
     }
     cancel():void{
       this.isEdit=false;
@@ -181,7 +181,7 @@ holidayid:string='';
         if(this.isEdit){
           this.EmojForm.get('edit')?.setValue(this.isEdit);
         }
-        this.commonService.saveholiday(this.EmojForm.value).subscribe({
+        this.commonService.saveemoj(this.EmojForm.value).subscribe({
           next: (res: any) => {
             if (res.sucess === true) {
               const message = this.isEdit ? 'Update successfully' : 'Saved successfully';
@@ -193,7 +193,7 @@ holidayid:string='';
               this.isList = true;
               this.EmojForm.reset();
               this.isEdit = false;
-              this.fetchHolidaydetails(this.luser);
+              this.fetchEmojdetails(this.luser);
             }
           },
           error: (err: any) => {
@@ -207,14 +207,13 @@ holidayid:string='';
         });
       }
     }
-    fetchdetails(holidayid:any) {
-      this.commonService.holidayEdit(holidayid).subscribe({
+    fetchdetails(emojid:any) {
+      this.commonService.emojEdit(emojid).subscribe({
         next: (data: any) => {
           this.EmojForm.patchValue({
-            holidaycode:data.holidaycode,
-            hdate:data.hdate ,
-            hname:data.hname,
-            status:data.status,
+            emojcode:data.emojcode,
+            emojname:data.emojname ,
+            emojicon:data.emojicon,
             active:data.active,
           });
         },
