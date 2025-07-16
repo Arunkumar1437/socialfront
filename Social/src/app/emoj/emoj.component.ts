@@ -5,12 +5,12 @@ import { Router } from '@angular/router';
 import { CommonService } from '../common.service';
 
 @Component({
-  selector: 'app-holiday',
-  templateUrl: './holiday.component.html',
-  styleUrl: './holiday.component.css'
+  selector: 'app-emoj',
+  templateUrl: './emoj.component.html',
+  styleUrl: './emoj.component.css'
 })
-export class HolidayComponent {
-  holidayid:string='';
+export class EmojComponent {
+holidayid:string='';
   clockedIn: boolean = false;
   isAdmin: boolean = false;
   isList: boolean = true;
@@ -26,7 +26,7 @@ export class HolidayComponent {
     @Input() currentPage: number = 1;
     @Output() pageChanged = new EventEmitter<number>();  
     numPages: number = 1;
-    holidayForm:FormGroup;
+    EmojForm:FormGroup;
     empList: any;
     fileUrl: string = '';
     filePath: string = '';
@@ -34,12 +34,10 @@ export class HolidayComponent {
       logger: any;
   constructor(
     private router: Router, private commonService: CommonService, private _snackBar: MatSnackBar,private formBuilder: FormBuilder ) {
-      this.holidayForm = this.formBuilder.group({
-        holidaycode:[''],
-        hdate: ['',Validators.required],
-        hname:['',],
-        status:['',],
-        userid:['',],
+      this.EmojForm = this.formBuilder.group({
+        emojcode:[''],
+        emojname: [''],
+        emojicon:['',],
         active:[false,],
         edit:[false,]
        });
@@ -52,7 +50,7 @@ export class HolidayComponent {
       this.empList = emplist ? JSON.parse(emplist) : [];
       console.log('Employee List:', this.empList); 
       if(this.luser!=""){
-        this.holidayForm.get('userid')?.setValue(this.luser);
+        this.EmojForm.get('userid')?.setValue(this.luser);
         console.log('Login user Id:', this.luser);
       }
       this.fetchHolidaydetails(this.luser);
@@ -156,7 +154,7 @@ export class HolidayComponent {
       this.currentPage = 1; 
       this.updatePagination();
       this.isList = true;
-      this.holidayForm.reset();
+      this.EmojForm.reset();
       this.isEdit = false;
       this.fetchHolidaydetails(this.luser);
   }
@@ -179,11 +177,11 @@ export class HolidayComponent {
       this.isView=false;
     }
     submit():void{
-      if (this.holidayForm.valid) {
+      if (this.EmojForm.valid) {
         if(this.isEdit){
-          this.holidayForm.get('edit')?.setValue(this.isEdit);
+          this.EmojForm.get('edit')?.setValue(this.isEdit);
         }
-        this.commonService.saveholiday(this.holidayForm.value).subscribe({
+        this.commonService.saveholiday(this.EmojForm.value).subscribe({
           next: (res: any) => {
             if (res.sucess === true) {
               const message = this.isEdit ? 'Update successfully' : 'Saved successfully';
@@ -193,7 +191,7 @@ export class HolidayComponent {
                 horizontalPosition: 'right',
               });
               this.isList = true;
-              this.holidayForm.reset();
+              this.EmojForm.reset();
               this.isEdit = false;
               this.fetchHolidaydetails(this.luser);
             }
@@ -212,7 +210,7 @@ export class HolidayComponent {
     fetchdetails(holidayid:any) {
       this.commonService.holidayEdit(holidayid).subscribe({
         next: (data: any) => {
-          this.holidayForm.patchValue({
+          this.EmojForm.patchValue({
             holidaycode:data.holidaycode,
             hdate:data.hdate ,
             hname:data.hname,

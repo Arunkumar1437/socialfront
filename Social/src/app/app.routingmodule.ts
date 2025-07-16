@@ -44,6 +44,7 @@ export const routes: Routes = [
     {path:"Leavetype",loadChildren:()=>import("./leavetype/leavetype.module").then((m)=>m.LeavetypeModule)},
     {path:"Leavedeclaration",loadChildren:()=>import("./leavedeclaration/leavedeclaration.module").then((m)=>m.LeavedeclarationModule)},
     {path:"Leaveapplication",loadChildren:()=>import("./leaveapplication/leaveapplication.module").then((m)=>m.LeaveapplicationModule)},
+    {path:"Emoj",loadChildren:()=>import("./emoj/emoj.module").then((m)=>m.EmojModule)},
 
 
     //configure the Components 
@@ -68,6 +69,8 @@ export const routes: Routes = [
     { path:'leavetype', component: LeavetypeComponent},
     {path:"leavedeclaration",component:LeavedeclarationComponent},
     {path:"leaveapplication",component:LeaveapplicationComponent},
+    {path:"emoj",component:DashboardComponent},
+
     //Redirect to Login Page Directly
     {path: '', redirectTo: 'Login/login', pathMatch: 'full' },
    
