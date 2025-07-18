@@ -11,7 +11,6 @@ import { CommonService } from '../common.service';
 })
 export class EmojComponent {
  emojid:string='';
-  clockedIn: boolean = false;
   isAdmin: boolean = false;
   isList: boolean = true;
   isEdit : boolean = false;
@@ -28,10 +27,7 @@ export class EmojComponent {
     numPages: number = 1;
     EmojForm:FormGroup;
     empList: any;
-    fileUrl: string = '';
-    filePath: string = '';
-    downloadFile: string = '';
-      logger: any;
+    
   constructor(
     private router: Router, private commonService: CommonService, private _snackBar: MatSnackBar,private formBuilder: FormBuilder ) {
       this.EmojForm = this.formBuilder.group({
@@ -145,11 +141,10 @@ export class EmojComponent {
     filterTable(): void {
       const term = this.searchTerm?.toLowerCase() || ''; 
       this.filteredData = this.emojlist.filter(item =>
-          (item.holidaycode?.toLowerCase() || '').includes(term) ||
-          (item.hdate?.toLowerCase() || '').includes(term) ||
-          (item.hname?.toLowerCase() || '').includes(term) ||
-          (item.active?.toString().toLowerCase() || '').includes(term) ||
-          (item.status?.toLowerCase() || '').includes(term)
+          (item.emojcode?.toLowerCase() || '').includes(term) ||
+          (item.emojname?.toLowerCase() || '').includes(term) ||
+          (item.emojicon?.toLowerCase() || '').includes(term) ||
+          (item.active?.toString().toLowerCase() || '').includes(term)
       );
       this.currentPage = 1; 
       this.updatePagination();

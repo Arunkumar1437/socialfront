@@ -165,5 +165,9 @@ export class CommonService {
   emojList(luser:any): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/mastermodule/getemojlist/${luser}`); }
   emojEdit(emojid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/editemoj/${emojid}`;return this.http.get<any>(url);}
   deleteemoj(emojid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/deleteemoj/${emojid}`;return this.http.delete(url);}
+  savecurrency(data: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/savecurrency`; return this.http.post<any>(url,data);}
+  currencyList(luser:any): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/mastermodule/getcurrencylist/${luser}`); }
+  currencyEdit(currencyid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/editcurrency/${currencyid}`;return this.http.get<any>(url);}
+  deletecurrency(currencyid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/deletecurrency/${currencyid}`;return this.http.delete(url);}
   
 }

@@ -10,15 +10,14 @@ import { CommonService } from '../common.service';
   styleUrl: './currency.component.css'
 })
 export class CurrencyComponent {
-holidayid:string='';
-  clockedIn: boolean = false;
+currencyid:string='';
   isAdmin: boolean = false;
   isList: boolean = true;
   isEdit : boolean = false;
   isView : boolean = false;
   luser:any;
-  holidaylist: any[] = [];
-  pageholiday: any[] = [];
+  currencylist: any[] = [];
+  pagecurrency: any[] = [];
     filteredData: any[] = [];
     searchTerm: string = '';
     @Input() totalItems: number = 0;  
@@ -28,18 +27,18 @@ holidayid:string='';
     numPages: number = 1;
     CurrencyForm:FormGroup;
     empList: any;
-    fileUrl: string = '';
-    filePath: string = '';
-    downloadFile: string = '';
-      logger: any;
   constructor(
     private router: Router, private commonService: CommonService, private _snackBar: MatSnackBar,private formBuilder: FormBuilder ) {
       this.CurrencyForm = this.formBuilder.group({
-        emojcode:[''],
-        emojname: [''],
-        emojicon:['',],
+        currencycode:[''],
+        currencyname: [''],
+        currencyvalue:[0,],
+        currencysymbol:['',],
+        fromcurrencyvalue:[0],
+        tocurrencyvalue:[0],
         active:[false,],
-        edit:[false,]
+        edit:[false,],
+        userid:['']
        });
     }
     ngOnInit(): void {
@@ -53,14 +52,14 @@ holidayid:string='';
         this.CurrencyForm.get('userid')?.setValue(this.luser);
         console.log('Login user Id:', this.luser);
       }
-      this.fetchHolidaydetails(this.luser);
+      this.fetchCurrencydetails(this.luser);
     }
 
-    fetchHolidaydetails(luser:any) {
-      this.commonService.holidayList(luser).subscribe({
+    fetchCurrencydetails(luser:any) {
+      this.commonService.currencyList(luser).subscribe({
         next: (data: any) => {
-          this.holidaylist = data.getholidaylist || [];
-          this.totalItems = this.holidaylist.length;
+          this.currencylist = data.getcurrencylist || [];
+          this.totalItems = this.currencylist.length;
           this.numPages = Math.ceil(this.totalItems / this.itemsByPage);  
           this.updatePagedData(); 
         },
@@ -71,10 +70,10 @@ holidayid:string='';
     }
 
     deleteholiday(item:any) {
-      const holidaycode = item.holidaycode;
-      this.holidayid=holidaycode;
-      console.log(holidaycode);
-      this.commonService.deleteholiday(this.holidayid).subscribe({
+      const currencycode = item.currencycode;
+      this.currencyid=currencycode;
+      console.log(currencycode);
+      this.commonService.deletecurrency(this.currencyid).subscribe({
         next: (res: any) => {
           if (res.sucess === true) {
             const message = 'Deleted successfully';
@@ -84,7 +83,7 @@ holidayid:string='';
               horizontalPosition: 'right',
  
             });
-            this.fetchHolidaydetails(this.luser);
+            this.fetchCurrencydetails(this.luser);
           }
         },
         error: (err: any) => {
@@ -99,10 +98,10 @@ holidayid:string='';
     }
 
     updatePagedData(): void {
-      const sourceData = this.searchTerm ? this.filteredData : this.holidaylist;
+      const sourceData = this.searchTerm ? this.filteredData : this.currencylist;
       const startIndex = (this.currentPage - 1) * this.itemsByPage;
       const endIndex = startIndex + this.itemsByPage;
-      this.pageholiday = sourceData.slice(startIndex, endIndex);
+      this.pagecurrency = sourceData.slice(startIndex, endIndex);
     }
   
     onPageChange(newPage: number): void {
@@ -112,7 +111,7 @@ holidayid:string='';
     }
   
     updatePagination(): void {
-      const sourceData = this.searchTerm ? this.filteredData : this.holidaylist;
+      const sourceData = this.searchTerm ? this.filteredData : this.currencylist;
       this.totalItems = sourceData.length;
       this.numPages = Math.ceil(this.totalItems / this.itemsByPage);
     
@@ -144,8 +143,8 @@ holidayid:string='';
 
     filterTable(): void {
       const term = this.searchTerm?.toLowerCase() || ''; 
-      this.filteredData = this.holidaylist.filter(item =>
-          (item.holidaycode?.toLowerCase() || '').includes(term) ||
+      this.filteredData = this.currencylist.filter(item =>
+          (item.currencycode?.toLowerCase() || '').includes(term) ||
           (item.hdate?.toLowerCase() || '').includes(term) ||
           (item.hname?.toLowerCase() || '').includes(term) ||
           (item.active?.toString().toLowerCase() || '').includes(term) ||
@@ -156,20 +155,20 @@ holidayid:string='';
       this.isList = true;
       this.CurrencyForm.reset();
       this.isEdit = false;
-      this.fetchHolidaydetails(this.luser);
+      this.fetchCurrencydetails(this.luser);
   }
   
    detailholiday(item:any){
       this.isList=false;
       this.isEdit=false;
       this.isView=true;
-      this.fetchdetails(item.holidaycode);
+      this.fetchdetails(item.currencycode);
     }
     editholiday(item:any){
       this.isList=false;
       this.isEdit=true;
       this.isView=false;
-      this.fetchdetails(item.holidaycode);
+      this.fetchdetails(item.currencycode);
     }
     cancel():void{
       this.isEdit=false;
@@ -181,7 +180,7 @@ holidayid:string='';
         if(this.isEdit){
           this.CurrencyForm.get('edit')?.setValue(this.isEdit);
         }
-        this.commonService.saveholiday(this.CurrencyForm.value).subscribe({
+        this.commonService.savecurrency(this.CurrencyForm.value).subscribe({
           next: (res: any) => {
             if (res.sucess === true) {
               const message = this.isEdit ? 'Update successfully' : 'Saved successfully';
@@ -193,7 +192,7 @@ holidayid:string='';
               this.isList = true;
               this.CurrencyForm.reset();
               this.isEdit = false;
-              this.fetchHolidaydetails(this.luser);
+              this.fetchCurrencydetails(this.luser);
             }
           },
           error: (err: any) => {
@@ -207,14 +206,16 @@ holidayid:string='';
         });
       }
     }
-    fetchdetails(holidayid:any) {
-      this.commonService.holidayEdit(holidayid).subscribe({
+    fetchdetails(currencyid:any) {
+      this.commonService.currencyEdit(currencyid).subscribe({
         next: (data: any) => {
           this.CurrencyForm.patchValue({
-            holidaycode:data.holidaycode,
-            hdate:data.hdate ,
-            hname:data.hname,
-            status:data.status,
+            currencycode:data.currencycode,
+            currencyname:data.currencyname ,
+            currencysymbol:data.currencysymbol,
+            tocurrencyvalue:data.tocurrencyvalue ,
+            fromcurrencyvalue:data.fromcurrencyvalue,
+            currencyvalue:data.currencyvalue,
             active:data.active,
           });
         },

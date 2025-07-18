@@ -121,28 +121,24 @@
 <div *ngIf="isView">
   <div class="d-flex justify-content-center mt-8">
     <div class="mt-5" style="border:1px solid rgb(91, 165, 197);border-radius: 10px;width: 50%;">
-      <h4 class="bg-primary text-white text-center p-2" style="border-radius: 10px;">Holiday View 
+      <h4 class="bg-primary text-white text-center p-2" style="border-radius: 10px;">Emoj View 
         <span style="cursor:pointer; float:inline-end;" (click)="cancel()">❌</span>
       </h4>
 
       <div class="row mb-4">
-        <div class="col-md-3 font-weight-bold"><b>Holiday ID</b></div>
-        <div class="col-md-3">{{ EmojForm.get('holidaycode')?.value || 'N/A' }}</div>
-        <div class="col-md-3 font-weight-bold"><b>Holiday Name</b></div>
-        <div class="col-md-3">{{ EmojForm.get('hname')?.value || 'N/A' }}</div>
+        <div class="col-md-3 font-weight-bold"><b>Emoj ID</b></div>
+        <div class="col-md-3">{{ EmojForm.get('emojcode')?.value || 'N/A' }}</div>
+        <div class="col-md-3 font-weight-bold"><b>Emoj Name</b></div>
+        <div class="col-md-3">{{ EmojForm.get('emojname')?.value || 'N/A' }}</div>
       </div>
 
       <div class="row mb-4">
-        <div class="col-md-3 font-weight-bold"><b>Status</b></div>
-        <div class="col-md-3">{{ EmojForm.get('status')?.value || 'N/A' }}</div>
+        <div class="col-md-3 font-weight-bold"><b>Emoj Icon</b></div>
+        <div class="col-md-3">{{ EmojForm.get('emojicon')?.value || 'N/A' }}</div>
         <div class="col-md-3 font-weight-bold"><b>Active</b></div>
         <div class="col-md-3">{{ EmojForm.get('active')?.value || 'N/A' }}</div>
       </div>
 
-      <div class="row mb-4">
-        <div class="col-md-3 font-weight-bold"><b>Holiday Date</b></div>
-        <div class="col-md-3">{{ EmojForm.get('hdate')?.value || 'N/A' }}</div>
-      </div>
     </div>
   </div>
 </div>

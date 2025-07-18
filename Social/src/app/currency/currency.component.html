@@ -21,15 +21,19 @@
                 <th style="background: rgb(239, 206, 95); text-align: center;">Currency ID</th>
                 <th style="background: rgb(239, 206, 95); text-align: center;">Currency Name</th>
                 <th style="background: rgb(239, 206, 95); text-align: center;">Currency Value</th>
+                <th style="background: rgb(239, 206, 95); text-align: center;">From Currency Value</th>
+                <th style="background: rgb(239, 206, 95); text-align: center;">To Currency Value</th>
                 <th style="background: rgb(239, 206, 95); text-align: center;">Active</th>
                 <th style="background: rgb(239, 206, 95); text-align: center;">Actions</th>
             </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of (filteredData?.length ? filteredData : pageholiday)">
-            <td style="text-align: center;">{{ item.holidaycode}}</td>
-            <td style="text-align: center;">{{ item.hname }}</td>
-            <td style="text-align: center;">{{ item.status }}</td>
+          <tr *ngFor="let item of (filteredData?.length ? filteredData : pagecurrency)">
+            <td style="text-align: center;">{{ item.currencycode}}</td>
+            <td style="text-align: center;">{{ item.currencyname }}</td>
+            <td style="text-align: center;">{{ item.currencyvalue }}</td>
+            <td style="text-align: center;">{{ item.fromcurrencyvalue }}</td>
+            <td style="text-align: center;">{{ item.tocurrencyvalue }}</td>
             <td style="text-align: center;">{{ item.active }}</td>
             <td  style="text-align: center;">
               <button *ngIf="isAdmin"  class="btn btn-primary" style="background: transparent; border: none;" (click)="editholiday(item)"><span>✏️</span></button>
@@ -84,24 +88,45 @@
     </div>
 
     <div class="demo border border-1 rounded p-4" style="background-color: #f8d7da;">
-      <div class="row mb-3" *ngIf="isEdit">
-        <div class="col-md-6 font-weight-bold" id="gridhead"><b>Currency ID</b></div>
-        <div class="col-md-6">{{ CurrencyForm.get('emojcode')?.value || 'N/A' }}</div>
+      <div class="row mb-3" >
+        <div class="col-md-6 font-weight-bold" id="gridhead"><b>Currency Code</b></div>
+        <div class="col-md-6"*ngIf="isEdit">{{ CurrencyForm.get('currencycode')?.value || 'N/A' }}</div>
+        <div class="col-md-6"*ngIf="!isEdit">
+          <input type="text" id="currencycode" formControlName="currencycode" class="form-control w-100" placeholder="Enter Currency Code" />
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6 font-weight-bold" id="gridhead"><b>Currency Symbol</b></div>
+        <div class="col-md-6">
+          <input type="text" id="symbol" formControlName="currencysymbol" class="form-control w-100" placeholder="Enter Currency Symbol" />
+        </div>
       </div>
       <div class="row mb-3">
         <div class="col-md-6 font-weight-bold" id="gridhead"><b>Currency Name</b></div>
         <div class="col-md-6">
-          <input type="text" id="emojname" formControlName="emojname" class="form-control w-100" placeholder="Enter Currency Name" />
+          <input type="text" id="currencyname" formControlName="currencyname" class="form-control w-100" placeholder="Enter Currency Name" />
         </div>
       </div>
       <div class="row mb-3">
         <div class="col-md-6 font-weight-bold" id="gridhead"><b>Currency Value</b></div>
         <div class="col-md-6">
-          <input type="text" id="emojicon" formControlName="emojicon" class="form-control w-100" placeholder="Enter Currency Value" />
+          <input type="number" id="currencyvalue" formControlName="currencyvalue" class="form-control w-100" placeholder="Enter Currency Value" />
         </div>
       </div>
       <div class="row mb-3">
-        <div class="col-md-6 font-weight-bold" id="gridhead"><b>Active</b></div>
+        <div class="col-md-6 font-weight-bold" id="gridhead"><b>From Currency Value</b></div>
+        <div class="col-md-6">
+          <input type="number" id="fromcurrencyvalue" formControlName="fromcurrencyvalue" class="form-control w-100" placeholder="Enter From Currency Value" />
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6 font-weight-bold" id="gridhead"><b>To Currency Value</b></div>
+        <div class="col-md-6">
+          <input type="number" id="tocurrencyvalue" formControlName="tocurrencyvalue" class="form-control w-100" placeholder="Enter To Currency Value" />
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6 font-weight-bold" id="gridhead"><b>  </b></div>
         <div class="col-md-6">
           <div class="form-check form-switch">
             <input type="checkbox" class="form-check-input" id="active" formControlName="active">
@@ -121,7 +146,7 @@
 <div *ngIf="isView">
   <div class="d-flex justify-content-center mt-8">
     <div class="mt-5" style="border:1px solid rgb(91, 165, 197);border-radius: 10px;width: 50%;">
-      <h4 class="bg-primary text-white text-center p-2" style="border-radius: 10px;">Holiday View 
+      <h4 class="bg-primary text-white text-center p-2" style="border-radius: 10px;">Currency View 
         <span style="cursor:pointer; float:inline-end;" (click)="cancel()">❌</span>
       </h4>
 
