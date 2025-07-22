@@ -5,17 +5,18 @@ import { Router } from '@angular/router';
 import { CommonService } from '../common.service';
 
 @Component({
-  selector: 'app-currency',
-  templateUrl: './currency.component.html',
-  styleUrl: './currency.component.css'
+  selector: 'app-country',
+  templateUrl: './country.component.html',
+  styleUrl: './country.component.css'
 })
-export class CurrencyComponent {
-currencyid:string='';
+export class CountryComponent {
+countryid:string='';
   isAdmin: boolean = false;
   isList: boolean = true;
   isEdit : boolean = false;
   isView : boolean = false;
   luser:any;
+   regionlist: any[] = [];
   currencylist: any[] = [];
   pagecurrency: any[] = [];
     filteredData: any[] = [];
@@ -25,17 +26,15 @@ currencyid:string='';
     @Input() currentPage: number = 1;
     @Output() pageChanged = new EventEmitter<number>();  
     numPages: number = 1;
-    CurrencyForm:FormGroup;
+    CountryForm:FormGroup;
     empList: any;
   constructor(
     private router: Router, private commonService: CommonService, private _snackBar: MatSnackBar,private formBuilder: FormBuilder ) {
-      this.CurrencyForm = this.formBuilder.group({
-        currencycode:[''],
-        currencyname: [''],
-        currencyvalue:[0,],
-        currencysymbol:['',],
-        fromcurrencyvalue:[0],
-        tocurrencyvalue:[0],
+      this.CountryForm = this.formBuilder.group({
+        countrycode:[''],
+        countryname: [''],
+        countryregion:[0,],
+        countrysymbol:['',],
         active:[false,],
         edit:[false,],
         userid:['']
@@ -49,10 +48,11 @@ currencyid:string='';
       this.empList = emplist ? JSON.parse(emplist) : [];
       console.log('Employee List:', this.empList); 
       if(this.luser!=""){
-        this.CurrencyForm.get('userid')?.setValue(this.luser);
+        this.CountryForm.get('userid')?.setValue(this.luser);
         console.log('Login user Id:', this.luser);
       }
       this.fetchCurrencydetails(this.luser);
+      this.fetchregionlist();
     }
 
     fetchCurrencydetails(luser:any) {
@@ -68,12 +68,21 @@ currencyid:string='';
         },
       });
     }
-
+    fetchregionlist() {
+      this.commonService.getregiondrop().subscribe({
+        next: (data: any) => {
+          this.regionlist = data.getregion || [];
+        },
+        error: (e: any) => {
+          console.error('Error fetching data:', e);
+        },
+      });
+    }
     deleteholiday(item:any) {
       const currencycode = item.currencycode;
-      this.currencyid=currencycode;
+      this.countryid=currencycode;
       console.log(currencycode);
-      this.commonService.deletecurrency(this.currencyid).subscribe({
+      this.commonService.deletecurrency(this.countryid).subscribe({
         next: (res: any) => {
           if (res.sucess === true) {
             const message = 'Deleted successfully';
@@ -145,17 +154,15 @@ currencyid:string='';
       const term = this.searchTerm?.toLowerCase() || ''; 
       this.filteredData = this.currencylist.filter(item =>
           (item.currencycode?.toLowerCase() || '').includes(term) ||
-          (item.currencyname?.toLowerCase() || '').includes(term) ||
-          (item.currencysymbol?.toLowerCase() || '').includes(term) ||
-          (item.currencyvalue?.toString().toLowerCase() || '').includes(term) ||
-          (item.fromcurrencyvalue?.toLowerCase() || '').includes(term) ||
-          (item.tocurrencyvalue?.toString().toLowerCase() || '').includes(term) ||
-          (item.active?.toLowerCase() || '').includes(term)
+          (item.hdate?.toLowerCase() || '').includes(term) ||
+          (item.hname?.toLowerCase() || '').includes(term) ||
+          (item.active?.toString().toLowerCase() || '').includes(term) ||
+          (item.status?.toLowerCase() || '').includes(term)
       );
       this.currentPage = 1; 
       this.updatePagination();
       this.isList = true;
-      this.CurrencyForm.reset();
+      this.CountryForm.reset();
       this.isEdit = false;
       this.fetchCurrencydetails(this.luser);
   }
@@ -178,11 +185,11 @@ currencyid:string='';
       this.isView=false;
     }
     submit():void{
-      if (this.CurrencyForm.valid) {
+      if (this.CountryForm.valid) {
         if(this.isEdit){
-          this.CurrencyForm.get('edit')?.setValue(this.isEdit);
+          this.CountryForm.get('edit')?.setValue(this.isEdit);
         }
-        this.commonService.savecurrency(this.CurrencyForm.value).subscribe({
+        this.commonService.savecurrency(this.CountryForm.value).subscribe({
           next: (res: any) => {
             if (res.sucess === true) {
               const message = this.isEdit ? 'Update successfully' : 'Saved successfully';
@@ -192,7 +199,7 @@ currencyid:string='';
                 horizontalPosition: 'right',
               });
               this.isList = true;
-              this.CurrencyForm.reset();
+              this.CountryForm.reset();
               this.isEdit = false;
               this.fetchCurrencydetails(this.luser);
             }
@@ -208,16 +215,14 @@ currencyid:string='';
         });
       }
     }
-    fetchdetails(currencyid:any) {
-      this.commonService.currencyEdit(currencyid).subscribe({
+    fetchdetails(countryid:any) {
+      this.commonService.currencyEdit(countryid).subscribe({
         next: (data: any) => {
-          this.CurrencyForm.patchValue({
-            currencycode:data.currencycode,
-            currencyname:data.currencyname ,
-            currencysymbol:data.currencysymbol,
-            tocurrencyvalue:data.tocurrencyvalue ,
-            fromcurrencyvalue:data.fromcurrencyvalue,
-            currencyvalue:data.currencyvalue,
+          this.CountryForm.patchValue({
+            countrycode:data.countrycode,
+            countryname:data.countryname,
+            
+            countrysymbol:data.countrysymbol,
             active:data.active,
           });
         },

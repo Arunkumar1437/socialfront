@@ -39,13 +39,15 @@ import { LeavedeclarationComponent } from './leavedeclaration/leavedeclaration.c
 import { LeaveapplicationComponent } from './leaveapplication/leaveapplication.component';
 import { EmojComponent } from './emoj/emoj.component';
 import { CurrencyComponent } from './currency/currency.component';
+import { CountryComponent } from './country/country.component';
+import { RegionComponent } from './region/region.component';
 
 @NgModule({
   declarations: [
     TaskmangeComponent,AttendanceComponent,SidebarComponent,MessageComponent,PostComponent,NotificationComponent,
     SettingComponent,RegisterComponent,ForgetpasswordComponent,DashboardComponent,ProfileComponent,
     OcrComponent,ChatComponent,AdminComponent,FormComponent,MainpageComponent,EmployeeComponent, 
-    HolidayComponent, LeavetypeComponent, LeavedeclarationComponent, LeaveapplicationComponent, EmojComponent, CurrencyComponent,
+    HolidayComponent, LeavetypeComponent, LeavedeclarationComponent, LeaveapplicationComponent, EmojComponent, CurrencyComponent, CountryComponent, RegionComponent,
   ],
   imports: [
     CommonModule,

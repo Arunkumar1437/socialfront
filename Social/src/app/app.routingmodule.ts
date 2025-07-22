@@ -22,6 +22,8 @@ import { LeavedeclarationComponent } from './leavedeclaration/leavedeclaration.c
 import { LeaveapplicationComponent } from './leaveapplication/leaveapplication.component';
 import { CurrencyComponent } from './currency/currency.component';
 import { EmojComponent } from './emoj/emoj.component';
+import { CountryComponent } from './country/country.component';
+import { RegionComponent } from './region/region.component';
 
 export const routes: Routes = [
     //configure the modules
@@ -48,6 +50,8 @@ export const routes: Routes = [
     {path:"Leaveapplication",loadChildren:()=>import("./leaveapplication/leaveapplication.module").then((m)=>m.LeaveapplicationModule)},
     {path:"Emoj",loadChildren:()=>import("./emoj/emoj.module").then((m)=>m.EmojModule)},
     {path:"Currency",loadChildren:()=>import("./currency/currency.module").then((m)=>m.CurrencyModule)},
+    {path:"Country",loadChildren:()=>import("./country/country.module").then((m)=>m.CountryModule)},
+    {path:"Region",loadChildren:()=>import("./region/region.module").then((m)=>m.RegionModule)},
 
 
     //configure the Components 
@@ -74,6 +78,8 @@ export const routes: Routes = [
     {path:"leaveapplication",component:LeaveapplicationComponent},
     {path:"emoj",component:EmojComponent},
     {path:'currency',component:CurrencyComponent},
+     {path:'country',component:CountryComponent},
+      {path:'region',component:RegionComponent},
     //Redirect to Login Page Directly
     {path: '', redirectTo: 'Login/login', pathMatch: 'full' },
    

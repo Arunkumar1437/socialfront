@@ -5,19 +5,19 @@ import { Router } from '@angular/router';
 import { CommonService } from '../common.service';
 
 @Component({
-  selector: 'app-currency',
-  templateUrl: './currency.component.html',
-  styleUrl: './currency.component.css'
+  selector: 'app-region',
+  templateUrl: './region.component.html',
+  styleUrl: './region.component.css'
 })
-export class CurrencyComponent {
-currencyid:string='';
+export class RegionComponent {
+regionid:string='';
   isAdmin: boolean = false;
   isList: boolean = true;
   isEdit : boolean = false;
   isView : boolean = false;
   luser:any;
-  currencylist: any[] = [];
-  pagecurrency: any[] = [];
+  regionlist: any[] = [];
+  pageregion: any[] = [];
     filteredData: any[] = [];
     searchTerm: string = '';
     @Input() totalItems: number = 0;  
@@ -25,17 +25,14 @@ currencyid:string='';
     @Input() currentPage: number = 1;
     @Output() pageChanged = new EventEmitter<number>();  
     numPages: number = 1;
-    CurrencyForm:FormGroup;
+    RegionForm:FormGroup;
     empList: any;
   constructor(
     private router: Router, private commonService: CommonService, private _snackBar: MatSnackBar,private formBuilder: FormBuilder ) {
-      this.CurrencyForm = this.formBuilder.group({
-        currencycode:[''],
-        currencyname: [''],
-        currencyvalue:[0,],
-        currencysymbol:['',],
-        fromcurrencyvalue:[0],
-        tocurrencyvalue:[0],
+      this.RegionForm = this.formBuilder.group({
+        regioncode:[''],
+        regionname: [''],
+        regionsymbol:['',],
         active:[false,],
         edit:[false,],
         userid:['']
@@ -49,17 +46,17 @@ currencyid:string='';
       this.empList = emplist ? JSON.parse(emplist) : [];
       console.log('Employee List:', this.empList); 
       if(this.luser!=""){
-        this.CurrencyForm.get('userid')?.setValue(this.luser);
+        this.RegionForm.get('userid')?.setValue(this.luser);
         console.log('Login user Id:', this.luser);
       }
-      this.fetchCurrencydetails(this.luser);
+      this.fetchRegiondetails(this.luser);
     }
 
-    fetchCurrencydetails(luser:any) {
-      this.commonService.currencyList(luser).subscribe({
+    fetchRegiondetails(luser:any) {
+      this.commonService.regionList(luser).subscribe({
         next: (data: any) => {
-          this.currencylist = data.getcurrencylist || [];
-          this.totalItems = this.currencylist.length;
+          this.regionlist = data.getregionlist || [];
+          this.totalItems = this.regionlist.length;
           this.numPages = Math.ceil(this.totalItems / this.itemsByPage);  
           this.updatePagedData(); 
         },
@@ -69,11 +66,11 @@ currencyid:string='';
       });
     }
 
-    deleteholiday(item:any) {
-      const currencycode = item.currencycode;
-      this.currencyid=currencycode;
-      console.log(currencycode);
-      this.commonService.deletecurrency(this.currencyid).subscribe({
+    delete(item:any) {
+      const regioncode = item.regioncode;
+      this.regionid=regioncode;
+      console.log(regioncode);
+      this.commonService.deleteregion(this.regionid).subscribe({
         next: (res: any) => {
           if (res.sucess === true) {
             const message = 'Deleted successfully';
@@ -83,7 +80,7 @@ currencyid:string='';
               horizontalPosition: 'right',
  
             });
-            this.fetchCurrencydetails(this.luser);
+            this.fetchRegiondetails(this.luser);
           }
         },
         error: (err: any) => {
@@ -98,10 +95,10 @@ currencyid:string='';
     }
 
     updatePagedData(): void {
-      const sourceData = this.searchTerm ? this.filteredData : this.currencylist;
+      const sourceData = this.searchTerm ? this.filteredData : this.regionlist;
       const startIndex = (this.currentPage - 1) * this.itemsByPage;
       const endIndex = startIndex + this.itemsByPage;
-      this.pagecurrency = sourceData.slice(startIndex, endIndex);
+      this.pageregion = sourceData.slice(startIndex, endIndex);
     }
   
     onPageChange(newPage: number): void {
@@ -111,7 +108,7 @@ currencyid:string='';
     }
   
     updatePagination(): void {
-      const sourceData = this.searchTerm ? this.filteredData : this.currencylist;
+      const sourceData = this.searchTerm ? this.filteredData : this.regionlist;
       this.totalItems = sourceData.length;
       this.numPages = Math.ceil(this.totalItems / this.itemsByPage);
     
@@ -143,34 +140,31 @@ currencyid:string='';
 
     filterTable(): void {
       const term = this.searchTerm?.toLowerCase() || ''; 
-      this.filteredData = this.currencylist.filter(item =>
-          (item.currencycode?.toLowerCase() || '').includes(term) ||
-          (item.currencyname?.toLowerCase() || '').includes(term) ||
-          (item.currencysymbol?.toLowerCase() || '').includes(term) ||
-          (item.currencyvalue?.toString().toLowerCase() || '').includes(term) ||
-          (item.fromcurrencyvalue?.toLowerCase() || '').includes(term) ||
-          (item.tocurrencyvalue?.toString().toLowerCase() || '').includes(term) ||
-          (item.active?.toLowerCase() || '').includes(term)
+      this.filteredData = this.regionlist.filter(item =>
+          (item.regioncode?.toLowerCase() || '').includes(term) ||
+          (item.regionname?.toLowerCase() || '').includes(term) ||
+          (item.regionsymbol?.toLowerCase() || '').includes(term) ||
+          (item.active?.toString().toLowerCase() || '').includes(term)
       );
       this.currentPage = 1; 
       this.updatePagination();
       this.isList = true;
-      this.CurrencyForm.reset();
+      this.RegionForm.reset();
       this.isEdit = false;
-      this.fetchCurrencydetails(this.luser);
+      this.fetchRegiondetails(this.luser);
   }
   
-   detailholiday(item:any){
+   detail(item:any){
       this.isList=false;
       this.isEdit=false;
       this.isView=true;
-      this.fetchdetails(item.currencycode);
+      this.fetchdetails(item.regioncode);
     }
-    editholiday(item:any){
+    edit(item:any){
       this.isList=false;
       this.isEdit=true;
       this.isView=false;
-      this.fetchdetails(item.currencycode);
+      this.fetchdetails(item.regioncode);
     }
     cancel():void{
       this.isEdit=false;
@@ -178,11 +172,11 @@ currencyid:string='';
       this.isView=false;
     }
     submit():void{
-      if (this.CurrencyForm.valid) {
+      if (this.RegionForm.valid) {
         if(this.isEdit){
-          this.CurrencyForm.get('edit')?.setValue(this.isEdit);
+          this.RegionForm.get('edit')?.setValue(this.isEdit);
         }
-        this.commonService.savecurrency(this.CurrencyForm.value).subscribe({
+        this.commonService.saveregion(this.RegionForm.value).subscribe({
           next: (res: any) => {
             if (res.sucess === true) {
               const message = this.isEdit ? 'Update successfully' : 'Saved successfully';
@@ -192,9 +186,9 @@ currencyid:string='';
                 horizontalPosition: 'right',
               });
               this.isList = true;
-              this.CurrencyForm.reset();
+              this.RegionForm.reset();
               this.isEdit = false;
-              this.fetchCurrencydetails(this.luser);
+              this.fetchRegiondetails(this.luser);
             }
           },
           error: (err: any) => {
@@ -209,15 +203,12 @@ currencyid:string='';
       }
     }
     fetchdetails(currencyid:any) {
-      this.commonService.currencyEdit(currencyid).subscribe({
+      this.commonService.regionEdit(currencyid).subscribe({
         next: (data: any) => {
-          this.CurrencyForm.patchValue({
-            currencycode:data.currencycode,
-            currencyname:data.currencyname ,
-            currencysymbol:data.currencysymbol,
-            tocurrencyvalue:data.tocurrencyvalue ,
-            fromcurrencyvalue:data.fromcurrencyvalue,
-            currencyvalue:data.currencyvalue,
+          this.RegionForm.patchValue({
+            regioncode:data.regioncode,
+            regionsymbol:data.regionsymbol ,
+            regionname:data.regionname,
             active:data.active,
           });
         },

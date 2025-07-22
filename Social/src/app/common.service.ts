@@ -169,5 +169,9 @@ export class CommonService {
   currencyList(luser:any): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/mastermodule/getcurrencylist/${luser}`); }
   currencyEdit(currencyid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/editcurrency/${currencyid}`;return this.http.get<any>(url);}
   deletecurrency(currencyid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/deletecurrency/${currencyid}`;return this.http.delete(url);}
-  
+  saveregion(data: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/saveregion`; return this.http.post<any>(url,data);}
+  regionList(luser:any): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/mastermodule/getregionlist/${luser}`); }
+  regionEdit(regionid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/editregion/${regionid}`;return this.http.get<any>(url);}
+  deleteregion(regionid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/deleteregion/${regionid}`;return this.http.delete(url);}
+  getregiondrop():Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/mastermodule/getregiondropdown`); }
 }
