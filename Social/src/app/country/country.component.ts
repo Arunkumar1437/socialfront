@@ -17,8 +17,8 @@ countryid:string='';
   isView : boolean = false;
   luser:any;
    regionlist: any[] = [];
-  currencylist: any[] = [];
-  pagecurrency: any[] = [];
+  countrylist: any[] = [];
+  pagecountry: any[] = [];
     filteredData: any[] = [];
     searchTerm: string = '';
     @Input() totalItems: number = 0;  
@@ -51,15 +51,15 @@ countryid:string='';
         this.CountryForm.get('userid')?.setValue(this.luser);
         console.log('Login user Id:', this.luser);
       }
-      this.fetchCurrencydetails(this.luser);
+      this.fetchCountrydetails(this.luser);
       this.fetchregionlist();
     }
 
-    fetchCurrencydetails(luser:any) {
-      this.commonService.currencyList(luser).subscribe({
+    fetchCountrydetails(luser:any) {
+      this.commonService.countryList(luser).subscribe({
         next: (data: any) => {
-          this.currencylist = data.getcurrencylist || [];
-          this.totalItems = this.currencylist.length;
+          this.countrylist = data.getcountrybeanlist || [];
+          this.totalItems = this.countrylist.length;
           this.numPages = Math.ceil(this.totalItems / this.itemsByPage);  
           this.updatePagedData(); 
         },
@@ -78,11 +78,11 @@ countryid:string='';
         },
       });
     }
-    deleteholiday(item:any) {
-      const currencycode = item.currencycode;
-      this.countryid=currencycode;
-      console.log(currencycode);
-      this.commonService.deletecurrency(this.countryid).subscribe({
+    delete(item:any) {
+      const countrycode = item.countrycode;
+      this.countryid=countrycode;
+      console.log(countrycode);
+      this.commonService.deletecountry(this.countryid).subscribe({
         next: (res: any) => {
           if (res.sucess === true) {
             const message = 'Deleted successfully';
@@ -92,7 +92,7 @@ countryid:string='';
               horizontalPosition: 'right',
  
             });
-            this.fetchCurrencydetails(this.luser);
+            this.fetchCountrydetails(this.luser);
           }
         },
         error: (err: any) => {
@@ -107,10 +107,10 @@ countryid:string='';
     }
 
     updatePagedData(): void {
-      const sourceData = this.searchTerm ? this.filteredData : this.currencylist;
+      const sourceData = this.searchTerm ? this.filteredData : this.countrylist;
       const startIndex = (this.currentPage - 1) * this.itemsByPage;
       const endIndex = startIndex + this.itemsByPage;
-      this.pagecurrency = sourceData.slice(startIndex, endIndex);
+      this.pagecountry = sourceData.slice(startIndex, endIndex);
     }
   
     onPageChange(newPage: number): void {
@@ -120,7 +120,7 @@ countryid:string='';
     }
   
     updatePagination(): void {
-      const sourceData = this.searchTerm ? this.filteredData : this.currencylist;
+      const sourceData = this.searchTerm ? this.filteredData : this.countrylist;
       this.totalItems = sourceData.length;
       this.numPages = Math.ceil(this.totalItems / this.itemsByPage);
     
@@ -152,7 +152,7 @@ countryid:string='';
 
     filterTable(): void {
       const term = this.searchTerm?.toLowerCase() || ''; 
-      this.filteredData = this.currencylist.filter(item =>
+      this.filteredData = this.countrylist.filter(item =>
           (item.currencycode?.toLowerCase() || '').includes(term) ||
           (item.hdate?.toLowerCase() || '').includes(term) ||
           (item.hname?.toLowerCase() || '').includes(term) ||
@@ -164,20 +164,20 @@ countryid:string='';
       this.isList = true;
       this.CountryForm.reset();
       this.isEdit = false;
-      this.fetchCurrencydetails(this.luser);
+      this.fetchCountrydetails(this.luser);
   }
   
-   detailholiday(item:any){
+   detail(item:any){
       this.isList=false;
       this.isEdit=false;
       this.isView=true;
-      this.fetchdetails(item.currencycode);
+      this.fetchdetails(item.countrycode);
     }
-    editholiday(item:any){
+    edit(item:any){
       this.isList=false;
       this.isEdit=true;
       this.isView=false;
-      this.fetchdetails(item.currencycode);
+      this.fetchdetails(item.countrycode);
     }
     cancel():void{
       this.isEdit=false;
@@ -189,7 +189,7 @@ countryid:string='';
         if(this.isEdit){
           this.CountryForm.get('edit')?.setValue(this.isEdit);
         }
-        this.commonService.savecurrency(this.CountryForm.value).subscribe({
+        this.commonService.savecountry(this.CountryForm.value).subscribe({
           next: (res: any) => {
             if (res.sucess === true) {
               const message = this.isEdit ? 'Update successfully' : 'Saved successfully';
@@ -201,7 +201,7 @@ countryid:string='';
               this.isList = true;
               this.CountryForm.reset();
               this.isEdit = false;
-              this.fetchCurrencydetails(this.luser);
+              this.fetchCountrydetails(this.luser);
             }
           },
           error: (err: any) => {
@@ -216,12 +216,12 @@ countryid:string='';
       }
     }
     fetchdetails(countryid:any) {
-      this.commonService.currencyEdit(countryid).subscribe({
+      this.commonService.countryEdit(countryid).subscribe({
         next: (data: any) => {
           this.CountryForm.patchValue({
             countrycode:data.countrycode,
             countryname:data.countryname,
-            
+            countryregion:data.countryregion,
             countrysymbol:data.countrysymbol,
             active:data.active,
           });

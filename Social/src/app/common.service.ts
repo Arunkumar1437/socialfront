@@ -174,4 +174,12 @@ export class CommonService {
   regionEdit(regionid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/editregion/${regionid}`;return this.http.get<any>(url);}
   deleteregion(regionid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/deleteregion/${regionid}`;return this.http.delete(url);}
   getregiondrop():Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/mastermodule/getregiondropdown`); }
+  savecountry(data: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/savecountry`; return this.http.post<any>(url,data);}
+  countryList(luser:any): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/mastermodule/getcountrylist/${luser}`); }
+  countryEdit(countryid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/editcountry/${countryid}`;return this.http.get<any>(url);}
+  deletecountry(countryid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/deletecountry/${countryid}`;return this.http.delete(url);}
+  getcountrydrop():Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/mastermodule/getcountrydropdown`); }
+  getstatedrop():Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/mastermodule/getstatedropdown`); }
+
+
 }
