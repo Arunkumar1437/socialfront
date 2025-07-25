@@ -1,0 +1,161 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+<div *ngIf="isList">
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <span (click)="openAdd()" style="cursor: pointer;">➕</span>
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      placeholder="Search"
+      (input)="filterTable()"
+      class="form-control"
+      style="margin-bottom: 10px; width: 300px;"
+    />
+  </div>
+  <div class="table-container">
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th style="background: rgb(202, 236, 81); text-align: center;">City ID</th>
+                <th style="background: rgb(202, 236, 81); text-align: center;">City Name</th>
+                <th style="background: rgb(202, 236, 81); text-align: center;">City State</th>
+                <th style="background: rgb(202, 236, 81); text-align: center;">Active</th>
+                <th style="background: rgb(202, 236, 81); text-align: center;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of (filteredData?.length ? filteredData : pagecity)">
+            <td style="text-align: center;">{{ item.citycode}}</td>
+            <td style="text-align: center;">{{ item.cityname }}</td>
+            <td style="text-align: center;">{{ item.citystate }}</td>
+            <td style="text-align: center;">{{ item.active }}</td>
+            <td  style="text-align: center;">
+              <button *ngIf="isAdmin"  class="btn btn-primary" style="background: transparent; border: none;" (click)="edit(item)"><span>✏️</span></button>
+              <button class="btn btn-primary" style="background: transparent; border: none;" (click)="detail(item)"><span>👁️</span></button>
+              <button *ngIf="isAdmin"  class="delete" style="background: transparent; border: none;"(click)="delete(item)"><span>🗑️</span></button>
+            </td>
+          </tr> 
+        </tbody>
+      </table>
+    <footer class="panel-footer panel-footer-list" style="background-color: #e2e2e2;">
+      <div class="row" style="margin-left: 483px;">
+        <div class="col-sm-12 col-md-7">
+          <div class="pagination" *ngIf="numPages > 1">
+            <ul class="pagination pagination-bottom">
+              <li class="footable-page-arrow" [ngClass]="{'disabled': currentPage === 1}">
+                <a (click)="selectPage(1)">
+                  <span class="text-info">⏪</span>
+                </a>
+              </li>
+              <li class="footable-page-arrow" [ngClass]="{'disabled': currentPage === 1}">
+                <a (click)="selectPage(currentPage - 1)">
+                  <span class="text-info">⬅️</span>
+                </a>
+              </li>
+              <li class="footable-page active">
+                <input type="number" [(ngModel)]="currentPage" min="1" [max]="numPages" (change)="selectPage(currentPage)">
+              </li>
+              <li class="footable-page-arrow" [ngClass]="{'disabled': currentPage === numPages}">
+                <a (click)="selectPage(currentPage + 1)">
+                  <span class="text-info">➡️</span>
+                </a>
+              </li>
+              <li class="footable-page-arrow" [ngClass]="{'disabled': currentPage === numPages}">
+                <a (click)="selectPage(numPages)">
+                  <span class="text-info">⏩</span>
+                </a>
+              </li>
+            </ul>
+            <small class="inline m-t-sm m-b-sm"> Showing page {{currentPage}} of {{numPages}} </small>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>
+
+<div *ngIf="!isList && !isView" style="width: 50%;margin-left: 410px;text-align: center;">
+  <form [formGroup]="CityForm" (ngSubmit)="submit()" class="form-container">
+    <div>
+      <h4 class="heading text-center border border-0 bg-primary text-white rounded py-2" *ngIf="!isEdit">Add City</h4>
+      <h4 class="heading text-center border border-0 bg-primary text-white rounded py-2" *ngIf="isEdit">Edit City</h4>
+    </div>
+
+    <div class="demo border border-1 rounded p-4" style="background-color: #f8d7da;">
+      <div class="row mb-3" >
+        <div class="col-md-6 font-weight-bold" id="gridhead"><b>City Code</b></div>
+        <div class="col-md-6"*ngIf="isEdit">{{ CityForm.get('citycode')?.value || 'N/A' }}</div>
+        <div class="col-md-6"*ngIf="!isEdit">
+          <input type="text" id="citycode" formControlName="citycode" class="form-control w-100" placeholder="Enter City Code" />
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6 font-weight-bold" id="gridhead"><b>City Symbol</b></div>
+        <div class="col-md-6">
+          <input type="text" id="symbol" formControlName="citysymbol" class="form-control w-100" placeholder="Enter City Symbol" />
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6 font-weight-bold" id="gridhead"><b>City Name</b></div>
+        <div class="col-md-6">
+          <input type="text" id="cityname" formControlName="cityname" class="form-control w-100" placeholder="Enter City Name" />
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6 font-weight-bold" id="gridhead"><b>State</b></div>
+        <div class="col-md-6">
+            <select id="citystate" formControlName="citystate" class="form-control w-100">
+            <option value="">-- Select State --</option>
+            <option *ngFor="let state of statelist" [value]="state.id">{{ state.text }}</option>
+            </select>
+        </div>
+        </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6 font-weight-bold" id="gridhead"><b>Active</b></div>
+        <div class="col-md-6">
+          <div class="form-check form-switch">
+            <input type="checkbox" class="form-check-input" id="active" formControlName="active">
+            <label class="form-check-label" for="active"></label>
+          </div>
+        </div>
+      <div class="form-group d-flex justify-content-center mt-4">
+        <button type="submit" class="btn btn-success mx-2" *ngIf="!isEdit">Save</button>
+        <button type="submit" class="btn btn-success mx-2" *ngIf="isEdit">Update</button>
+        <button type="button" class="btn btn-danger mx-2" (click)="cancel()">Cancel</button>
+      </div>
+    </div>
+    </div>
+  </form>
+</div>
+
+<div *ngIf="isView">
+  <div class="d-flex justify-content-center mt-8">
+    <div class="mt-5" style="border:1px solid rgb(91, 165, 197);border-radius: 10px;width: 50%;">
+      <h4 class="bg-primary text-white text-center p-2" style="border-radius: 10px;">Country View 
+        <span style="cursor:pointer; float:inline-end;" (click)="cancel()">❌</span>
+      </h4>
+
+      <div class="row mb-4">
+        <div class="col-md-3 font-weight-bold"><b>Country ID</b></div>
+        <div class="col-md-3">{{ CityForm.get('citycode')?.value || 'N/A' }}</div>
+        <div class="col-md-3 font-weight-bold"><b>Country Name</b></div>
+        <div class="col-md-3">{{ CityForm.get('cityname')?.value || 'N/A' }}</div>
+      </div>
+
+      <div class="row mb-4">
+        <div class="col-md-3 font-weight-bold"><b>Country Symbol</b></div>
+        <div class="col-md-3">{{ CityForm.get('citysymbol')?.value || 'N/A' }}</div>
+        <div class="col-md-3 font-weight-bold"><b>Active</b></div>
+        <div class="col-md-3">{{ CityForm.get('active')?.value || 'N/A' }}</div>
+      </div>
+      
+      <div class="row mb-4">
+        <div class="col-md-3 font-weight-bold"><b>Country Region</b></div>
+        <div class="col-md-3">{{ CityForm.get('citystate')?.value || 'N/A' }}</div>
+      </div>
+    </div>
+  </div>
+</div>

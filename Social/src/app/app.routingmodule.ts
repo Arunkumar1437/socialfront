@@ -24,6 +24,8 @@ import { CurrencyComponent } from './currency/currency.component';
 import { EmojComponent } from './emoj/emoj.component';
 import { CountryComponent } from './country/country.component';
 import { RegionComponent } from './region/region.component';
+import { CityComponent } from './city/city.component';
+import { StateComponent } from './state/state.component';
 
 export const routes: Routes = [
     //configure the modules
@@ -52,6 +54,8 @@ export const routes: Routes = [
     {path:"Currency",loadChildren:()=>import("./currency/currency.module").then((m)=>m.CurrencyModule)},
     {path:"Country",loadChildren:()=>import("./country/country.module").then((m)=>m.CountryModule)},
     {path:"Region",loadChildren:()=>import("./region/region.module").then((m)=>m.RegionModule)},
+    {path:"City",loadChildren:()=>import("./city/city.module").then((m)=>m.CityModule)},
+    {path:"State",loadChildren:()=>import("./state/state.module").then((m)=>m.StateModule)},
 
 
     //configure the Components 
@@ -69,17 +73,21 @@ export const routes: Routes = [
     {path:"profile/:id",component:ProfileComponent},
     {path:"ocr",component:OcrComponent},
     {path:"chat",component:ChatComponent},
-    { path:'user', component: AdminComponent},
+    {path:'user', component: AdminComponent},
     {path:"form",component:FormComponent },
     {path:"employee",component:EmployeeComponent},
-    { path:'holiday', component: HolidayComponent},
-    { path:'leavetype', component: LeavetypeComponent},
+    {path:'holiday', component: HolidayComponent},
+    {path:'leavetype', component: LeavetypeComponent},
     {path:"leavedeclaration",component:LeavedeclarationComponent},
     {path:"leaveapplication",component:LeaveapplicationComponent},
     {path:"emoj",component:EmojComponent},
     {path:'currency',component:CurrencyComponent},
-     {path:'country',component:CountryComponent},
-      {path:'region',component:RegionComponent},
+    {path:'country',component:CountryComponent},
+    {path:'region',component:RegionComponent},
+    {path:'city',component:CityComponent},
+    {path:'state',component:StateComponent},
+    
+    
     //Redirect to Login Page Directly
     {path: '', redirectTo: 'Login/login', pathMatch: 'full' },
    

@@ -180,6 +180,14 @@ export class CommonService {
   deletecountry(countryid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/deletecountry/${countryid}`;return this.http.delete(url);}
   getcountrydrop():Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/mastermodule/getcountrydropdown`); }
   getstatedrop():Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/mastermodule/getstatedropdown`); }
-
+  savestate(data: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/savestate`; return this.http.post<any>(url,data);}
+  stateList(luser:any): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/mastermodule/getstatelist/${luser}`); }
+  stateEdit(stateid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/editstate/${stateid}`;return this.http.get<any>(url);}
+  deletestate(stateid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/deletestate/${stateid}`;return this.http.delete(url);}
+  savecity(data: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/savecity`; return this.http.post<any>(url,data);}
+  cityList(luser:any): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/mastermodule/getcitylist/${luser}`); }
+  cityEdit(cityid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/editcity/${cityid}`;return this.http.get<any>(url);}
+  deletecity(cityid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/deletecity/${cityid}`;return this.http.delete(url);}
+ 
 
 }
