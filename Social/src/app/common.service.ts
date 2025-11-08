@@ -189,5 +189,21 @@ export class CommonService {
   cityEdit(cityid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/editcity/${cityid}`;return this.http.get<any>(url);}
   deletecity(cityid: any): Observable<any> {const url = `${this.mastermoduleapi}api/mastermodule/deletecity/${cityid}`;return this.http.delete(url);}
  
+  //Payroll
+  saveupdatecreditdebit(data: any): Observable<any> {const url = `${this.mastermoduleapi}api/payrollmodule/savecreditdebit`; return this.http.post<any>(url,data);}
+  creditdebitList(luser:any): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/payrollmodule/getcreditdebitlist/${luser}`); }
+  creditdebitEdit(creditdebitid: any): Observable<any> {const url = `${this.mastermoduleapi}api/payrollmodule/editcreditdebit/${creditdebitid}`;return this.http.get<any>(url);}
+  deletecreditdebit(creditdebitid: any): Observable<any> {const url = `${this.mastermoduleapi}api/payrollmodule/deletecreditdebit/${creditdebitid}`;return this.http.delete(url);}
+  creditdibitdetails(): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/payrollmodule/creditdebitdetails`); }
+  saveupdatesalaryfixation(data: any): Observable<any> {const url = `${this.mastermoduleapi}api/payrollmodule/savesalaryfixation`; return this.http.post<any>(url,data);}
+  salaryfixationlList(luser:any): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/payrollmodule/getsalaryfixationlist/${luser}`); }
+  salaryfixationEdit(empid: any): Observable<any> {const url = `${this.mastermoduleapi}api/payrollmodule/editsalaryfixation/${empid}`;return this.http.get<any>(url);}
+  salaryfixationDelete(empid: any): Observable<any> {const url = `${this.mastermoduleapi}api/payrollmodule/deletesalaryfixation/${empid}`;return this.http.delete(url);}
+  generatepayroll(data: any): Observable<any> {const url = `${this.mastermoduleapi}api/payrollmodule/payrollgeneration`; return this.http.post<any>(url,data);}
+  saveupdateleaveentry(data: any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/saveleaveentry`; return this.http.post<any>(url,data);}
+  leaveentryList(luser:any): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/hrmsmodule/getleaveentryList/${luser}`); }
+  leaveentryEdit(leaveentryid: any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/editlleaveentry/${leaveentryid}`;return this.http.get<any>(url);}
+  deleteleaveentry(leaveentryid: any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/deleteleaveentry/${leaveentryid}`;return this.http.delete(url);}
+  
 
 }

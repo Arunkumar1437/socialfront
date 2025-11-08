@@ -26,6 +26,10 @@ import { CountryComponent } from './country/country.component';
 import { RegionComponent } from './region/region.component';
 import { CityComponent } from './city/city.component';
 import { StateComponent } from './state/state.component';
+import { SalaryfixationComponent } from './salaryfixation/salaryfixation.component';
+import { CreditdebitmasterComponent } from './creditdebitmaster/creditdebitmaster.component';
+import { PayrollgenerationComponent } from './payrollgeneration/payrollgeneration.component';
+import { LeaveentryComponent } from './leaveentry/leaveentry.component';
 
 export const routes: Routes = [
     //configure the modules
@@ -56,7 +60,10 @@ export const routes: Routes = [
     {path:"Region",loadChildren:()=>import("./region/region.module").then((m)=>m.RegionModule)},
     {path:"City",loadChildren:()=>import("./city/city.module").then((m)=>m.CityModule)},
     {path:"State",loadChildren:()=>import("./state/state.module").then((m)=>m.StateModule)},
-
+    {path:"Salaryfixation",loadChildren:()=>import("./salaryfixation/salaryfixation.module").then((m)=>m.SalaryfixationModule)},
+    {path:"Creditdebitmaster",loadChildren:()=>import("./creditdebitmaster/creditdebitmaster.module").then((m)=>m.CreditdebitmasterModule)},
+    {path:"Payrollgeneration",loadChildren:()=>import("./payrollgeneration/payrollgeneration.module").then((m)=>m.PayrollgenerationModule)},
+    {path:"Leaveentry",loadChildren:()=>import("./leaveentry/leaveentry.module").then((m)=>m.LeaveentryModule)},
 
     //configure the Components 
     {path:"dash",component:DashboardComponent},
@@ -86,8 +93,11 @@ export const routes: Routes = [
     {path:'region',component:RegionComponent},
     {path:'city',component:CityComponent},
     {path:'state',component:StateComponent},
-    
-    
+    {path:"salaryfixation",component:SalaryfixationComponent},
+     {path:"creditdebitmaster",component: CreditdebitmasterComponent},
+     {path:'payrollgeneration',component:PayrollgenerationComponent},
+     {path:'leaveentry',component:LeaveentryComponent},
+
     //Redirect to Login Page Directly
     {path: '', redirectTo: 'Login/login', pathMatch: 'full' },
    

@@ -177,7 +177,7 @@ export class LeaveapplicationComponent implements OnInit {
   }
 
   getList(luser:any): void {
-    this.commonService.leaveappliclList(luser).subscribe({
+    this.commonService.leaveentryList(luser).subscribe({
       next: (data: any) => {
         this.leaveappliclList = data.getleaveappliclList || [];
         this.totalItems = this.leaveappliclList.length;

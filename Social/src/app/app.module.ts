@@ -43,13 +43,17 @@ import { CountryComponent } from './country/country.component';
 import { RegionComponent } from './region/region.component';
 import { StateComponent } from './state/state.component';
 import { CityComponent } from './city/city.component';
+import { SalaryfixationComponent } from './salaryfixation/salaryfixation.component';
+import { CreditdebitmasterComponent } from './creditdebitmaster/creditdebitmaster.component';
+import { PayrollgenerationComponent } from './payrollgeneration/payrollgeneration.component';
+import { LeaveentryComponent } from './leaveentry/leaveentry.component';
 
 @NgModule({
   declarations: [
     TaskmangeComponent,AttendanceComponent,SidebarComponent,MessageComponent,PostComponent,NotificationComponent,
     SettingComponent,RegisterComponent,ForgetpasswordComponent,DashboardComponent,ProfileComponent,
     OcrComponent,ChatComponent,AdminComponent,FormComponent,MainpageComponent,EmployeeComponent, 
-    HolidayComponent, LeavetypeComponent, LeavedeclarationComponent, LeaveapplicationComponent, EmojComponent, CurrencyComponent, CountryComponent, RegionComponent, StateComponent, CityComponent,
+    HolidayComponent, LeavetypeComponent, LeavedeclarationComponent, LeaveapplicationComponent, EmojComponent, CurrencyComponent, CountryComponent, RegionComponent, StateComponent, CityComponent, SalaryfixationComponent, CreditdebitmasterComponent, PayrollgenerationComponent, LeaveentryComponent,
   ],
   imports: [
     CommonModule,
