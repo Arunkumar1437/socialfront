@@ -204,6 +204,7 @@ export class CommonService {
   leaveentryList(luser:any): Observable<{ data: any[] }> {return this.http.get<{ data: any[] }>(`${this.mastermoduleapi}api/hrmsmodule/getleaveentryList/${luser}`); }
   leaveentryEdit(leaveentryid: any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/editlleaveentry/${leaveentryid}`;return this.http.get<any>(url);}
   deleteleaveentry(leaveentryid: any): Observable<any> {const url = `${this.mastermoduleapi}api/hrmsmodule/deleteleaveentry/${leaveentryid}`;return this.http.delete(url);}
-  
+  getpayslipview (data: any): Observable<any> {const url = `${this.mastermoduleapi}api/payrollmodule/payslipview`; return this.http.post<any>(url,data);}
+  sendpayslipmail (data: any): Observable<any> {const url = `${this.mastermoduleapi}api/payrollmodule/payslipsendmail`; return this.http.post<any>(url,data);}
 
 }

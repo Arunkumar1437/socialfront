@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { CommonService } from '../common.service';
@@ -10,7 +10,7 @@ import { CommonService } from '../common.service';
   styleUrl: './payrollgeneration.component.css'
 })
 export class PayrollgenerationComponent  implements OnInit {
-  salaryfixationForm: FormGroup;
+  payrollgenerationForm: FormGroup;
   leavedetail: any[] = [];
   salaryfixationList: any[] = [];
   pageddata: any[] = [];
@@ -37,10 +37,10 @@ export class PayrollgenerationComponent  implements OnInit {
     private commonService: CommonService,
     private _snackBar: MatSnackBar
   ) {
-    this.salaryfixationForm = this.formBuilder.group({
-      empid:[''],
-      month:[''],
-      year:['']
+    this.payrollgenerationForm = this.formBuilder.group({
+      empid:['',Validators.required],
+      month:['',Validators.required],
+      year:['',Validators.required]
     });
   }
 months = [
@@ -71,9 +71,9 @@ years: number[] = [];
       this.userList = [];  
     }
     if(this.userid!=""){
-      this.salaryfixationForm.get('userid')?.setValue(this.userid);
-      this.salaryfixationForm.get('empid')?.setValue(this.userid);
-      this.salaryfixationForm.get('empname')?.setValue(this.username);
+      this.payrollgenerationForm.get('userid')?.setValue(this.userid);
+      this.payrollgenerationForm.get('empid')?.setValue(this.userid);
+      this.payrollgenerationForm.get('empname')?.setValue(this.username);
       console.log('Login user Id:', this.userid);
       console.log('Login user Name:', this.username);
     }
@@ -83,46 +83,10 @@ years: number[] = [];
     this.years.push(i);
   }
    }
-
-  get creditlistArray(): FormArray {
-    return this.salaryfixationForm.get('creditlist') as FormArray;
-  }
-  get debitlistArray(): FormArray {
-    return this.salaryfixationForm.get('debitlist') as FormArray;
-  }
-
-  getcreditdebitDetails(): void {
-    this.commonService.creditdibitdetails().subscribe({
-      next: (data: any) => {
-        const creditlist = data.creditlist || [];
-        const debitlist = data.debitlist || [];
-        this.creditlistArray.clear();
-         this.debitlistArray.clear();
-        creditlist.forEach((item: any) => {
-          this.creditlistArray.push(this.formBuilder.group({
-            creditdebitcode: [item.creditdebitcode],
-            creditdebitname: [item.creditdebitname],
-            amount: [0.0],
-            salaryfixid:['']
-          }));
-        });
-
-        debitlist.forEach((item: any) => {
-          this.debitlistArray.push(this.formBuilder.group({
-            creditdebitcode: [item.creditdebitcode],
-            creditdebitname: [item.creditdebitname],
-            amount: [0.0],salaryfixid:['']
-          }));
-        });
-      },
-      error: (e: any) => console.error('Error fetching data:', e)
-    });
-  }
-
   onSubmit(): void {
-    if (this.salaryfixationForm.valid) {
-      this.salaryfixationForm.get('userid')?.setValue(this.userid);
-      this.commonService.generatepayroll(this.salaryfixationForm.value).subscribe({
+    if (this.payrollgenerationForm.valid) {
+      this.payrollgenerationForm.get('userid')?.setValue(this.userid);
+      this.commonService.generatepayroll(this.payrollgenerationForm.value).subscribe({
         next: (res: any) => {
           if (res.sucess === true) {
             const message = 'Generated successfully';
@@ -157,31 +121,6 @@ years: number[] = [];
         }
       });
     }
-  }
-  
-
-  loadvalue(empid: any): void {
-    this.commonService.salaryfixationEdit(empid).subscribe({
-      next: (data: any) => {
-        this.salaryfixationForm.patchValue({
-            empid:data.empid,
-            username:data.username,
-            debitlist:data.debitlist,
-            creditlist:data.creditlist,
-            fromdate:data.fromdate,
-        });
-        let fromdate = data.fromdate; 
-
-        if (fromdate) {
-        const parts = fromdate.split('-'); 
-        const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`; 
-        this.salaryfixationForm.get('fromdate')?.setValue(formattedDate);
-}
-      },
-      error: (e: any) => {
-        console.error('Error fetching leave Application:', e);
-      },
-    });
   }
   
 }

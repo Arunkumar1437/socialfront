@@ -30,6 +30,7 @@ import { SalaryfixationComponent } from './salaryfixation/salaryfixation.compone
 import { CreditdebitmasterComponent } from './creditdebitmaster/creditdebitmaster.component';
 import { PayrollgenerationComponent } from './payrollgeneration/payrollgeneration.component';
 import { LeaveentryComponent } from './leaveentry/leaveentry.component';
+import { PayslipComponent } from './payslip/payslip.component';
 
 export const routes: Routes = [
     //configure the modules
@@ -64,6 +65,7 @@ export const routes: Routes = [
     {path:"Creditdebitmaster",loadChildren:()=>import("./creditdebitmaster/creditdebitmaster.module").then((m)=>m.CreditdebitmasterModule)},
     {path:"Payrollgeneration",loadChildren:()=>import("./payrollgeneration/payrollgeneration.module").then((m)=>m.PayrollgenerationModule)},
     {path:"Leaveentry",loadChildren:()=>import("./leaveentry/leaveentry.module").then((m)=>m.LeaveentryModule)},
+    {path:"Payslip",loadChildren:()=>import("./payslip/payslip.module").then((m)=>m.PayslipModule)},
 
     //configure the Components 
     {path:"dash",component:DashboardComponent},
@@ -94,10 +96,11 @@ export const routes: Routes = [
     {path:'city',component:CityComponent},
     {path:'state',component:StateComponent},
     {path:"salaryfixation",component:SalaryfixationComponent},
-     {path:"creditdebitmaster",component: CreditdebitmasterComponent},
-     {path:'payrollgeneration',component:PayrollgenerationComponent},
-     {path:'leaveentry',component:LeaveentryComponent},
-
+    {path:"creditdebitmaster",component: CreditdebitmasterComponent},
+    {path:'payrollgeneration',component:PayrollgenerationComponent},
+    {path:'leaveentry',component:LeaveentryComponent},
+    {path:'payslip',component:PayslipComponent},
+    
     //Redirect to Login Page Directly
     {path: '', redirectTo: 'Login/login', pathMatch: 'full' },
    

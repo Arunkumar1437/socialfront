@@ -1,0 +1,142 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<body>
+    <form [formGroup]="payslipForm" (ngSubmit)="onSubmit()">
+        <div class="d-flex justify-content-center mt-8">
+            <div class="table-container" style="border-radius: 10px;width: 75%;">
+            <div class="row align-items-center mb-2">
+                    <!-- Employee Name -->
+                    <label class="col-sm-2 col-form-label text-end">
+                        Employee Name:<span class="text-danger">*</span>
+                    </label>
+                    <div class="col-sm-3">
+                        <ng-select
+                        style="border: 2px solid blue; border-radius: 5px; height: 35px;"
+                        formControlName="empid"
+                        [items]="userList"
+                        bindLabel="username"
+                        bindValue="userid"
+                        [searchable]="true"
+                        [clearable]="true">
+                        </ng-select>
+                    </div>
+
+                    <!-- Month -->
+                    <label class="col-sm-1 col-form-label text-end">Month<span class="text-danger">*</span></label>
+                    <div class="col-md-2">
+                        <select formControlName="month" class="form-select" style="border: 2px solid blue; border-radius: 5px; height: 35px;">
+                        <option value="" disabled selected>Select Month</option>
+                        <option *ngFor="let m of months" [value]="m.value">{{ m.name }}</option>
+                        </select>
+                    </div>
+
+                    <!-- Year -->
+                    <label class="col-sm-1 col-form-label text-end">Year<span class="text-danger">*</span></label>
+                    <div class="col-md-2">
+                        <select formControlName="year" class="form-select" style="border: 2px solid blue; border-radius: 5px; height: 35px;">
+                        <option value="" disabled selected>Select Year</option>
+                        <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+                        </select>
+                    </div>
+                    </div>                
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-success" [disabled]="!payslipForm.valid">View</button>
+          </div>
+      </div>
+    </div>
+    <div *ngIf="isView" id="payslipSection" style="margin-top:10px">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<table class="payslip">
+  <tr>
+    <td colspan="8" class="header">Social Software Pvt Ltd</td>
+  </tr>
+  <tr>
+    <td colspan="8" class="sub-header">
+      Registered Office Address: 1/96 B,Shop Street,Palayankottai Kilpathi,Srimushnam TK, Cuddalore Dt-608701
+    </td>
+  </tr>
+  <tr>
+    <th colspan="8" style="text-align:center;">Salary Slip of {{ payslipForm.get('monthword')?.value || 'N/A' }}-{{ payslipForm.get('year')?.value || 'N/A' }}</th>
+  </tr>
+
+  <tr>
+    <th>Employee Id</th><td>{{ payslipForm.get('empid')?.value || 'N/A' }}</td>
+    <th>Month</th><td>{{ payslipForm.get('monthword')?.value || 'N/A' }}-{{ payslipForm.get('year')?.value || 'N/A' }}</td>
+    <th>Bank Account number</th><td>00000042406316999</td>
+    <th>Bank Name</th><td>State Bank of India</td>
+  </tr>
+  <tr>
+    <th>Employee Name</th><td>{{ payslipForm.get('username')?.value || 'N/A' }}</td>
+    <th>Designation</th><td>EMPLOYEE</td>
+    <th>UAN No</th><td>101263857773</td>
+    <th>No. of Working Days</th><td>30</td>
+  </tr>
+  <tr>
+    <th>Department</th><td>SUPER ADMIN</td>
+    <th>Location</th><td>CHENNAI</td>
+    <th>LOP Days</th><td>{{ payslipForm.get('lopdays')?.value || 'N/A' }}</td>
+    <th>Date of Joining</th><td>20/09/2023</td>
+  </tr>
+
+  <tr>
+    <th colspan="3" class="section-title">Earnings</th>
+    <th class="section-title">Amount</th>
+    <th colspan="3" class="section-title">Deductions</th>
+    <th class="section-title">Amount</th>
+  </tr>
+
+  <tr>
+    <td colspan="3">Basic</td><td class="amount">{{ payslipForm.get('basicamount')?.value || 'N/A' }}</td>
+    <td colspan="3">PF</td><td class="amount">{{ payslipForm.get('epfamount')?.value || 'N/A' }}</td>
+  </tr>
+  <tr>
+    <td colspan="3">INSENTIVE</td><td class="amount">{{ payslipForm.get('insentiveamount')?.value || 'N/A' }}</td>
+    <td colspan="3">Professional Tax</td><td class="amount"></td>
+  </tr>
+  <tr>
+    <td colspan="3">Special Allowance</td><td class="amount"></td>
+    <td colspan="3">TDS</td><td class="amount"></td>
+  </tr>
+  <tr>
+    <td colspan="3">Conveyance Allowance</td><td class="amount"></td>
+    <td colspan="3">LOP</td><td class="amount">{{ payslipForm.get('lopamount')?.value || 'N/A' }}</td>
+  </tr>
+  <tr>
+    <td colspan="3">Medical Allowance</td><td class="amount"></td>
+    <td colspan="3">Salary Advance</td><td class="amount"></td>
+  </tr>
+  <tr>
+    <td colspan="3">LTA</td><td class="amount"></td>
+    <td colspan="3">Other Deductions</td><td class="amount"></td>
+  </tr>
+
+  <tr class="total-row">
+    <td colspan="3">Total Earnings</td><td class="amount">{{ payslipForm.get('grosspay')?.value || 'N/A' }}</td>
+    <td colspan="3">Total Deductions</td><td class="amount">{{ payslipForm.get('grossdeduct')?.value || 'N/A' }}</td>
+  </tr>
+
+  <tr class="total-row">
+    <td colspan="7">Net Pay</td><td class="amount">{{ payslipForm.get('netpay')?.value || 'N/A' }}</td>
+  </tr>
+
+  <tr>
+    <th colspan="2">Net Amount in Words:</th>
+    <td colspan="6">{{ payslipForm.get('netamountword')?.value || 'N/A' }}</td>
+  </tr>
+
+  <tr>
+    <td colspan="8" class="footer-note">
+      This is a Computer generated payslip and does not require any authentication.
+    </td>
+  </tr>
+</table>
+
+</div>
+<div *ngIf="isView"style="margin-top: 10px;text-align: center;">
+    <button class="btn btn-primary"  type="button" (click)="payslipprint()" >🖨️ Print</button>
+<button class="btn btn-primary"  type="button" (click)="sendMail()"style="margin-left: 10px" >Mail</button>
+</div>
+    </form>
+</body>

@@ -47,13 +47,14 @@ import { SalaryfixationComponent } from './salaryfixation/salaryfixation.compone
 import { CreditdebitmasterComponent } from './creditdebitmaster/creditdebitmaster.component';
 import { PayrollgenerationComponent } from './payrollgeneration/payrollgeneration.component';
 import { LeaveentryComponent } from './leaveentry/leaveentry.component';
+import { PayslipComponent } from './payslip/payslip.component';
 
 @NgModule({
   declarations: [
     TaskmangeComponent,AttendanceComponent,SidebarComponent,MessageComponent,PostComponent,NotificationComponent,
     SettingComponent,RegisterComponent,ForgetpasswordComponent,DashboardComponent,ProfileComponent,
     OcrComponent,ChatComponent,AdminComponent,FormComponent,MainpageComponent,EmployeeComponent, 
-    HolidayComponent, LeavetypeComponent, LeavedeclarationComponent, LeaveapplicationComponent, EmojComponent, CurrencyComponent, CountryComponent, RegionComponent, StateComponent, CityComponent, SalaryfixationComponent, CreditdebitmasterComponent, PayrollgenerationComponent, LeaveentryComponent,
+    HolidayComponent, LeavetypeComponent, LeavedeclarationComponent, LeaveapplicationComponent, EmojComponent, CurrencyComponent, CountryComponent, RegionComponent, StateComponent, CityComponent, SalaryfixationComponent, CreditdebitmasterComponent, PayrollgenerationComponent, LeaveentryComponent, PayslipComponent,
   ],
   imports: [
     CommonModule,
